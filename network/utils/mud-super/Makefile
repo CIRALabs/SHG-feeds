@@ -7,7 +7,7 @@ PKG_RELEASE:=1
 PKG_BUILD_DIR:=$(BUILD_DIR)/mud-super-$(PKG_VERSION)
 #PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
 #PKG_HASH:=9b7dc52656f5cbec846a7ba3299f73bd
-PKG_CAT:=zcat
+PKG_CAT:=xzcat
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/CIRALabs/shg-mudsuper.git
 PKG_SOURCE_VERSION:=master
@@ -22,11 +22,16 @@ define Package/mud-super
   URL:=http://www.securehomegateway.ca/
 endef
 
-define Package/bridge/description
+define Package/mud-super/description
  mud-super is a package to supervise the firewall interfaces of openwrt using
  IETF RFCxxxx MUD files to control access by various home (IoT) devices.
  mud-super is generally controlled by a mud-controller, of which https://github.com/CIRALabs/shg-fountain
  is one such controller.  (It is generally run in an LXC container)
 endef
+
+define Package/install
+	make DESTDIR=$(1) install
+endef
+
 
 $(eval $(call BuildPackage,mud-super))
