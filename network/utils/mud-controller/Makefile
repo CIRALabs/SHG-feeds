@@ -2,9 +2,9 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mud-controller
 PKG_VERSION:=1.0.1
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/mud-super-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/mud-controller-$(PKG_VERSION)
 #PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
 #PKG_HASH:=9b7dc52656f5cbec846a7ba3299f73bd
 PKG_CAT:=xzcat
