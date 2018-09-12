@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=mud-super
-PKG_VERSION:=1.0.0
-PKG_RELEASE:=1
+PKG_NAME:=mud-controller
+PKG_VERSION:=1.0.1
+PKG_RELEASE:=4
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/mud-super-$(PKG_VERSION)
 #PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
@@ -15,23 +15,24 @@ PKG_SOURCE_DATE:=2018-08-31
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/mud-super
-  SECTION:=base
+define Package/mud-controller
+  DEPENDS:=+libuci-lua lua-cjson lua-resolver luasocket
+  SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=firewall manager using MUD files
   URL:=http://www.securehomegateway.ca/
 endef
 
-define Package/mud-super/description
+define Package/mud-controller/description
  mud-super is a package to supervise the firewall interfaces of openwrt using
  IETF RFCxxxx MUD files to control access by various home (IoT) devices.
  mud-super is generally controlled by a mud-controller, of which https://github.com/CIRALabs/shg-fountain
  is one such controller.  (It is generally run in an LXC container)
 endef
 
-define Package/install
-	make DESTDIR=$(1) install
+define Package/mud-controller/install
+	make -C $(PKG_BUILD_DIR) DESTDIR=$(1) install
 endef
 
 
-$(eval $(call BuildPackage,mud-super))
+$(eval $(call BuildPackage,mud-controller))
