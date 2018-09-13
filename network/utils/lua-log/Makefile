@@ -31,4 +31,4 @@ define Package/lua-log/install
 endef
 
 
-$(eval $(call BuildPackage,mud-super))
+$(eval $(call BuildPackage,lua-log))
