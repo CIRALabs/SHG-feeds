@@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/lua-log
   SECTION:=base
   CATEGORY:=Network
-  TITLE:=firewall manager using MUD files
+  TITLE:=Logging utilities for LUA
   URL:=http://www.securehomegateway.ca/
 endef
 
