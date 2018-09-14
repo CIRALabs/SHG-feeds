@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mud-controller
-PKG_VERSION:=1.0.1
-PKG_RELEASE:=5
+PKG_VERSION:=0.1.0
+PKG_RELEASE:=6
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/mud-controller-$(PKG_VERSION)
 #PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
@@ -16,7 +16,7 @@ PKG_SOURCE_DATE:=2018-08-31
 include $(INCLUDE_DIR)/package.mk
 
 define Package/mud-controller
-  DEPENDS:=+libuci-lua lua-cjson lua-resolver luasocket
+  DEPENDS:=+libuci-lua lua-cjson lua-resolver luasocket lua-log
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=firewall manager using MUD files
