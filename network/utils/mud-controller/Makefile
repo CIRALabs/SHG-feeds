@@ -31,8 +31,13 @@ define Package/mud-controller/description
 endef
 
 define Package/mud-controller/install
+	echo installing to $(1)
+	mkdir -p $(1)/etc/init.d
 	make -C $(PKG_BUILD_DIR) DESTDIR=$(1) install
 endef
 
+define Build/Compile
+	echo compile.; true
+endef
 
 $(eval $(call BuildPackage,mud-controller))
