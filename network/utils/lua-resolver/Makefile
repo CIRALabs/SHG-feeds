@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lua-resolver
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/lua-resolver-$(PKG_VERSION)
 #PKG_SOURCE:=lua-cjson-$(PKG_VERSION).tar.gz
@@ -17,6 +17,7 @@ PKG_SOURCE_DATE:=2018-08-31
 include $(INCLUDE_DIR)/package.mk
 
 define Package/lua-resolver
+  PKGARCH=all
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=LUA resolver package
@@ -28,8 +29,8 @@ define Package/lua-resolver/description
 endef
 
 define Package/lua-resolver/install
-	$(INSTALL_DIR) $(1)/usr/lib/lua/mud-super;
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/dns/parser.lua $(PKG_BUILD_DIR)/dns/resolver.lua $(1)/usr/lib/lua/mud-super
+	$(INSTALL_DIR) $(1)/usr/lib/lua/dns;
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/dns/parser.lua $(PKG_BUILD_DIR)/dns/resolver.lua $(1)/usr/lib/lua/dns
 endef
 
 define Build/Compile
