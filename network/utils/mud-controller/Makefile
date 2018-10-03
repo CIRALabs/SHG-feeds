@@ -16,6 +16,7 @@ PKG_SOURCE_DATE:=2018-08-31
 include $(INCLUDE_DIR)/package.mk
 
 define Package/mud-controller
+  PKGARCH=all
   DEPENDS:=+libuci-lua lua-cjson lua-resolver luasocket lua-log
   SECTION:=ciralabs
   CATEGORY:=Network
