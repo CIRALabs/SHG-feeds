@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mud-controller
-PKG_VERSION:=0.1.1
-PKG_RELEASE:=10
+PKG_VERSION:=0.1.3
+PKG_RELEASE:=14
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/mud-controller-$(PKG_VERSION)
 #PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
