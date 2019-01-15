@@ -1,0 +1,4 @@
+#!/bin/sh
+
+lxc-attach --name=mud-supervisor -- service ssh start
+
