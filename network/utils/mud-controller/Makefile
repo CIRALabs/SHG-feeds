@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mud-controller
 PKG_VERSION:=0.1.3
-PKG_RELEASE:=14
+PKG_RELEASE:=15
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/mud-controller-$(PKG_VERSION)
 #PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
@@ -27,7 +27,8 @@ endef
 define Package/mud-controller/description
  mud-controller is a package to manage the firewall interfaces of openwrt using
  IETF RFCxxxx MUD files to control access by various home (IoT) devices.
- mud-controller is generally controlled by a mud-supervisor, of which https://github.com/CIRALabs/shg-fountain
+ mud-controller is generally controlled by a mud-supervisor,
+ of which https://github.com/CIRALabs/shg-fountain
  is one such supervisor.  (It is generally run in an LXC container)
 endef
 

@@ -34,11 +34,12 @@ define Package/mud-supervisor/description
  with rsync.
 endef
 
+#	cp mud-supervisor.init $(1)/etc/init.d/mud-supervisor
+#	chmod +x $(1)/etc/init.d/mud-supervisor
+
 define Package/mud-supervisor/install
 	echo installing to $(1)
 	mkdir -p $(1)/etc/init.d $(1)/root
-	cp mud-supervisor.init $(1)/etc/init.d/mud-supervisor
-	chmod +x $(1)/etc/init.d/mud-supervisor
 	cp upd mudbash mudssh  $(1)/root
 	chmod +x $(1)/root/upd $(1)/root/mudbash $(1)/root/mudssh
 endef
