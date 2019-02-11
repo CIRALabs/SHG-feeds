@@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/mud-controller
   PKGARCH=all
-  DEPENDS:=+libuci-lua lua-cjson lua-resolver luasocket lua-log
+  DEPENDS:=+libuci-lua lua-cjson lua-resolver luasocket lua-log luaevent
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=firewall manager using MUD files
