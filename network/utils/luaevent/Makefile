@@ -11,9 +11,9 @@ PKG_RELEASE:=1
 #PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/Viagenie/luaevent.git
-PKG_SOURCE_VERSION:=shg
-PKG_SOURCE_DATE:=2019-02-06
+PKG_SOURCE_URL:=https://github.com/harningt/luaevent
+PKG_SOURCE_VERSION:=develop
+PKG_SOURCE_DATE:=2019-02-12
 
 
 PKG_BUILD_PARALLEL:=1
