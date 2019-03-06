@@ -1,0 +1,83 @@
+#!/bin/sh /etc/rc.common
+#
+# Onboarding script for SHG on Turris Omnia
+
+START=80
+STOP=00
+USE_PROCD=1
+
+
+#info() { echo $@; }
+#error(){ >&2 echo $@; }
+info() { logger -t shg-provisioning -p info $@; }
+error() { logger -t shg-provisioning -p err $@; }
+check_error() {
+    if [ $? -ne 0 ]; then
+        error $@
+        exit 1
+    fi
+}
+
+WELL_KNOWN_FILE="/etc/shg/onboarded"
+WORKING_DIR="/etc/shg"
+WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
+check_error "Failed to retrieve provisionning URL"
+WAN_DEV_NAME=$(uci get network.wan.ifname)
+check_error "Failed to retrieve WAN interface name"
+LAN_DEV_NAME="br-lan"
+KEY_NAME="shg"
+TGZ_NAME="shg-filesystem"
+
+
+start_service() {
+    # Turris is already onboarded
+    if [ -f $WELL_KNOWN_FILE ]; then
+        info "Already onboarded"
+        exit 0;
+    fi
+
+    mkdir -p ${WORKING_DIR}
+    cd ${WORKING_DIR}
+
+    # generate cert
+    info "Generating certs..."
+    openssl req -new -newkey rsa:2048 -nodes -subj "/" -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr 1>/dev/null 2>&1
+    #openssl rsa -pubout -in ${KEY_NAME}.key -out ${KEY_NAME}.pub 1>/dev/null
+    chmod 600 ${KEY_NAME}.key
+
+    # encode CSR
+    ENCODED_CSR=base64:$(base64 ${KEY_NAME}.csr)
+
+    # retrieve adresses
+    info "Retrieve addresses..."
+    WAN_ETH=$(cat /sys/class/net/${WAN_DEV_NAME}/address)
+    check_error "Failed to retrieve ${WAN_DEV_NAME} MAC address"
+    LAN_ETH=$(cat /sys/class/net/${LAN_DEV_NAME}/address)
+    check_error "Failed to retrieve ${LAN_DEV_NAME} MAC address"
+    #IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'fd[a-f0-9]\{2\}:[^/]*')
+    IP6_ULA_PREFIX=$(uci get network.globals.ula_prefix)
+    check_error "Failed to retrieve ULA address"
+
+    # POST Turris information
+    info "Contact server with information..."
+    HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' -d "{\"wan-mac\": \"${WAN_ETH}\", \"switch-mac\": \"${LAN_ETH}\", \"ula\": \"${IP6_ULA_PREFIX}\", \"csr\": \"${ENCODED_CSR}\"}" -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
+    check_error "Failed to download filesystem tgz"
+    if [ ${HTTP_STATUS} -ne 200 ]; then
+        error "Failed to contact server: HTTP ${HTTP_STATUS}"
+        exit 1;
+    fi
+
+    # Extract tgz file
+    info "Filesystem successfully retrieved, install it..."
+    cd /
+    tar -xzf ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
+    check_error "Failed to extract filesystem tgz"
+
+    # Set the well-known file to avoid subsequent onboarding
+    touch ${WELL_KNOWN_FILE}
+
+    # Reboot
+    info "Filesystem installed, reboot..."
+    reboot
+}
+
