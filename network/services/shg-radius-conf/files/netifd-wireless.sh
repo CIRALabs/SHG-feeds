@@ -243,6 +243,9 @@ wireless_vif_parse_encryption() {
 		psk3*|sae*)
 			auth_type=sae
 		;;
+		*psk*-radius*)
+			auth_type=psk-radius
+		;;
 		*psk*)
 			auth_type=psk
 		;;

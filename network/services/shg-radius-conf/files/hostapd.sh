@@ -45,6 +45,11 @@ hostapd_append_wpa_key_mgmt() {
 			[ "${ieee80211r:-0}" -gt 0 ] && append wpa_key_mgmt "FT-${auth_type_l}"
 			[ "${ieee80211w:-0}" -gt 0 ] && append wpa_key_mgmt "WPA-${auth_type_l}-SHA256"
 		;;
+		psk-radius)
+			append wpa_key_mgmt "WPA-PSK"
+			[ "${ieee80211r:-0}" -gt 0 ] && append wpa_key_mgmt "FT-PSK"
+			[ "${ieee80211w:-0}" -gt 0 ] && append wpa_key_mgmt "WPA-PSK-SHA256"
+		;;
 		eap192)
 			append wpa_key_mgmt "WPA-EAP-SUITE-B-192"
 		;;
@@ -359,6 +364,36 @@ hostapd_set_bss_options() {
 
 			wps_possible=1
 		;;
+		psk-radius)
+			json_get_vars \
+				auth_server auth_secret auth_port \
+				dae_client dae_secret dae_port \
+				ownip radius_client_addr
+
+			append bss_conf "wpa_passphrase=\"This will not be used\"" "$N"
+			append bss_conf "wpa_psk_radius=2" "$N"
+
+			# legacy compatibility
+			[ -n "$auth_server" ] || json_get_var auth_server server
+			[ -n "$auth_port" ] || json_get_var auth_port port
+			[ -n "$auth_secret" ] || json_get_var auth_secret key
+
+			set_default auth_port 1812
+			set_default dae_port 3799
+
+
+			append bss_conf "auth_server_addr=$auth_server" "$N"
+			append bss_conf "auth_server_port=$auth_port" "$N"
+			append bss_conf "auth_server_shared_secret=$auth_secret" "$N"
+
+			[ -n "$dae_client" -a -n "$dae_secret" ] && {
+				append bss_conf "radius_das_port=$dae_port" "$N"
+				append bss_conf "radius_das_client=$dae_client $dae_secret" "$N"
+			}
+
+			[ -n "$ownip" ] && append bss_conf "own_ip_addr=$ownip" "$N"
+			[ -n "$radius_client_addr" ] && append bss_conf "radius_client_addr=$radius_client_addr" "$N"
+		;;
 		eap|eap192|eap-eap192)
 			json_get_vars \
 				auth_server auth_secret auth_port \
@@ -549,6 +584,9 @@ hostapd_set_bss_options() {
 		deny)
 			append bss_conf "macaddr_acl=0" "$N"
 			append bss_conf "deny_mac_file=$_macfile" "$N"
+		;;
+		radius)
+			append bss_conf "macaddr_acl=2" "$N"
 		;;
 		*)
 			_macfile=""
