@@ -18,18 +18,17 @@ check_error() {
     fi
 }
 
-WELL_KNOWN_FILE="/etc/shg/onboarded"
-WORKING_DIR="/etc/shg"
-WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
-check_error "Failed to retrieve provisionning URL"
-WAN_DEV_NAME=$(uci get network.wan.ifname)
-check_error "Failed to retrieve WAN interface name"
-LAN_DEV_NAME="br-lan"
-KEY_NAME="shg"
-TGZ_NAME="shg-filesystem"
-
-
 start_service() {
+    WELL_KNOWN_FILE="/etc/shg/onboarded"
+    WORKING_DIR="/etc/shg"
+    WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
+    check_error "Failed to retrieve provisionning URL"
+    WAN_DEV_NAME=$(uci get network.wan.ifname)
+    check_error "Failed to retrieve WAN interface name"
+    LAN_DEV_NAME="br-lan"
+    KEY_NAME="shg"
+    TGZ_NAME="shg-filesystem"
+
     # Turris is already onboarded
     if [ -f $WELL_KNOWN_FILE ]; then
         info "Already onboarded"
