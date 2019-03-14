@@ -66,7 +66,7 @@ start_service() {
     info "Contact server with information..."
     JSON="{\"wan-mac\": \"${WAN_ETH}\", \"switch-mac\": \"${LAN_ETH}\", \"ula\": \"${IP6_ULA_PREFIX}\", \"csr\": \"${ENCODED_CSR}\"}"
     echo $JSON >$UPLOADFILE
-    HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' --data-raw $JSON  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
+    HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
     check_error "Failed to download filesystem tgz"
     if [ ${HTTP_STATUS} -ne 200 ]; then
         error "Failed to contact server: HTTP ${HTTP_STATUS}"
