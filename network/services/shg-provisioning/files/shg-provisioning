@@ -21,11 +21,16 @@ check_error() {
 start_service() {
     WELL_KNOWN_FILE="/etc/shg/onboarded"
     WORKING_DIR="/etc/shg"
-    WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
+    if [ -f /etc/shg/provisioningURL ]; then
+        WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
+    else
+        WELL_KNOWN_ADDRESS="https://provision.securehomegateway.ca/shg-provision"
+    fi
     check_error "Failed to retrieve provisionning URL"
     WAN_DEV_NAME=$(uci get network.wan.ifname)
     check_error "Failed to retrieve WAN interface name"
     LAN_DEV_NAME="br-lan"
+    UPLOADFILE="/tmp/provision.json"
     KEY_NAME="shg"
     TGZ_NAME="shg-filesystem"
 
@@ -44,8 +49,8 @@ start_service() {
     #openssl rsa -pubout -in ${KEY_NAME}.key -out ${KEY_NAME}.pub 1>/dev/null
     chmod 600 ${KEY_NAME}.key
 
-    # encode CSR
-    ENCODED_CSR=base64:$(base64 ${KEY_NAME}.csr)
+    # encode CSR, not wrapped, as it goes into JSON
+    ENCODED_CSR=$(base64 -w 0 ${KEY_NAME}.csr)
 
     # retrieve adresses
     info "Retrieve addresses..."
@@ -59,7 +64,8 @@ start_service() {
 
     # POST Turris information
     info "Contact server with information..."
-    HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' -d "{\"wan-mac\": \"${WAN_ETH}\", \"switch-mac\": \"${LAN_ETH}\", \"ula\": \"${IP6_ULA_PREFIX}\", \"csr\": \"${ENCODED_CSR}\"}" -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
+    echo "{\"wan-mac\": \"${WAN_ETH}\", \"switch-mac\": \"${LAN_ETH}\", \"ula\": \"${IP6_ULA_PREFIX}\", \"csr\": \"${ENCODED_CSR}\"}" >$UPLOADFILE
+    HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' --data-raw @$UPLOADFILE  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
     check_error "Failed to download filesystem tgz"
     if [ ${HTTP_STATUS} -ne 200 ]; then
         error "Failed to contact server: HTTP ${HTTP_STATUS}"
