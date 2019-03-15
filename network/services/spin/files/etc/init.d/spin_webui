@@ -3,7 +3,7 @@
 START=86
 
 start() {
-    (cd /usr/lib/spin/web_ui; minittp-server -i -p 8002 ./spin_webui.lua -s -m 192.168.8.1 >& /tmp/minittp_start.log&)
+    (cd /usr/lib/spin/web_ui; minittp-server -i -a 0.0.0.0 -p 8002 ./spin_webui.lua -s -m localhost >& /tmp/minittp_start.log&)
 }
 
 stop() {
@@ -16,14 +16,14 @@ reload() {
     if [ -e /var/minittp-server.pid ]; then
         kill `cat /var/minittp-server.pid`
     fi
-    (cd /usr/lib/spin/web_ui; minittp-server -i -p 8002 ./spin_webui.lua -s -m 192.168.8.1 >& /tmp/minittp_start.log&)
+    start
 }
 
 restart() {
     if [ -e /var/minittp-server.pid ]; then
         kill `cat /var/minittp-server.pid`
     fi
-    (cd /usr/lib/spin/web_ui; minittp-server -i -p 8002 ./spin_webui.lua -s -m 192.168.8.1 >& /tmp/minittp_start.log&)
+    start
 }
 
 shutdown() {
