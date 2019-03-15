@@ -1,0 +1,45 @@
+#!/bin/sh /etc/rc.common
+
+START=86
+
+SPIN_ENFORCER_PID="/var/run/spin_enforcer.pid"
+
+run_spin_enforcer() {
+    cd /usr/lib/spin
+    ./spin_enforcer.lua&
+    echo $! > ${SPIN_ENFORCER_PID}
+}
+
+start() {
+    /etc/init.d/spin start
+    run_spin_enforcer
+}
+
+stop() {
+    if [ -e ${SPIN_ENFORCER_PID} ]; then
+        kill `cat ${SPIN_ENFORCER_PID}`
+        rm ${SPIN_ENFORCER_PID}
+    fi
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    stop
+    start
+}
+
+enable() {
+    #ln -s /etc/init.d/spin /etc/rc.d/S${START}spin_enforcer
+    #start
+    echo "you must start the enforcer manually for now"
+}
+
+disable() {
+    rm -f /etc/rc.d/S${START}spin_enforcer
+    stop
+}
+

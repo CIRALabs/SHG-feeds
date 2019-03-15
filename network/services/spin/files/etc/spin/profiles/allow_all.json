@@ -1,0 +1,6 @@
+{
+  "id": "allow_all",
+  "name": "Allow all",
+  "type": "CREATED_BY_USER",
+  "description": "Full access to the Internet"
+}

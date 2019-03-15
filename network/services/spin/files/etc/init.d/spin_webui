@@ -1,0 +1,44 @@
+#!/bin/sh /etc/rc.common
+
+START=86
+
+start() {
+    (cd /usr/lib/spin/web_ui; minittp-server -i -p 8002 ./spin_webui.lua -s -m 192.168.8.1 >& /tmp/minittp_start.log&)
+}
+
+stop() {
+    if [ -e /var/minittp-server.pid ]; then
+        kill `cat /var/minittp-server.pid`
+    fi
+}
+
+reload() {
+    if [ -e /var/minittp-server.pid ]; then
+        kill `cat /var/minittp-server.pid`
+    fi
+    (cd /usr/lib/spin/web_ui; minittp-server -i -p 8002 ./spin_webui.lua -s -m 192.168.8.1 >& /tmp/minittp_start.log&)
+}
+
+restart() {
+    if [ -e /var/minittp-server.pid ]; then
+        kill `cat /var/minittp-server.pid`
+    fi
+    (cd /usr/lib/spin/web_ui; minittp-server -i -p 8002 ./spin_webui.lua -s -m 192.168.8.1 >& /tmp/minittp_start.log&)
+}
+
+shutdown() {
+    if [ -e /var/minittp-server.pid ]; then
+        kill `cat /var/minittp-server.pid`
+    fi
+}
+
+enable() {
+    ln -s /etc/init.d/spin /etc/rc.d/S${START}spin_webui
+    start
+}
+
+disable() {
+    rm -f /etc/rc.d/S${START}spin_webui
+    stop
+}
+

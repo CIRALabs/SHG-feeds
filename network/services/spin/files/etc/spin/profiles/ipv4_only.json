@@ -1,0 +1,7 @@
+{
+  "id": "ipv4_only",
+  "name": "IPv4 only",
+  "type": "CREATED_BY_USER",
+  "description": "Allow all IPv4 traffic, Deny all IPv6 traffic",
+  "rules_v6": [ "-j REJECT" ]
+}

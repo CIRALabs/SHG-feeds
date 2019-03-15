@@ -1,0 +1,15 @@
+
+config spind 'spind'
+    option iptable_debug '/tmp/blockcommands'
+    option iptable_queue_dns '1'
+    option iptable_queue_block '2'
+    option iptable_place_dns '0'
+    option iptable_place_block '0'
+    option pubsub_host '127.0.0.1'
+    option pubsub_port '1883'
+    option pubsub_channel_commands 'SPIN/commands'
+    option pubsub_channel_traffic 'SPIN/traffic'
+    option pubsub_timeout '60'
+    option log_usesyslog '1'
+    option log_loglevel '6'
+
