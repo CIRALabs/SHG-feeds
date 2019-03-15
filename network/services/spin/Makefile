@@ -38,8 +38,10 @@ define Package/spin
            +kmod-nf-conntrack-netlink\
            +libnetfilter-queue\
            +kmod-nfnetlink-queue\
+           +iptables-mod-nfqueue\
            +libnetfilter-log\
            +kmod-nfnetlink-log\
+           +iptables-mod-nflog\
            +libldns\
            +libuci
   MAINTAINER:=Jelte Jansen <jelte.jansen@sidn.nl>
