@@ -46,7 +46,7 @@ start_service() {
     # generate cert
     if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
         info "Generating certs..."
-        openssl req -new -newkey rsa:2048 -nodes -subj "/" -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr 1>/dev/null 2>&1
+        openssl req -new -newkey rsa:2048 -nodes -subj "/" -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr -outform DER 1>/dev/null 2>&1
         #openssl rsa -pubout -in ${KEY_NAME}.key -out ${KEY_NAME}.pub 1>/dev/null
         chmod 600 ${KEY_NAME}.key
     fi
