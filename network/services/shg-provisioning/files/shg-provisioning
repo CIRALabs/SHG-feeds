@@ -50,10 +50,16 @@ start_service() {
     # extract bytes 2,3,4 of ULA address.
     ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 ).r.dasblinkenled.org
 
+    printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_HOSTNAME},DNS:mud.${ULA_HOSTNAME}" >/tmp/shg.ossl.cnf
+
     # generate cert
     if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
         info "Generating certs..."
-        openssl req -new -newkey rsa:2048 -nodes -subj "/CN=${ULA_HOSTNAME}/CN=mud.${ULA_HSTNAME}" -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr -outform DER 1>/dev/null 2>&1
+        openssl req -new -newkey rsa:2048 -nodes -subj "/CN=${ULA_HOSTNAME}" \
+                -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr -outform DER \
+                -reqexts SAN \
+                -config /tmp/shg.ossl.cnf \
+#                1>/dev/null 2>&1
         chmod 600 ${KEY_NAME}.key
     fi
 
