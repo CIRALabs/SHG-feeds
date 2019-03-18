@@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/mud-supervisor
   PKGARCH=all
-  DEPENDS:=+mud-controller lxc
+  DEPENDS:=+mud-controller +lxc
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=MUD supervisor and BRSKI Registrar using container
