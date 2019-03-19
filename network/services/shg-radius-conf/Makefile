@@ -42,9 +42,6 @@ define Package/shg-radius-configuration/postinst
 	cp /etc/shg/radius-configuration/lib/netifd/* /lib/netifd/
 	cp /etc/shg/radius-configuration/etc/freeradius3/radiusd.conf /etc/freeradius3/
 
-	# Enable radius - Seems it is not enabled by default
-	/etc/init.d/radiusd enable
-
 	# Configure wifi
 	uci set wireless.default_radio0.encryption='psk2-radius'
 	uci set wireless.default_radio0.macfilter='radius'
