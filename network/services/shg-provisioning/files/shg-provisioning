@@ -33,6 +33,7 @@ start_service() {
     UPLOADFILE="/tmp/provision.json"
     KEY_NAME="shg"
     TGZ_NAME="shg-filesystem"
+    POSTINST_SCRIPT="./postinst.sh"
 
     # Turris is already onboarded
     if [ -f $WELL_KNOWN_FILE ]; then
@@ -89,6 +90,11 @@ start_service() {
     cd /
     tar -xzf ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
     check_error "Failed to extract filesystem tgz"
+
+    # Run post-installation script
+    cd ${WORKING_DIR}
+    ${POSTINST_SCRIPT}
+    check_error "Failed to run post-installation script"
 
     # Set the well-known file to avoid subsequent onboarding
     touch ${WELL_KNOWN_FILE}
