@@ -8,7 +8,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-radius-configuration
-  PKGARCH=all
+  PKGARCH:=all
   DEPENDS:=+freeradius3-mod-sql-sqlite +freeradius3-mod-expr +freeradius3-mod-always +freeradius3-mod-attr-filter +freeradius3-mod-preprocess
   SECTION:=ciralabs
   CATEGORY:=Network

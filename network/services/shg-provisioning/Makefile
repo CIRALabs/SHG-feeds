@@ -8,7 +8,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-provisioning
-  PKGARCH=all
+  PKGARCH:=all
   DEPENDS:=+coreutils-base64 +curl
   SECTION:=ciralabs
   CATEGORY:=Network
@@ -29,6 +29,5 @@ define Package/shg-provisioning/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/shg-provisioning $(1)/etc/init.d/shg-provisioning
 endef
-
 
 $(eval $(call BuildPackage,shg-provisioning))
