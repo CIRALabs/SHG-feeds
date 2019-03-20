@@ -36,15 +36,11 @@ endef
 
 define Package/shg-radius-configuration/postinst
 #!/bin/sh
-[ -n "$${IPKG_INSTROOT}" ] || {
-
-	# Deploy custom configuration files
-	cp /lib/netifd/hostapd.sh /lib/netifd/hostapd.sh.orig
-	cp /lib/netifd/netifd-wireless.sh /lib/netifd/netifd-wireless.sh.orig
-	cp /etc/shg/radius-configuration/lib/netifd/* /lib/netifd/
-	cp /etc/shg/radius-configuration/etc/freeradius3/radiusd.conf /etc/freeradius3/
-
-}
+# Deploy custom configuration files
+cp $${IPKG_INSTROOT}/lib/netifd/hostapd.sh $${IPKG_INSTROOT}/lib/netifd/hostapd.sh.orig
+cp $${IPKG_INSTROOT}/lib/netifd/netifd-wireless.sh $${IPKG_INSTROOT}/lib/netifd/netifd-wireless.sh.orig
+cp $${IPKG_INSTROOT}/etc/shg/radius-configuration/lib/netifd/* $${IPKG_INSTROOT}/lib/netifd/
+cp $${IPKG_INSTROOT}/etc/shg/radius-configuration/etc/freeradius3/radiusd.conf $${IPKG_INSTROOT}/etc/freeradius3/
 endef
 
 $(eval $(call BuildPackage,shg-radius-configuration))
