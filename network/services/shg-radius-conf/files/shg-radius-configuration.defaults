@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Do not launch until we have run wizard
+[ "$(uci -q get foris.wizard.finished)" != "1" ] && exit 1
+
+uci batch <<EOF
+set wireless.default_radio0.encryption='psk2-radius'
+set wireless.default_radio0.macfilter='radius'
+set wireless.default_radio0.server='127.0.0.1'
+set wireless.default_radio0.auth_server='127.0.0.1'
+set wireless.default_radio0.auth_secret='secret'
+set wireless.default_radio0.acct_server='127.0.0.1'
+set wireless.default_radio0.acct_secret='secret'
+set wireless.default_radio0.dae_client='127.0.0.1'
+set wireless.default_radio0.dae_port='3799'
+set wireless.default_radio0.dae_secret='testing123'
+set wireless.default_radio1.encryption='psk2-radius'
+set wireless.default_radio1.macfilter='radius'
+set wireless.default_radio1.server='127.0.0.1'
+set wireless.default_radio1.auth_server='127.0.0.1'
+set wireless.default_radio1.auth_secret='secret'
+set wireless.default_radio1.acct_server='127.0.0.1'
+set wireless.default_radio1.acct_secret='secret'
+set wireless.default_radio1.dae_client='127.0.0.1'
+set wireless.default_radio1.dae_port='3798'
+set wireless.default_radio1.dae_secret='testing123'
+commit wireless
+EOF

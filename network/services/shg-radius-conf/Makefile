@@ -30,6 +30,8 @@ define Package/shg-radius-configuration/install
 	$(INSTALL_DATA) ./files/hostapd.sh $(1)/etc/shg/radius-configuration/lib/netifd/
 	$(INSTALL_DIR) $(1)/etc/shg/radius-configuration/etc/freeradius3/
 	$(INSTALL_DATA) ./files/radiusd.conf $(1)/etc/shg/radius-configuration/etc/freeradius3
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/shg-radius-configuration.defaults $(1)/etc/uci-defaults/shg-radius-configuration
 endef
 
 define Package/shg-radius-configuration/postinst
@@ -42,28 +44,6 @@ define Package/shg-radius-configuration/postinst
 	cp /etc/shg/radius-configuration/lib/netifd/* /lib/netifd/
 	cp /etc/shg/radius-configuration/etc/freeradius3/radiusd.conf /etc/freeradius3/
 
-	# Configure wifi
-	uci set wireless.default_radio0.encryption='psk2-radius'
-	uci set wireless.default_radio0.macfilter='radius'
-	uci set wireless.default_radio0.server='127.0.0.1'
-	uci set wireless.default_radio0.auth_server='127.0.0.1'
-	uci set wireless.default_radio0.auth_secret='secret'
-	uci set wireless.default_radio0.acct_server='127.0.0.1'
-	uci set wireless.default_radio0.acct_secret='secret'
-	uci set wireless.default_radio0.dae_client='127.0.0.1'
-	uci set wireless.default_radio0.dae_port='3799'
-	uci set wireless.default_radio0.dae_secret='testing123'
-	uci set wireless.default_radio1.encryption='psk2-radius'
-	uci set wireless.default_radio1.macfilter='radius'
-	uci set wireless.default_radio1.server='127.0.0.1'
-	uci set wireless.default_radio1.auth_server='127.0.0.1'
-	uci set wireless.default_radio1.auth_secret='secret'
-	uci set wireless.default_radio1.acct_server='127.0.0.1'
-	uci set wireless.default_radio1.acct_secret='secret'
-	uci set wireless.default_radio1.dae_client='127.0.0.1'
-	uci set wireless.default_radio1.dae_port='3798'
-	uci set wireless.default_radio1.dae_secret='testing123'
-	uci commit wireless
 }
 endef
 
