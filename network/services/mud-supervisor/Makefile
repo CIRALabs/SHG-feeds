@@ -16,7 +16,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/mud-supervisor
-  PKGARCH=all
+  PKGARCH:=all
   DEPENDS:=+mud-controller +lxc
   SECTION:=ciralabs
   CATEGORY:=Network
@@ -34,19 +34,34 @@ define Package/mud-supervisor/description
  with rsync.
 endef
 
-#	cp mud-supervisor.init $(1)/etc/init.d/mud-supervisor
-#	chmod +x $(1)/etc/init.d/mud-supervisor
+define Build/Compile
+	true
+endef
+
+define Package/mud-supervisor/conffiles
+/etc/lighttpd/conf.d/mud-supervisor.conf
+/srv/lxc/mud-supervisor/config
+endef
 
 define Package/mud-supervisor/install
-	echo installing to $(1)
-	mkdir -p $(1)/etc/init.d $(1)/root
-	cp upd mudbash mudssh  $(1)/root
-	chmod +x $(1)/root/upd $(1)/root/mudbash $(1)/root/mudssh
+	$(INSTALL_DIR) $(1)/root
+	$(INSTALL_DIR) $(1)/srv/lxc/
+	$(INSTALL_DIR) $(1)/etc/lighttpd/conf.d
+
+	$(INSTALL_BIN) ./files/upd $(1)/root/
+	$(INSTALL_BIN) ./files/mudbash $(1)/root/
+	$(INSTALL_BIN) ./files/mudssh $(1)/root/
+
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/mud-supervisor.init $(1)/etc/init.d/mud-supervisor
+
+	$(CP) ./files/mud-supervisor-lxc.tar.gz $(1)/srv/lxc/
+	$(CP) ./files/lighttpd/mud-supervisor.conf $(1)/etc/lighttpd/conf.d/
 endef
 
-define Build/Compile
-	echo compile.; true
+define Package/mud-supervisor/postinst
+#!/bin/sh
+tar xvf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor-lxc.tar.gz -C $${IPKG_INSTROOT}/srv/lxc/
 endef
-
 
 $(eval $(call BuildPackage,mud-supervisor))

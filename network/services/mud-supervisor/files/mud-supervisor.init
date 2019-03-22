@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+# Note: Do NOT use PROCD for now in this script, or we will get stuck
+
+START=80
+STOP=80
+
+start() {
+        lxc-start --name=mud-supervisor
+        sleep 2
+        lxc-attach --name=mud-supervisor  -- /root/start &
+}
+
+stop() {
+        lxc-stop --name=mud-supervisor
+}

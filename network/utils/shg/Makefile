@@ -31,9 +31,9 @@ define Package/shg/preinst
 #!/bin/sh
 grep shg $${IPKG_INSTROOT}/etc/services_wanted || \
     echo "
-shg
 shg-provisioning
 mud-controller
+mud-supervisor
 radiusd
 " >> $${IPKG_INSTROOT}/etc/services_wanted
 
