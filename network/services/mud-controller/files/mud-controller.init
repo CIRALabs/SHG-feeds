@@ -1,0 +1,11 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+START=85 # After mud-supervisor
+USE_PROCD=1
+
+start_service() {
+    procd_open_instance
+    procd_set_param command lua /usr/lib/lua/mud-controller/init.lua
+    procd_close_instance
+}
