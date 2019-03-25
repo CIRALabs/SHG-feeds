@@ -59,9 +59,13 @@ define Package/mud-supervisor/install
 	$(CP) ./files/lighttpd/mud-supervisor.conf $(1)/etc/lighttpd/conf.d/
 endef
 
+# This is hacky/dirty and needed because lxc rootfile contains executables linked to libc
+# However, turris has musl by default, so there is a missing dependency detected during packaging
+# and I could not find a way to bypass this.
 define Package/mud-supervisor/postinst
 #!/bin/sh
-tar xvf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor-lxc.tar.gz -C $${IPKG_INSTROOT}/srv/lxc/
+rm -rf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor
+tar xf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor-lxc.tar.gz -C $${IPKG_INSTROOT}/srv/lxc/
 endef
 
 $(eval $(call BuildPackage,mud-supervisor))
