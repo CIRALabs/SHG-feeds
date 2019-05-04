@@ -56,7 +56,8 @@ start_service() {
     # generate cert
     if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
         info "Generating certs..."
-        openssl req -new -newkey rsa:2048 -nodes -subj "/CN=${ULA_HOSTNAME}" \
+        openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 \
+                -nodes -subj "/CN=${ULA_HOSTNAME}" \
                 -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr -outform DER \
                 -reqexts SAN \
                 -config /tmp/shg.ossl.cnf \
