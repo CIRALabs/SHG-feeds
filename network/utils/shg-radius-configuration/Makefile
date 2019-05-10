@@ -9,7 +9,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-radius-configuration
   PKGARCH:=all
-  DEPENDS:=+freeradius3-mod-sql-sqlite +freeradius3-mod-expr +freeradius3-mod-always +freeradius3-mod-attr-filter +freeradius3-mod-preprocess
+  DEPENDS:=+shg-wifi-configuration +freeradius3-mod-sql-sqlite +freeradius3-mod-expr +freeradius3-mod-always +freeradius3-mod-attr-filter +freeradius3-mod-preprocess
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG configuration for PSK-Radius integration
@@ -31,7 +31,8 @@ define Package/shg-radius-configuration/install
 	$(INSTALL_DIR) $(1)/etc/shg/radius-configuration/etc/freeradius3/
 	$(INSTALL_DATA) ./files/radiusd.conf $(1)/etc/shg/radius-configuration/etc/freeradius3
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DATA) ./files/shg-radius-configuration.defaults $(1)/etc/uci-defaults/shg-radius-configuration
+	# Need to be executed after shg-wifi-configuration
+	$(INSTALL_DATA) ./files/shg-radius-configuration.defaults $(1)/etc/uci-defaults/90_shg-radius-configuration
 endef
 
 define Package/shg-radius-configuration/postinst
