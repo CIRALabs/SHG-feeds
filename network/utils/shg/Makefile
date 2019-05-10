@@ -8,7 +8,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg
   PKGARCH:=all
-  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning
+  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-radius-configuration
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG meta-package
