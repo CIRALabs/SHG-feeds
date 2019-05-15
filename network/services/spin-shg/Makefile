@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=spin
+PKG_NAME:=spin-shg
 PKG_VERSION:=0.9
 PKG_RELEASE:=1
 
@@ -15,7 +15,7 @@ TARGET_CFLAGS += -ggdb3 -Wno-error=format
 CONFIGURE_PATH:=src
 MAKE_PATH:=src
 
-define Package/spin
+define Package/spin-shg
   SECTION:=base
   CATEGORY:=SIDN
   TITLE:=Experimental tools for SPIN
@@ -58,7 +58,7 @@ SPIN_MAKE_OPTS:= -C $(PKG_BUILD_DIR)/$(MAKE_PATH) \
         TOOLPATH="$(KERNEL_CROSS)" \
         LDOPTS=" "
 
-define Package/spin/description
+define Package/spin-shg/description
   Experiment with SPIN tools
 endef
 
@@ -70,7 +70,7 @@ define Build/Compile
   $(MAKE) $(SPIN_MAKE_OPTS)
 endef
 
-define Package/spin/install
+define Package/spin-shg/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/etc/rc.d
 	cp -r ./files/* $(1)/
@@ -85,7 +85,7 @@ define Package/spin/install
 	$(INSTALL_DIR) $(1)/etc/spin
 endef
 
-define Package/spin/postinst
+define Package/spin-shg/postinst
 #!/bin/sh
 [ -n "$${IPKG_INSTROOT}" ] || {
 	uci set mosquitto.mosquitto.port=1883
@@ -98,4 +98,4 @@ define Package/spin/postinst
 }
 endef
 
-$(eval $(call BuildPackage,spin))
+$(eval $(call BuildPackage,spin-shg))
