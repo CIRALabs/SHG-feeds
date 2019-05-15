@@ -9,7 +9,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-radius-configuration
   PKGARCH:=all
-  DEPENDS:=+shg-wifi-configuration +freeradius3-mod-sql-sqlite +freeradius3-mod-expr +freeradius3-mod-always +freeradius3-mod-attr-filter +freeradius3-mod-preprocess
+  DEPENDS:=+shg-wifi-configuration +libpcre +freeradius3 +freeradius3-mod-sql +freeradius3-mod-sql-sqlite +freeradius3-mod-expr +freeradius3-mod-always +freeradius3-mod-attr-filter +freeradius3-mod-preprocess
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG configuration for PSK-Radius integration
