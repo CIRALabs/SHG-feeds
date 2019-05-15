@@ -15,6 +15,11 @@ export RAILS_ENV
 cd /app/fountain
 # Note: need to redirect output to file, otherwise app will shutdown after a while...
 # Not sure why?!
-bundle exec thin start --socket /root/mud-supervisor_skt --log /var/log/thin.log -D -V $@ &> /var/log/mud-supervisor.log
+bundle exec thin start --ssl \
+       --address ::    \
+       --port    8081  \
+       --user    fountain \
+       --ssl-cert-file ${SERVCERT} \
+       --ssl-key-file  ${SERVKEY} $@ &> /var/log/mud-supervisor.log
 
 echo DONE

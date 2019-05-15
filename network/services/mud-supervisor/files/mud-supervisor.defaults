@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Do not launch until we have run wizard
+[ "$(uci -q get foris.wizard.finished)" != "1" ] && exit 1
+
+uci batch <<EOF
+add dhcp host
+set dhcp.@host[-1].mac="2e:66:d8:00:93:29"
+set dhcp.@host[-1].ip="192.168.1.200"
+set dhcp.@host[-1].name="mud-supervisor"
+commit dhcp
+EOF

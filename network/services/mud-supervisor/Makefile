@@ -39,15 +39,14 @@ define Build/Compile
 endef
 
 define Package/mud-supervisor/conffiles
-/etc/lighttpd/conf.d/mud-supervisor.conf
 /srv/lxc/mud-supervisor/config
 endef
 
 define Package/mud-supervisor/install
-	$(INSTALL_DIR) $(1)/root
 	$(INSTALL_DIR) $(1)/srv/lxc/
-	$(INSTALL_DIR) $(1)/etc/lighttpd/conf.d
+	$(CP) ./files/mud-supervisor-lxc.tar.gz $(1)/srv/lxc/
 
+	$(INSTALL_DIR) $(1)/root
 	$(INSTALL_BIN) ./files/upd $(1)/root/
 	$(INSTALL_BIN) ./files/mudbash $(1)/root/
 	$(INSTALL_BIN) ./files/mudssh $(1)/root/
@@ -55,8 +54,8 @@ define Package/mud-supervisor/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/mud-supervisor.init $(1)/etc/init.d/mud-supervisor
 
-	$(CP) ./files/mud-supervisor-lxc.tar.gz $(1)/srv/lxc/
-	$(CP) ./files/lighttpd/mud-supervisor.conf $(1)/etc/lighttpd/conf.d/
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/mud-supervisor.defaults $(1)/etc/uci-defaults/99_mud-supervisor
 endef
 
 # This is hacky/dirty and needed because lxc rootfile contains executables linked to libc
@@ -66,6 +65,7 @@ define Package/mud-supervisor/postinst
 #!/bin/sh
 rm -rf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor
 tar xf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor-lxc.tar.gz -C $${IPKG_INSTROOT}/srv/lxc/
+
 endef
 
 $(eval $(call BuildPackage,mud-supervisor))
