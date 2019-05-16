@@ -13,6 +13,9 @@ RAILS_ENV=${RAILS_ENV-production}
 export RAILS_ENV
 
 cd /app/fountain
+
+bundle exec rake db:migrate
+
 # Note: need to redirect output to file, otherwise app will shutdown after a while...
 # Not sure why?!
 bundle exec thin start --ssl \
