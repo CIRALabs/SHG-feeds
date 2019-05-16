@@ -1,4 +1,0 @@
-#!/bin/sh
-
-host=shg.sandelman.ca
-rsync --rsync-path="rsync --fake-super" -x --delete -a -r --inplace --exclude=SWAP --exclude=/etc --partial shg@$host:/shg/builds/shgturris/srv/. /srv/.

@@ -30,8 +30,6 @@ define Package/mud-supervisor/description
  in ruby-on-rails, and keeps a database of devices.  It exposes an API to internal
  clients (smartphone, one-page app).
  It includes a BRSKI registrar.
- At present this is just a shell, the actual container needs to be downloaded
- with rsync.
 endef
 
 define Build/Compile
@@ -48,7 +46,6 @@ define Package/mud-supervisor/install
 	$(CP) ./files/lxc/config $(1)/srv/lxc/mud-supervisor/
 
 	$(INSTALL_DIR) $(1)/root
-	$(INSTALL_BIN) ./files/upd $(1)/root/
 	$(INSTALL_BIN) ./files/mudbash $(1)/root/
 	$(INSTALL_BIN) ./files/mudssh $(1)/root/
 
