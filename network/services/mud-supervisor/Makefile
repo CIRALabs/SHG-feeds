@@ -43,8 +43,9 @@ define Package/mud-supervisor/conffiles
 endef
 
 define Package/mud-supervisor/install
-	$(INSTALL_DIR) $(1)/srv/lxc/
-	$(CP) ./files/mud-supervisor-lxc.tar.gz $(1)/srv/lxc/
+	$(INSTALL_DIR) $(1)/srv/lxc/mud-supervisor/
+	$(CP) ./files/lxc/rootfs $(1)/srv/lxc/mud-supervisor/rootfs
+	$(CP) ./files/lxc/config $(1)/srv/lxc/mud-supervisor/
 
 	$(INSTALL_DIR) $(1)/root
 	$(INSTALL_BIN) ./files/upd $(1)/root/
@@ -56,16 +57,6 @@ define Package/mud-supervisor/install
 
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/mud-supervisor.defaults $(1)/etc/uci-defaults/99_mud-supervisor
-endef
-
-# This is hacky/dirty and needed because lxc rootfile contains executables linked to libc
-# However, turris has musl by default, so there is a missing dependency detected during packaging
-# and I could not find a way to bypass this.
-define Package/mud-supervisor/postinst
-#!/bin/sh
-rm -rf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor
-tar xf $${IPKG_INSTROOT}/srv/lxc/mud-supervisor-lxc.tar.gz -C $${IPKG_INSTROOT}/srv/lxc/
-
 endef
 
 $(eval $(call BuildPackage,mud-supervisor))
