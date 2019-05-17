@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LD_LIBRARY_PATH=/usr/local/rvm/rubies/ruby-2.6.3/lib/
+
 if [ -z "$MY_RUBY_HOME" ]; then
     . /etc/profile.d/rvm.sh
     rvm use 2.6.3 >/dev/null
