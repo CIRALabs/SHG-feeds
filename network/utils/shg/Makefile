@@ -35,11 +35,12 @@ shg-provisioning
 mud-controller
 mud-supervisor
 radiusd
+mosquitto
 " >> $${IPKG_INSTROOT}/etc/services_wanted
 
 grep cira $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf || \
 echo "
-src/gz cira https://www.viagenie.ca/cira-shg/repo/" >> $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf
+src/gz cira https://www.viagenie.ca/cira-shg/repo/beta1" >> $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf
 endef
 
 $(eval $(call BuildPackage,shg))
