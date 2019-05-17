@@ -83,19 +83,9 @@ define Package/spin-shg/install
 	$(INSTALL_BIN) ${PKG_BUILD_DIR}/src/tools/spin_print/spin_print $(1)/usr/bin/spin_print
 	$(INSTALL_BIN) ${PKG_BUILD_DIR}/src/spind/spind $(1)/usr/bin/spind
 	$(INSTALL_DIR) $(1)/etc/spin
-endef
 
-define Package/spin-shg/postinst
-#!/bin/sh
-[ -n "$${IPKG_INSTROOT}" ] || {
-	uci set mosquitto.mosquitto.port=1883
-	uci set mosquitto.mosquitto.protocol=mqtt
-	uci set mosquitto.spin_listener=listener
-	uci set mosquitto.spin_listener.port=1884
-	uci set mosquitto.spin_listener.protocol=websockets
-	uci set mosquitto.owrt.use_uci='1'
-	uci commit mosquitto
-}
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/spin.defaults $(1)/etc/uci-defaults/spin
 endef
 
 $(eval $(call BuildPackage,spin-shg))
