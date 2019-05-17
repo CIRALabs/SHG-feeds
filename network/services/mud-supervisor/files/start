@@ -2,7 +2,7 @@
 
 if [ -z "$MY_RUBY_HOME" ]; then
     . /etc/profile.d/rvm.sh
-    rvm use 2.6.1 >/dev/null
+    rvm use 2.6.3 >/dev/null
 fi
 
 export CERTDIR=/app/certificates
@@ -15,6 +15,10 @@ export RAILS_ENV
 cd /app/fountain
 
 bundle exec rake db:migrate
+
+# clean up previous log entries in case they are owned by root
+rm -f log/thin.log.1 tmp/pids/thin.pid
+mv log/thin.log log/thin.log.1
 
 # Note: need to redirect output to file, otherwise app will shutdown after a while...
 # Not sure why?!
