@@ -18,6 +18,22 @@ cd /app/fountain
 
 bundle exec rake db:migrate
 
+# TEMP: These will be set-up during provisioning
+if [ ! -f /root/setup ]; then
+	bundle exec rake fountain:s0_set_hostname HOSTNAME=shg PORT=8081
+	touch /root/setup
+fi
+if [ ! -f /app/certificates/ownerca_secp384r1.crt ]; then
+    bundle exec rake fountain:s1_registrar_ca
+fi
+if [ ! -f /app/certificates/jrc_prime256v1.crt ]; then
+    bundle exec rake fountain:s2_create_registrar
+fi
+# Does not work as openssl is not installed in LXC - Taken care in mud-supervisor's defaults file
+if [ ! -f /app/certificates/jrc_prime256v1.key ]; then
+    openssl ecparam -name secp384r1 -genkey -noout -out /app/certificates/jrc_prime256v1.key
+fi
+
 # clean up previous log entries in case they are owned by root
 rm -f log/thin.log.1 tmp/pids/thin.pid
 mv log/thin.log log/thin.log.1

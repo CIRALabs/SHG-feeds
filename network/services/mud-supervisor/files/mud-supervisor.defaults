@@ -10,3 +10,7 @@ set dhcp.@host[-1].ip="192.168.1.200"
 set dhcp.@host[-1].name="mud-supervisor"
 commit dhcp
 EOF
+
+if [ ! -f /srv/lxc/mud-supervisor/rootfs/app/certificates/jrc_prime256v1.key ]; then
+    openssl ecparam -name secp384r1 -genkey -noout -out /srv/lxc/mud-supervisor/rootfs/app/certificates/jrc_prime256v1.key
+fi
