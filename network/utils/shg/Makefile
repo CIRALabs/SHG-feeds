@@ -16,7 +16,7 @@ define Package/shg
 endef
 
 define Package/shg/description
-  This package will install and configure a Turris Omnia routeur to an SHG one.
+  This package will install and configure a Turris Omnia router to an SHG one.
 endef
 
 define Build/Compile
