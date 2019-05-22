@@ -1,0 +1,26 @@
+# Template used to create this container: /usr/share/lxc/templates/lxc-download
+# Parameters passed to the template: --server repo.turris.cz/lxc --dist Ubuntu --release Bionic --arch armv7l
+# For additional config options, please look at lxc.container.conf(5)
+# Debian workaround
+# Template to generate fixed MAC address
+
+# Distribution configuration
+lxc.arch = armv7l
+
+# Container specific configuration
+lxc.tty.max = 4
+lxc.pts.max = 1024
+lxc.rootfs.path = /srv/lxc/mud-supervisor/rootfs
+lxc.uts.name = mud-supervisor
+
+# Network configuration
+lxc.net.0.type = veth
+lxc.net.0.link = br-lan
+lxc.net.0.flags = up
+lxc.net.0.name = eth0
+lxc.net.0.ipv4.address = 192.168.1.200/24
+lxc.net.0.hwaddr = 2e:66:d8:00:93:29
+#lxc.net.0.script.up = /usr/share/lxc/hooks/tx-off
+
+#lxc.mount.entry = /tmp/mudfiles home/mud/tmp none bind,create=dir 0 0
+

@@ -1,17 +1,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mud-supervisor
-PKG_VERSION:=1.0.0
+PKG_VERSION:=20190517
 PKG_RELEASE:=1
 
-#PKG_BUILD_DIR:=$(BUILD_DIR)/mud-supervisor-$(PKG_VERSION)
-#PKG_SOURCE:=mud-super-$(PKG_VERSION).tar.gz
-#PKG_HASH:=9b7dc52656f5cbec846a7ba3299f73bd
-#PKG_CAT:=xzcat
-#PKG_SOURCE_PROTO:=git
-#PKG_SOURCE_URL:=https://github.com/CIRALabs/shg-mud-controller.git
-#PKG_SOURCE_VERSION:=master
-#PKG_SOURCE_DATE:=2019-01-01
+PKG_SOURCE_URL:=https://junk.sandelman.ca/junk/
+PKG_SOURCE:=shg_mud_supervisor-$(PKG_VERSION)-margarita32.tgz
+PKG_HASH:=ea4b070178fae5323ffc9c9b4a2f4d88672fa858eba25101d663a1f835d88482
+
+UNPACK_CMD=gzip -dc $(DL_DIR)/$(PKG_SOURCE) | $(HOST_TAR) -C $(1)/rootfs $(TAR_OPTIONS)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -32,6 +29,11 @@ define Package/mud-supervisor/description
  It includes a BRSKI registrar.
 endef
 
+define Build/Prepare
+	mkdir -p $(PKG_BUILD_DIR)/rootfs
+	$(Build/Prepare/Default)
+endef
+
 define Build/Compile
 	true
 endef
@@ -42,8 +44,13 @@ endef
 
 define Package/mud-supervisor/install
 	$(INSTALL_DIR) $(1)/srv/lxc/mud-supervisor/
-	$(CP) ./files/lxc/rootfs $(1)/srv/lxc/mud-supervisor/rootfs
+	$(CP) $(PKG_BUILD_DIR)/rootfs $(1)/srv/lxc/mud-supervisor/rootfs
 	$(CP) ./files/lxc/config $(1)/srv/lxc/mud-supervisor/
+	# Fix missing /dev in lxc rootfs
+	$(INSTALL_DIR) $(1)/srv/lxc/mud-supervisor/rootfs/dev/
+	# Custom configuration
+	$(INSTALL_BIN) ./files/lxc/start $(1)/srv/lxc/mud-supervisor/rootfs/root/
+	$(INSTALL_BIN) ./files/production.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/config/environments/production.rb
 
 	$(INSTALL_DIR) $(1)/root
 	$(INSTALL_BIN) ./files/mudbash $(1)/root/
