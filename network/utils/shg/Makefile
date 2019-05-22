@@ -2,13 +2,13 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg
 PKG_VERSION:=0.1.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/shg
   PKGARCH:=all
-  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration
+  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration +spin-shg
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG meta-package
@@ -36,6 +36,7 @@ mud-controller
 mud-supervisor
 radiusd
 mosquitto
+spin
 " >> $${IPKG_INSTROOT}/etc/services_wanted
 
 grep cira $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf || \
