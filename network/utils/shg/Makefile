@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg
 PKG_VERSION:=0.1.0
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -24,7 +24,8 @@ define Build/Compile
 endef
 
 define Package/shg/install
-  true
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/shg.defaults $(1)/etc/uci-defaults/shg
 endef
 
 define Package/shg/preinst

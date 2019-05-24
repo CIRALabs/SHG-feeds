@@ -1,0 +1,36 @@
+#!/bin/sh
+
+USB_PART=/dev/sda1
+TAR_FILE=shg.tar.gz
+
+info() { logger -t shg -p info $@; }
+error() { logger -t shg -p err $@; }
+check_error() {
+    if [ $? -ne 0 ]; then
+        error $@
+        exit 1
+    fi
+}
+
+# Do not execute until onboarding is done
+if [ ! -f /etc/shg/onboarded ] ; then
+    info "Onboarding not executed, bailing-out"
+    exit 1
+fi
+
+if [ ! -e $USB_PART ] ; then
+    info "No USB key plugged, bye!"
+    exit 0
+fi
+mount $USB_PART /mnt
+check_error "Cannot mount $USB_PART on /mnt"
+
+if [ ! -f /mnt/${TAR_FILE} ]; then
+    info "No ${TAR_FILE} file, bailing-out"
+    exit 0
+fi
+
+tar -xzf /mnt/${TAR_FILE} -C /
+check_error "Failed to extract ${TAR_FILE}"
+
+umount /mnt
