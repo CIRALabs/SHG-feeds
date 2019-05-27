@@ -12,9 +12,9 @@ check_error() {
     fi
 }
 
-# Do not execute until onboarding is done
-if [ ! -f /etc/shg/onboarded ] ; then
-    info "Onboarding not executed, bailing-out"
+# Do not execute if onboarding is done
+if [ -f /etc/shg/onboarded ] ; then
+    info "Onboarding executed, bailing-out"
     exit 1
 fi
 
