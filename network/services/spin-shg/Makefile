@@ -86,6 +86,8 @@ define Package/spin-shg/install
 
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/spin.defaults $(1)/etc/uci-defaults/spin
+	$(INSTALL_DIR) $(1)/etc/lighttpd/conf.d/
+	$(INSTALL_DATA) ./files/etc/lighttpd/spin.conf $(1)/etc/lighttpd/conf.d/spin.conf
 endef
 
 $(eval $(call BuildPackage,spin-shg))
