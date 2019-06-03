@@ -8,7 +8,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg
   PKGARCH:=all
-  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration +spin-shg
+  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration +spin-shg +lighttpd-mod-magnet +lua-basexx +luacrypto
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG meta-package
@@ -26,6 +26,8 @@ endef
 define Package/shg/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) ./files/shg.defaults $(1)/etc/uci-defaults/shg
+	$(INSTALL_DIR) $(1)/etc/lighttpd/
+	$(INSTALL_DATA) ./files/etc/lighttpd/auth-magnet.lua $(1)/etc/lighttpd/
 endef
 
 define Package/shg/preinst
