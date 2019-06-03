@@ -88,3 +88,5 @@ end
 
 # Temp, to be disabled
 $ENABLE_TOFU = true
+$JWT_SECRET = "1234"
+$JWT_VALIDITY = 30 * 60

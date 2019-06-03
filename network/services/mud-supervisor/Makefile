@@ -51,6 +51,8 @@ define Package/mud-supervisor/install
 	# Custom configuration
 	$(INSTALL_BIN) ./files/lxc/start $(1)/srv/lxc/mud-supervisor/rootfs/root/
 	$(INSTALL_BIN) ./files/production.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/config/environments/production.rb
+	$(INSTALL_BIN) ./files/routes.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/config/routes.rb
+	$(INSTALL_BIN) ./files/secure_gateway_controller.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/app/controllers/secure_gateway_controller.rb
 
 	$(INSTALL_DIR) $(1)/root
 	$(INSTALL_BIN) ./files/mudbash $(1)/root/
