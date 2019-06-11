@@ -89,12 +89,15 @@ start_service() {
     # Extract tgz file
     info "Filesystem successfully retrieved, install it..."
     cd /
-    tar -xzf ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
+    tar --no-same-owner -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
     check_error "Failed to extract filesystem tgz"
 
-    # Run post-installation script
+    # Run post-installation script, if it exists.
     cd ${WORKING_DIR}
-    ${POSTINST_SCRIPT}
+    if [ -x ${POSTINST_SCRIPT} ]; then
+        ${POSTINST_SCRIPT}
+    fi
+
     check_error "Failed to run post-installation script"
 
     # Set the well-known file to avoid subsequent onboarding
