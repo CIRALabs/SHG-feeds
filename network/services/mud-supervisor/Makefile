@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mud-supervisor
-PKG_VERSION:=20190517
+PKG_VERSION:=20190611
 PKG_RELEASE:=1
 
 PKG_SOURCE_URL:=https://junk.sandelman.ca/junk/
 PKG_SOURCE:=shg_mud_supervisor-$(PKG_VERSION)-margarita32.tgz
-PKG_HASH:=ea4b070178fae5323ffc9c9b4a2f4d88672fa858eba25101d663a1f835d88482
+PKG_HASH:=ce35d39bf7f33cdda652d2bef76fd069860f16fb9efc3579b2b9cc284b75f6ec
 
 UNPACK_CMD=gzip -dc $(DL_DIR)/$(PKG_SOURCE) | $(HOST_TAR) -C $(1)/rootfs $(TAR_OPTIONS)
 
