@@ -8,10 +8,11 @@
 lxc.arch = armv7l
 
 # Container specific configuration
-lxc.include = /usr/share/lxc/config/common.conf
-lxc.hook.start-host = /usr/share/lxc/hooks/systemd-workaround
-lxc.rootfs.path = /srv/lxc/mud-supervisor/rootfs
+lxc.tty.max = 2
+lxc.pty.max = 32
+lxc.rootfs.path  = /srv/lxc/mud-supervisor/rootfs
 lxc.uts.name = mud-supervisor
+#lxc.console = none
 
 # Network configuration
 lxc.net.0.type = veth
@@ -20,3 +21,7 @@ lxc.net.0.flags = up
 lxc.net.0.name = eth0
 lxc.net.0.ipv4.address = 192.168.1.200/24
 lxc.net.0.hwaddr = 2e:66:d8:00:93:29
+#lxc.net.0.script.up = /usr/share/lxc/hooks/tx-off
+
+#lxc.mount.entry = /tmp/mudfiles home/mud/tmp none bind,create=dir 0 0
+
