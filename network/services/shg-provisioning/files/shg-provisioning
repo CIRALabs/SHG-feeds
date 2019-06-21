@@ -26,6 +26,12 @@ start_service() {
     else
         WELL_KNOWN_ADDRESS="https://provision.securehomegateway.ca/shg-provision"
     fi
+    if [ -f /etc/shg/provisioningDomain ]; then
+        WELL_KNOWN_DOMAIN=$(cat /etc/shg/provisioningDomain)
+    else
+        WELL_KNOWN_DOMAIN="r.securehomegateway.ca"
+    fi
+
     check_error "Failed to retrieve provisionning URL"
     WAN_DEV_NAME=$(uci get network.wan.ifname)
     check_error "Failed to retrieve WAN interface name"
@@ -49,9 +55,9 @@ start_service() {
     check_error "Failed to retrieve ULA address"
 
     # extract bytes 2,3,4 of ULA address.
-    ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 ).r.dasblinkenled.org
+    ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 ).${WELL_KNOWN_DOMAIN}
 
-    printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_HOSTNAME},DNS:mud.${ULA_HOSTNAME}" >/tmp/shg.ossl.cnf
+    printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_HOSTNAME},DNS:mud.${ULA_HOSTNAME}\n" >/tmp/shg.ossl.cnf
 
     # generate cert
     if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
