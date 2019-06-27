@@ -46,8 +46,12 @@ define Package/mud-supervisor/install
 	$(INSTALL_DIR) $(1)/srv/lxc/mud-supervisor/
 	$(CP) $(PKG_BUILD_DIR)/rootfs $(1)/srv/lxc/mud-supervisor/rootfs
 	$(CP) ./files/lxc/config $(1)/srv/lxc/mud-supervisor/
+	$(CP) ./files/lxc/fstab  $(1)/srv/lxc/mud-supervisor/
 	# Fix missing /dev in lxc rootfs
 	$(INSTALL_DIR) $(1)/srv/lxc/mud-supervisor/rootfs/dev/
+	$(INSTALL_DIR) $(1)/etc/shg/database
+	$(INSTALL_DIR) $(1)/etc/shg/certificates
+	$(INSTALL_DIR) $(1)/etc/shg/sockets
 	# Custom configuration
 	$(INSTALL_BIN) ./files/lxc/start $(1)/srv/lxc/mud-supervisor/rootfs/root/
 	$(INSTALL_BIN) ./files/production.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/config/environments/production.rb

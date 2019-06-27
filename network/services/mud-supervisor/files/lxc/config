@@ -11,6 +11,7 @@ lxc.arch = armv7l
 lxc.include = /usr/share/lxc/config/common.conf
 lxc.hook.start-host = /usr/share/lxc/hooks/systemd-workaround
 lxc.rootfs.path = /srv/lxc/mud-supervisor/rootfs
+lxc.mount = /srv/lxc/mud-supervisor/fstab
 lxc.uts.name = mud-supervisor
 
 # Network configuration

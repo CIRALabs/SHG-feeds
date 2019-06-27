@@ -1,0 +1,3 @@
+/etc/shg/certificates   /app/certificates       nodev,noexec,nosuid 0 0
+/etc/shg/database       /app/database           nodev,noexec,nosuid 0 0
+/etc/shg/sockets        /app/sockets            noexec,nosuid 0 0
