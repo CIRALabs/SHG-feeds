@@ -38,6 +38,9 @@ fi
 rm -f log/thin.log.1 tmp/pids/thin.pid
 mv log/thin.log log/thin.log.1
 
+# start the MUD telemetry socket in the background
+bundle exec rake fountain:mud_telemetry SOCK_DIR=/app/sockets &>/app/logs/mud-telemetry.log &
+
 # Note: need to redirect output to file, otherwise app will shutdown after a while...
 # Not sure why?!
 bundle exec thin start --ssl \
@@ -45,6 +48,6 @@ bundle exec thin start --ssl \
        --port    8081  \
        --user    fountain \
        --ssl-cert-file ${SERVCERT} \
-       --ssl-key-file  ${SERVKEY} $@ &> /var/log/mud-supervisor.log
+       --ssl-key-file  ${SERVKEY} $@ &> /app/logs/mud-supervisor.log &
 
 echo DONE

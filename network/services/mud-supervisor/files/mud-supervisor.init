@@ -6,6 +6,9 @@
 START=80
 STOP=80
 
+mkdir -p /tmp/mudlogs
+chmod 1777 /tmp/mudlogs
+
 start() {
         lxc-start --name=mud-supervisor
         sleep 2

@@ -53,7 +53,8 @@ define Package/mud-supervisor/install
 	$(INSTALL_DIR) $(1)/etc/shg/certificates
 	$(INSTALL_DIR) $(1)/etc/shg/sockets
 	# Custom configuration
-	$(INSTALL_BIN) ./files/lxc/start $(1)/srv/lxc/mud-supervisor/rootfs/root/
+	$(INSTALL_BIN) ./files/lxc/start   $(1)/srv/lxc/mud-supervisor/rootfs/root/
+	$(INSTALL_BIN) ./files/lxc/console $(1)/srv/lxc/mud-supervisor/rootfs/root/
 	$(INSTALL_BIN) ./files/production.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/config/environments/production.rb
 
 	$(INSTALL_DIR) $(1)/root

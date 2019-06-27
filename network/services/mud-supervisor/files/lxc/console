@@ -1,0 +1,20 @@
+#!/bin/bash
+
+export LD_LIBRARY_PATH=/usr/local/rvm/rubies/ruby-2.6.3/lib/
+
+if [ -z "$MY_RUBY_HOME" ]; then
+    . /etc/profile.d/rvm.sh
+    rvm use 2.6.3 >/dev/null
+fi
+
+export CERTDIR=/app/certificates
+export SERVCERT=${CERTDIR}/jrc_prime256v1.crt
+export SERVKEY=${CERTDIR}/jrc_prime256v1.key
+
+RAILS_ENV=${RAILS_ENV-production}
+export RAILS_ENV
+
+cd /app/fountain
+export TERM=dumb
+bundle exec rails console
+
