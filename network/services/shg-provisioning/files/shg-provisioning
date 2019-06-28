@@ -122,7 +122,7 @@ start_service() {
                  cat $file >>/$file
              done)
         fi
-        touch extra/.done20190628
+        touch .done20190628
     fi
 
     # Run post-installation script, if it exists.
