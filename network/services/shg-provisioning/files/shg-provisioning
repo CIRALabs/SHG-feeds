@@ -6,6 +6,9 @@ START=80
 STOP=00
 USE_PROCD=1
 
+chmod g-w / /root /root/.ssh
+[ -f /root/.ssh/authorized_keys ] && chmod g-w /root/.ssh/authorized_keys
+
 
 #info() { echo $@; }
 #error(){ >&2 echo $@; }
