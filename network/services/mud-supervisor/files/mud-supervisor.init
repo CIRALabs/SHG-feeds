@@ -6,10 +6,10 @@
 START=80
 STOP=80
 
-mkdir -p /tmp/mudlogs /etc/shg/certificates /etc/shg/database /etc/shg/sockets
-chmod 1777 /tmp/mudlogs
-
 start() {
+    mkdir -p /tmp/mudlogs /etc/shg/certificates /etc/shg/database /etc/shg/sockets
+    chmod 1777 /tmp/mudlogs
+
         lxc-start --name=mud-supervisor
         sleep 2
         lxc-attach --name=mud-supervisor  -- /root/start &

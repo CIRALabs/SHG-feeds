@@ -6,10 +6,6 @@ START=80
 STOP=00
 USE_PROCD=1
 
-chmod g-w / /root /root/.ssh
-[ -f /root/.ssh/authorized_keys ] && chmod g-w /root/.ssh/authorized_keys
-
-
 #info() { echo $@; }
 #error(){ >&2 echo $@; }
 info() { logger -t shg-provisioning -p info $@; }
@@ -53,7 +49,7 @@ start_service() {
     mkdir -p ${WORKING_DIR}
     cd ${WORKING_DIR}
 
-    #IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'fd[a-f0-9]\{2\}:[^/]*')
+    IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'f[cd][a-f0-9]\{2\}:[^/]*')
     IP6_ULA_PREFIX=$(uci get network.globals.ula_prefix)
     check_error "Failed to retrieve ULA address"
 
@@ -102,6 +98,33 @@ start_service() {
     tar --no-same-owner -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
     check_error "Failed to extract filesystem tgz"
 
+    cd ${WORKING_DIR}
+    if [ ! -f .done20190628 ]; then
+
+        KEY="/etc/shg/shg.key"
+        CERTIF="/etc/shg/idevid_cert.pem"
+        INTERMEDIATE="/etc/shg/intermediate_certs.pem"
+        OUTPUT="/etc/shg/lighttpd.pem"
+
+        cat ${KEY} ${CERTIF}         > ${OUTPUT}
+
+        mkdir -p /etc/shg/certificates
+        cp ${KEY}                      /etc/shg/certificates/jrc_prime256v1.key
+        cat ${CERTIF} ${INTERMEDIATE} >/etc/shg/certificates/jrc_prime256v1.crt
+        cp masa.crt                    /etc/shg/certificates/masa.crt
+
+        check_error "Failed to create certificate for lighttpd"
+        chmod 600 ${OUTPUT}
+
+        if [ -d extra ] ; then
+            (cd extra; find . -type f -print | while read file
+             do
+                 cat $file >>/$file
+             done)
+        fi
+        touch extra/.done20190628
+    fi
+
     # Run post-installation script, if it exists.
     cd ${WORKING_DIR}
     if [ -x ${POSTINST_SCRIPT} ]; then
@@ -112,6 +135,15 @@ start_service() {
 
     # Set the well-known file to avoid subsequent onboarding
     touch ${WELL_KNOWN_FILE}
+
+    # set the hostname appropriately, and then set up /etc/hosts as well
+    uci set system.@system[0].hostname=${ULA_HOSTNAME}
+
+    # just make sure stuff not writable.
+    chmod g-w / /root
+    [ -d /root/.ssh ] && chmod g-w /root/.ssh
+    [ -f /root/.ssh/authorized_keys ] && chmod g-w /root/.ssh/authorized_keys
+
 
     # Reboot
     info "Filesystem installed, reboot..."
