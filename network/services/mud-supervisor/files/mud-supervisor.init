@@ -10,6 +10,8 @@ start() {
     mkdir -p /tmp/mudlogs /etc/shg/certificates /etc/shg/database /etc/shg/sockets
     chmod 1777 /tmp/mudlogs
 
+    /srv/lxc/mud-supervisor/mud-supervisor-ll guess 8081 fe80::2c66:d8ff:fe00:9329%br-lan 8081 &
+
         lxc-start --name=mud-supervisor
         sleep 2
         lxc-attach --name=mud-supervisor  -- /root/start &
