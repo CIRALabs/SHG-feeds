@@ -27,7 +27,7 @@ class ClientThread(threading.Thread):
                                               socket.SOCK_STREAM, socket.SOL_TCP):
                         af, socktype, proto, canonname, sa = res
                         try:
-                                print("trying: %s %s %s %s" % (af, socktype, proto, sa))
+                                #print("connecting to: %s %s %s %s" % (af, socktype, proto, sa))
                                 targetHostSocket = socket.socket(af, socktype, proto)
                                 targetHostSocket.connect(sa)
                         except socket.error:
@@ -110,8 +110,8 @@ if __name__ == '__main__':
            nifs = getifaddrs.getifaddrs()
            for ni in nifs:
                if ni.name==b'br-lan' and ni.family==10 and ni.addr[0][0:4]=='fe80':
-                  print("Setting localhost %s" % (ni.addr[0]))
-                  print("calling socket(%s,%s,%s)" % (ni.family, socket.SOCK_STREAM, socket.SOL_TCP))
+                  #print("Setting localhost %s" % (ni.addr[0]))
+                  #print("calling socket(%s,%s,%s)" % (ni.family, socket.SOCK_STREAM, socket.SOL_TCP))
                   serverSocket = socket.socket(ni.family, socket.SOCK_STREAM, socket.SOL_TCP)
                   nsa = (ni.addr[0], localPort, ni.addr[2], ni.addr[3])
                   serverSocket.bind(nsa)
