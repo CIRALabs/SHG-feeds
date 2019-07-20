@@ -53,6 +53,8 @@ define Package/mud-supervisor/install
 	$(INSTALL_DIR) $(1)/etc/shg/certificates
 	$(INSTALL_DIR) $(1)/etc/shg/sockets
 	# Custom configuration
+	$(INSTALL_BIN) ./files/mud-supervisor-ll.py  $(1)/srv/lxc/mud-supervisor/mud-supervisor-ll
+	$(INSTALL_BIN) ./files/getifaddrs.py         $(1)/usr/lib/python3.6/getifaddrs.py
 	$(INSTALL_BIN) ./files/lxc/start   $(1)/srv/lxc/mud-supervisor/rootfs/root/
 	$(INSTALL_BIN) ./files/lxc/console $(1)/srv/lxc/mud-supervisor/rootfs/root/
 	$(INSTALL_BIN) ./files/production.rb $(1)/srv/lxc/mud-supervisor/rootfs/app/fountain/config/environments/production.rb
