@@ -40,5 +40,12 @@ define Package/luaevent/install
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/core.so $(1)/usr/lib/lua/luaevent
 endef
 
+define Build/Compile
+	$(call Build/Compile/Default,LUA_INC_DIR=/empty all)
+endef
+define Build/Install
+	$(call Build/Install/Default,LUA_INC_DIR=/empty install )
+endef
+
 $(eval $(call BuildPackage,luaevent))
 
