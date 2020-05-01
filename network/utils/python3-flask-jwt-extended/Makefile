@@ -8,8 +8,8 @@ PKG_RELEASE:=1
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 
-PYPI_NAME:=PyJWT
-PKG_HASH:=062d2cac64f5c02fd689105b99390b2490e550a1c0994cb9d781454ec31bd50c
+PYPI_NAME:=Flask-JWT-Extended
+PKG_HASH:=0aa8ee6fa7eb3be9314e39dd199ac8e19389a95371f9d54e155c7aa635e319dd
 
 include $(INCLUDE_DIR)/../feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
@@ -23,6 +23,7 @@ define Package/python3-flask-jwt-extended
   URL:=http://github.com/vimalloc/flask-jwt-extended
   DEPENDS:=+python3 +python3-flask +python3-pyjwt +python3-six \
 	  +python3-werkzeug
+  VARIANT:=python3
 endef
 
 define Package/python3-flask-jwt-extended/description
@@ -33,4 +34,4 @@ endef
 
 $(eval $(call Py3Package,python3-flask-jwt-extended))
 $(eval $(call BuildPackage,python3-flask-jwt-extended))
-#$(eval $(call BuildPackage,python3-flask-jwt-extended-src))
+$(eval $(call BuildPackage,python3-flask-jwt-extended-src))
