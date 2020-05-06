@@ -8,7 +8,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg
   PKGARCH:=all
-  DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration +spin-shg
+  #DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration +spin-shg
+  DEPENDS:=+shg-provisioning
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG meta-package
@@ -42,7 +43,7 @@ spin
 
 grep cira $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf || \
 echo "
-src/gz cira https://www.viagenie.ca/cira-shg/repo/beta1" >> $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf
+src/gz ciralabs https://ghost.sandelman.ca/hbs/omnia/packages/ciralabs" >> $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf
 endef
 
 $(eval $(call BuildPackage,shg))
