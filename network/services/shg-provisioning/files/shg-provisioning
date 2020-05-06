@@ -20,6 +20,8 @@ check_error() {
 start_service() {
     WELL_KNOWN_FILE="/etc/shg/onboarded"
     WORKING_DIR="/etc/shg"
+    mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
+
     if [ -f /etc/shg/provisioningURL ]; then
         WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
     else
@@ -72,7 +74,7 @@ start_service() {
     fi
 
     # encode CSR, not wrapped, as it goes into JSON
-    ENCODED_CSR=$(base64 -w 0 ${KEY_NAME}.csr)
+    ENCODED_CSR=$(gnu-base64 -w 0 ${KEY_NAME}.csr)
 
     # retrieve adresses
     info "Retrieve addresses..."
@@ -88,7 +90,7 @@ start_service() {
 
     # keep a copy of this for the container
     cp $UPLOADFILE /srv/lxc/mud-supervisor/rootfs/root
-    
+
     HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
     check_error "Failed to download filesystem tgz"
     if [ ${HTTP_STATUS} -ne 200 ]; then
