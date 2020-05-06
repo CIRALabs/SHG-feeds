@@ -2428,7 +2428,7 @@ CONFIG_PACKAGE_procd=y
 # CONFIG_PACKAGE_procd-seccomp is not set
 # CONFIG_PACKAGE_procd-ujail is not set
 # CONFIG_PACKAGE_qos-scripts is not set
-# CONFIG_PACKAGE_resolveip is not set
+CONFIG_PACKAGE_resolveip=m
 CONFIG_PACKAGE_rpcd=y
 CONFIG_PACKAGE_rpcd-mod-file=y
 CONFIG_PACKAGE_rpcd-mod-iwinfo=y
@@ -2446,7 +2446,7 @@ CONFIG_PACKAGE_uci=y
 CONFIG_PACKAGE_urandom-seed=y
 CONFIG_PACKAGE_urngd=y
 CONFIG_PACKAGE_usign=y
-# CONFIG_PACKAGE_wireless-tools is not set
+CONFIG_PACKAGE_wireless-tools=m
 # CONFIG_PACKAGE_zram-swap is not set
 
 #
@@ -2490,7 +2490,7 @@ CONFIG_ZABBIX_POSTGRESQL=y
 CONFIG_PACKAGE_cronie=y
 # CONFIG_PACKAGE_debootstrap is not set
 # CONFIG_PACKAGE_gkrellmd is not set
-# CONFIG_PACKAGE_htop is not set
+CONFIG_PACKAGE_htop=m
 # CONFIG_PACKAGE_ipmitool is not set
 # CONFIG_PACKAGE_monit is not set
 # CONFIG_PACKAGE_monit-nossl is not set
@@ -2519,7 +2519,7 @@ CONFIG_PACKAGE_syslog-ng=y
 # CONFIG_PACKAGE_autoconf is not set
 # CONFIG_PACKAGE_automake is not set
 # CONFIG_PACKAGE_binutils is not set
-# CONFIG_PACKAGE_diffutils is not set
+CONFIG_PACKAGE_diffutils=m
 # CONFIG_PACKAGE_gcc is not set
 # CONFIG_PACKAGE_gdb is not set
 # CONFIG_PACKAGE_gdbserver is not set
@@ -2553,119 +2553,119 @@ CONFIG_PACKAGE_cznic-repo-keys=y
 CONFIG_PACKAGE_cznic-repo-keys-test=y
 CONFIG_PACKAGE_dhparam=y
 CONFIG_PACKAGE_follectd=y
-CONFIG_PACKAGE_foris=y
-CONFIG_PACKAGE_foris-client=y
+CONFIG_PACKAGE_foris=m
+CONFIG_PACKAGE_foris-client=m
 # CONFIG_PACKAGE_foris-client-src is not set
-CONFIG_PACKAGE_foris-controller=y
-CONFIG_PACKAGE_foris-controller-app=y
-CONFIG_PACKAGE_foris-controller-collectd-module=y
+CONFIG_PACKAGE_foris-controller=m
+CONFIG_PACKAGE_foris-controller-app=m
+CONFIG_PACKAGE_foris-controller-collectd-module=m
 # CONFIG_PACKAGE_foris-controller-collectd-module-src is not set
-CONFIG_PACKAGE_foris-controller-data_collect-module=y
+CONFIG_PACKAGE_foris-controller-data_collect-module=m
 # CONFIG_PACKAGE_foris-controller-data_collect-module-src is not set
-CONFIG_PACKAGE_foris-controller-diagnostics-module=y
+CONFIG_PACKAGE_foris-controller-diagnostics-module=m
 # CONFIG_PACKAGE_foris-controller-diagnostics-module-src is not set
-CONFIG_PACKAGE_foris-controller-hotplug=y
-CONFIG_PACKAGE_foris-controller-netboot-module=y
+CONFIG_PACKAGE_foris-controller-hotplug=m
+CONFIG_PACKAGE_foris-controller-netboot-module=m
 # CONFIG_PACKAGE_foris-controller-netboot-module-src is not set
-CONFIG_PACKAGE_foris-controller-netmetr-module=y
+CONFIG_PACKAGE_foris-controller-netmetr-module=m
 # CONFIG_PACKAGE_foris-controller-netmetr-module-src is not set
-CONFIG_PACKAGE_foris-controller-openvpn-module=y
+CONFIG_PACKAGE_foris-controller-openvpn-module=m
 # CONFIG_PACKAGE_foris-controller-openvpn-module-src is not set
-CONFIG_PACKAGE_foris-controller-openvpn_client-module=y
+CONFIG_PACKAGE_foris-controller-openvpn_client-module=m
 # CONFIG_PACKAGE_foris-controller-openvpn_client-module-src is not set
-CONFIG_PACKAGE_foris-controller-pakon-module=y
+CONFIG_PACKAGE_foris-controller-pakon-module=m
 # CONFIG_PACKAGE_foris-controller-pakon-module-src is not set
-CONFIG_PACKAGE_foris-controller-schnapps-module=y
+CONFIG_PACKAGE_foris-controller-schnapps-module=m
 CONFIG_PACKAGE_foris-controller-schnapps-module-src=y
-# CONFIG_PACKAGE_foris-controller-sentinel-module is not set
+CONFIG_PACKAGE_foris-controller-sentinel-module=m
 # CONFIG_PACKAGE_foris-controller-sentinel-module-src is not set
-CONFIG_PACKAGE_foris-controller-storage-module=y
+CONFIG_PACKAGE_foris-controller-storage-module=m
 # CONFIG_PACKAGE_foris-controller-storage-module-src is not set
-CONFIG_PACKAGE_foris-controller-subordinates-module=y
+CONFIG_PACKAGE_foris-controller-subordinates-module=m
 # CONFIG_PACKAGE_foris-controller-subordinates-module-src is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-cs is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-da is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-de is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-fr is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-hu is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-it is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-lt is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-nb is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-pl is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-ru is not set
-# CONFIG_PACKAGE_foris-data_collect-plugin-l10n-sk is not set
+CONFIG_PACKAGE_foris-data_collect-plugin=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-da=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-de=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-fr=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-hu=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-it=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-lt=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-nb=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-ru=m
+CONFIG_PACKAGE_foris-data_collect-plugin-l10n-sk=m
 # CONFIG_PACKAGE_foris-data_collect-plugin-src is not set
-CONFIG_PACKAGE_foris-diagnostics-plugin=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-cs=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-de=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-fr=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-hu=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-it=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-lt=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-nb=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-pl=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-ru=y
-CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-sk=y
+CONFIG_PACKAGE_foris-diagnostics-plugin=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-de=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-fr=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-hu=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-it=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-lt=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-nb=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-ru=m
+CONFIG_PACKAGE_foris-diagnostics-plugin-l10n-sk=m
 # CONFIG_PACKAGE_foris-diagnostics-plugin-src is not set
-CONFIG_PACKAGE_foris-l10n-cs=y
-CONFIG_PACKAGE_foris-l10n-da=y
-CONFIG_PACKAGE_foris-l10n-de=y
-CONFIG_PACKAGE_foris-l10n-fr=y
-CONFIG_PACKAGE_foris-l10n-hu=y
-CONFIG_PACKAGE_foris-l10n-it=y
-CONFIG_PACKAGE_foris-l10n-lt=y
-CONFIG_PACKAGE_foris-l10n-nb=y
-CONFIG_PACKAGE_foris-l10n-pl=y
-CONFIG_PACKAGE_foris-l10n-ru=y
-CONFIG_PACKAGE_foris-l10n-sk=y
-CONFIG_PACKAGE_foris-netmetr-plugin=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-cs=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-de=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-fr=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-hu=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-it=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-nb=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-pl=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-ru=y
-CONFIG_PACKAGE_foris-netmetr-plugin-l10n-sk=y
-# CONFIG_PACKAGE_foris-netmetr-plugin-src is not set
-CONFIG_PACKAGE_foris-openvpn-plugin=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-cs=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-de=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-fr=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-hu=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-it=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-nb=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-pl=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-ru=y
-CONFIG_PACKAGE_foris-openvpn-plugin-l10n-sk=y
+CONFIG_PACKAGE_foris-l10n-cs=m
+CONFIG_PACKAGE_foris-l10n-da=m
+CONFIG_PACKAGE_foris-l10n-de=m
+CONFIG_PACKAGE_foris-l10n-fr=m
+CONFIG_PACKAGE_foris-l10n-hu=m
+CONFIG_PACKAGE_foris-l10n-it=m
+CONFIG_PACKAGE_foris-l10n-lt=m
+CONFIG_PACKAGE_foris-l10n-nb=m
+CONFIG_PACKAGE_foris-l10n-pl=m
+CONFIG_PACKAGE_foris-l10n-ru=m
+CONFIG_PACKAGE_foris-l10n-sk=m
+CONFIG_PACKAGE_foris-netmetr-plugin=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-de=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-fr=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-hu=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-it=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-nb=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-ru=m
+CONFIG_PACKAGE_foris-netmetr-plugin-l10n-sk=m
+CONFIG_PACKAGE_foris-netmetr-plugin-src=m
+CONFIG_PACKAGE_foris-openvpn-plugin=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-de=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-fr=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-hu=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-it=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-nb=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-ru=m
+CONFIG_PACKAGE_foris-openvpn-plugin-l10n-sk=m
 # CONFIG_PACKAGE_foris-openvpn-plugin-src is not set
-CONFIG_PACKAGE_foris-pakon-plugin=y
-CONFIG_PACKAGE_foris-pakon-plugin-l10n-cs=y
-CONFIG_PACKAGE_foris-pakon-plugin-l10n-nb=y
-CONFIG_PACKAGE_foris-pakon-plugin-l10n-pl=y
-CONFIG_PACKAGE_foris-pakon-plugin-l10n-sk=y
+CONFIG_PACKAGE_foris-pakon-plugin=m
+CONFIG_PACKAGE_foris-pakon-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-pakon-plugin-l10n-nb=m
+CONFIG_PACKAGE_foris-pakon-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-pakon-plugin-l10n-sk=m
 # CONFIG_PACKAGE_foris-pakon-plugin-src is not set
-# CONFIG_PACKAGE_foris-plugins-distutils is not set
+CONFIG_PACKAGE_foris-plugins-distutils=m
 # CONFIG_PACKAGE_foris-plugins-distutils-src is not set
 CONFIG_PACKAGE_foris-schema=y
 # CONFIG_PACKAGE_foris-schema-src is not set
 # CONFIG_PACKAGE_foris-src is not set
 # CONFIG_PACKAGE_foris-storage-plugin is not set
-CONFIG_PACKAGE_foris-storage-plugin-l10n-cs=y
-CONFIG_PACKAGE_foris-storage-plugin-l10n-nb=y
-CONFIG_PACKAGE_foris-storage-plugin-l10n-pl=y
-CONFIG_PACKAGE_foris-storage-plugin-l10n-sk=y
+CONFIG_PACKAGE_foris-storage-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-storage-plugin-l10n-nb=m
+CONFIG_PACKAGE_foris-storage-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-storage-plugin-l10n-sk=m
 # CONFIG_PACKAGE_foris-storage-plugin-src is not set
-CONFIG_PACKAGE_foris-subordinates-plugin=y
-CONFIG_PACKAGE_foris-subordinates-plugin-l10n-cs=y
-CONFIG_PACKAGE_foris-subordinates-plugin-l10n-de=y
-CONFIG_PACKAGE_foris-subordinates-plugin-l10n-pl=y
-CONFIG_PACKAGE_foris-subordinates-plugin-l10n-ru=y
-CONFIG_PACKAGE_foris-subordinates-plugin-l10n-sk=y
+CONFIG_PACKAGE_foris-subordinates-plugin=m
+CONFIG_PACKAGE_foris-subordinates-plugin-l10n-cs=m
+CONFIG_PACKAGE_foris-subordinates-plugin-l10n-de=m
+CONFIG_PACKAGE_foris-subordinates-plugin-l10n-pl=m
+CONFIG_PACKAGE_foris-subordinates-plugin-l10n-ru=m
+CONFIG_PACKAGE_foris-subordinates-plugin-l10n-sk=m
 # CONFIG_PACKAGE_foris-subordinates-plugin-src is not set
-CONFIG_PACKAGE_foris-ws=y
+CONFIG_PACKAGE_foris-ws=m
 # CONFIG_PACKAGE_foris-ws-src is not set
 CONFIG_PACKAGE_fosquitto=y
 # CONFIG_PACKAGE_fosquitto-monitor is not set
@@ -2676,12 +2676,12 @@ CONFIG_PACKAGE_libatsha204-emul=y
 # CONFIG_PACKAGE_libjose is not set
 CONFIG_PACKAGE_lighttpd-https-cert=y
 CONFIG_PACKAGE_localrepo=y
-# CONFIG_PACKAGE_luci-app-rainbow is not set
+CONFIG_PACKAGE_luci-app-rainbow=m
 CONFIG_PACKAGE_luci-lighttpd=y
 # CONFIG_PACKAGE_mox-otp-src is not set
 CONFIG_PACKAGE_netmetr=y
 # CONFIG_PACKAGE_netmetr-src is not set
-# CONFIG_PACKAGE_omnia-rainbow is not set
+CONFIG_PACKAGE_omnia-rainbow=m
 CONFIG_PACKAGE_omnia-support=m
 CONFIG_PACKAGE_ouidb=y
 # CONFIG_PACKAGE_pakon-dev-detect is not set
@@ -2767,9 +2767,9 @@ CONFIG_PACKAGE_switch-branch=y
 # CONFIG_PACKAGE_tos3to4 is not set
 # CONFIG_PACKAGE_tos3to4-early is not set
 CONFIG_PACKAGE_turris-cagen=y
-CONFIG_PACKAGE_turris-maintain=y
+CONFIG_PACKAGE_turris-maintain=m
 # CONFIG_PACKAGE_turris-netboot-data is not set
-CONFIG_PACKAGE_turris-netboot-tools=y
+CONFIG_PACKAGE_turris-netboot-tools=m
 CONFIG_PACKAGE_turris-utils=y
 CONFIG_PACKAGE_turris-version=y
 CONFIG_PACKAGE_turris-webapps=y
@@ -4738,7 +4738,8 @@ CONFIG_PACKAGE_turrishw=y
 # Compression
 #
 CONFIG_PACKAGE_libbz2=y
-# CONFIG_PACKAGE_liblz4 is not set
+CONFIG_PACKAGE_liblz4=m
+# CONFIG_LZ4_OPTIMIZE_SPEED is not set
 CONFIG_PACKAGE_liblzma=y
 # CONFIG_PACKAGE_libunrar is not set
 # CONFIG_PACKAGE_libzstd is not set
@@ -4751,7 +4752,7 @@ CONFIG_PACKAGE_libattr=y
 # CONFIG_PACKAGE_libfuse is not set
 # CONFIG_PACKAGE_libow is not set
 # CONFIG_PACKAGE_libow-capi is not set
-# CONFIG_PACKAGE_libsysfs is not set
+CONFIG_PACKAGE_libsysfs=m
 
 #
 # Firewall
@@ -5840,7 +5841,7 @@ CONFIG_SQLITE3_RTREE=y
 # CONFIG_PACKAGE_alsa-lib is not set
 # CONFIG_PACKAGE_argp-standalone is not set
 # CONFIG_PACKAGE_avro-c is not set
-# CONFIG_PACKAGE_bind-libs is not set
+CONFIG_PACKAGE_bind-libs=m
 # CONFIG_PACKAGE_bluez-libs is not set
 # CONFIG_PACKAGE_boost is not set
 # CONFIG_boost-context-exclude is not set
@@ -5851,7 +5852,7 @@ CONFIG_SQLITE3_RTREE=y
 # CONFIG_PACKAGE_classpath is not set
 # CONFIG_PACKAGE_classpath-tools is not set
 # CONFIG_PACKAGE_confuse is not set
-# CONFIG_PACKAGE_czmq is not set
+CONFIG_PACKAGE_czmq=m
 # CONFIG_PACKAGE_dtndht is not set
 # CONFIG_PACKAGE_fbthrift is not set
 # CONFIG_PACKAGE_fbzmq is not set
@@ -6045,7 +6046,7 @@ CONFIG_PACKAGE_libmagic=y
 # CONFIG_PACKAGE_libmaxminddb is not set
 # CONFIG_PACKAGE_libmbim is not set
 # CONFIG_PACKAGE_libmcrypt is not set
-# CONFIG_PACKAGE_libmicrohttpd-no-ssl is not set
+CONFIG_PACKAGE_libmicrohttpd-no-ssl=m
 # CONFIG_PACKAGE_libmicrohttpd-ssl is not set
 # CONFIG_PACKAGE_libmilter-sendmail is not set
 # CONFIG_PACKAGE_libminiupnpc is not set
@@ -6068,8 +6069,8 @@ CONFIG_PACKAGE_libnet-1.2.x=y
 # CONFIG_PACKAGE_libnetconf2 is not set
 # CONFIG_PACKAGE_libnetfilter-acct is not set
 CONFIG_PACKAGE_libnetfilter-conntrack=y
-# CONFIG_PACKAGE_libnetfilter-cthelper is not set
-# CONFIG_PACKAGE_libnetfilter-cttimeout is not set
+CONFIG_PACKAGE_libnetfilter-cthelper=m
+CONFIG_PACKAGE_libnetfilter-cttimeout=m
 CONFIG_PACKAGE_libnetfilter-log=y
 CONFIG_PACKAGE_libnetfilter-queue=y
 # CONFIG_PACKAGE_libnetsnmp is not set
@@ -6105,7 +6106,7 @@ CONFIG_PACKAGE_libnl-tiny=y
 # CONFIG_PACKAGE_libowfat is not set
 # CONFIG_PACKAGE_libp11 is not set
 # CONFIG_PACKAGE_libpagekite is not set
-# CONFIG_PACKAGE_libpaho-mqtt-c is not set
+CONFIG_PACKAGE_libpaho-mqtt-c=m
 CONFIG_PACKAGE_libpam=m
 # CONFIG_PACKAGE_libpbc is not set
 CONFIG_PACKAGE_libpcap=y
@@ -6136,7 +6137,7 @@ CONFIG_PACKAGE_libpopt=y
 # CONFIG_PACKAGE_libqmi is not set
 # CONFIG_PACKAGE_libqrencode is not set
 # CONFIG_PACKAGE_libradcli is not set
-# CONFIG_PACKAGE_libreadline is not set
+CONFIG_PACKAGE_libreadline=m
 # CONFIG_PACKAGE_libredblack is not set
 # CONFIG_PACKAGE_librouteros is not set
 # CONFIG_PACKAGE_libroxml is not set
@@ -6150,7 +6151,7 @@ CONFIG_PACKAGE_libpopt=y
 # CONFIG_PACKAGE_libsass is not set
 # CONFIG_PACKAGE_libsearpc is not set
 # CONFIG_PACKAGE_libseccomp is not set
-# CONFIG_PACKAGE_libsensors is not set
+CONFIG_PACKAGE_libsensors=m
 # CONFIG_PACKAGE_libshout is not set
 # CONFIG_PACKAGE_libshout-full is not set
 # CONFIG_PACKAGE_libshout-nossl is not set
@@ -6200,7 +6201,7 @@ CONFIG_LIBSSH2_OPENSSL=y
 # CONFIG_PACKAGE_libtiff is not set
 # CONFIG_PACKAGE_libtiffxx is not set
 # CONFIG_PACKAGE_libtins is not set
-# CONFIG_PACKAGE_libtirpc is not set
+CONFIG_PACKAGE_libtirpc=m
 # CONFIG_PACKAGE_libtorrent is not set
 CONFIG_PACKAGE_libubox=y
 # CONFIG_PACKAGE_libubox-lua is not set
@@ -6224,7 +6225,7 @@ CONFIG_PACKAGE_libusb-1.0=y
 # CONFIG_PACKAGE_libusb-compat is not set
 # CONFIG_PACKAGE_libusbmuxd is not set
 # CONFIG_PACKAGE_libustream-mbedtls is not set
-# CONFIG_PACKAGE_libustream-openssl is not set
+CONFIG_PACKAGE_libustream-openssl=m
 # CONFIG_PACKAGE_libustream-wolfssl is not set
 CONFIG_PACKAGE_libuuid=y
 CONFIG_PACKAGE_libuv=y
@@ -6251,7 +6252,7 @@ CONFIG_PACKAGE_libxml2=y
 # CONFIG_PACKAGE_libyubikey is not set
 # CONFIG_PACKAGE_libzdb is not set
 # CONFIG_PACKAGE_libzmq-curve is not set
-# CONFIG_PACKAGE_libzmq-nc is not set
+CONFIG_PACKAGE_libzmq-nc=m
 # CONFIG_PACKAGE_linux-atm is not set
 CONFIG_PACKAGE_lmdb=y
 # CONFIG_PACKAGE_lmdb-test is not set
@@ -6351,7 +6352,7 @@ CONFIG_LUCI_CSSTIDY=y
 # CONFIG_LUCI_LANG_vi is not set
 # CONFIG_LUCI_LANG_zh_Hans is not set
 # CONFIG_LUCI_LANG_zh_Hant is not set
-# CONFIG_PACKAGE_luci-compat is not set
+CONFIG_PACKAGE_luci-compat=m
 CONFIG_PACKAGE_luci-mod-admin-full=y
 # CONFIG_PACKAGE_luci-mod-failsafe is not set
 CONFIG_PACKAGE_luci-mod-network=y
@@ -6362,6 +6363,7 @@ CONFIG_PACKAGE_luci-mod-system=y
 #
 # 3. Applications
 #
+# CONFIG_PACKAGE_luci-app-acme is not set
 # CONFIG_PACKAGE_luci-app-adblock is not set
 # CONFIG_PACKAGE_luci-app-advanced-reboot is not set
 # CONFIG_PACKAGE_luci-app-ahcp is not set
@@ -6374,7 +6376,7 @@ CONFIG_PACKAGE_luci-mod-system=y
 # CONFIG_PACKAGE_luci-app-bmx7 is not set
 # CONFIG_PACKAGE_luci-app-cjdns is not set
 # CONFIG_PACKAGE_luci-app-clamav is not set
-# CONFIG_PACKAGE_luci-app-commands is not set
+CONFIG_PACKAGE_luci-app-commands=m
 # CONFIG_PACKAGE_luci-app-cshark is not set
 # CONFIG_PACKAGE_luci-app-dcwapd is not set
 # CONFIG_PACKAGE_luci-app-ddns is not set
@@ -6513,6 +6515,35 @@ CONFIG_PACKAGE_luci-lib-nixio_notls=y
 # CONFIG_PACKAGE_luci-i18n-base-vi is not set
 # CONFIG_PACKAGE_luci-i18n-base-zh-cn is not set
 # CONFIG_PACKAGE_luci-i18n-base-zh-tw is not set
+# CONFIG_PACKAGE_luci-i18n-commands-bg is not set
+# CONFIG_PACKAGE_luci-i18n-commands-ca is not set
+# CONFIG_PACKAGE_luci-i18n-commands-cs is not set
+# CONFIG_PACKAGE_luci-i18n-commands-de is not set
+# CONFIG_PACKAGE_luci-i18n-commands-el is not set
+# CONFIG_PACKAGE_luci-i18n-commands-en is not set
+# CONFIG_PACKAGE_luci-i18n-commands-es is not set
+# CONFIG_PACKAGE_luci-i18n-commands-fr is not set
+# CONFIG_PACKAGE_luci-i18n-commands-he is not set
+# CONFIG_PACKAGE_luci-i18n-commands-hi is not set
+# CONFIG_PACKAGE_luci-i18n-commands-hu is not set
+# CONFIG_PACKAGE_luci-i18n-commands-it is not set
+# CONFIG_PACKAGE_luci-i18n-commands-ja is not set
+# CONFIG_PACKAGE_luci-i18n-commands-ko is not set
+# CONFIG_PACKAGE_luci-i18n-commands-mr is not set
+# CONFIG_PACKAGE_luci-i18n-commands-ms is not set
+# CONFIG_PACKAGE_luci-i18n-commands-no is not set
+# CONFIG_PACKAGE_luci-i18n-commands-pl is not set
+# CONFIG_PACKAGE_luci-i18n-commands-pt is not set
+# CONFIG_PACKAGE_luci-i18n-commands-pt-br is not set
+# CONFIG_PACKAGE_luci-i18n-commands-ro is not set
+# CONFIG_PACKAGE_luci-i18n-commands-ru is not set
+# CONFIG_PACKAGE_luci-i18n-commands-sk is not set
+# CONFIG_PACKAGE_luci-i18n-commands-sv is not set
+# CONFIG_PACKAGE_luci-i18n-commands-tr is not set
+# CONFIG_PACKAGE_luci-i18n-commands-uk is not set
+# CONFIG_PACKAGE_luci-i18n-commands-vi is not set
+# CONFIG_PACKAGE_luci-i18n-commands-zh-cn is not set
+# CONFIG_PACKAGE_luci-i18n-commands-zh-tw is not set
 # CONFIG_PACKAGE_luci-i18n-firewall-bg is not set
 # CONFIG_PACKAGE_luci-i18n-firewall-ca is not set
 # CONFIG_PACKAGE_luci-i18n-firewall-cs is not set
@@ -6730,13 +6761,13 @@ CONFIG_PACKAGE_wget=y
 # Firewall
 #
 # CONFIG_PACKAGE_arptables is not set
-# CONFIG_PACKAGE_conntrack is not set
+CONFIG_PACKAGE_conntrack=m
 # CONFIG_PACKAGE_conntrackd is not set
 CONFIG_PACKAGE_ebtables=m
 CONFIG_PACKAGE_ebtables-utils=m
 # CONFIG_PACKAGE_fwknop is not set
 # CONFIG_PACKAGE_fwknopd is not set
-CONFIG_PACKAGE_ip6tables=y
+CONFIG_PACKAGE_ip6tables=m
 CONFIG_PACKAGE_ip6tables-extra=m
 CONFIG_PACKAGE_ip6tables-mod-nat=m
 CONFIG_PACKAGE_iptables=y
@@ -6827,15 +6858,15 @@ CONFIG_PACKAGE_avahi-dbus-daemon=m
 # CONFIG_PACKAGE_avahi-dnsconfd is not set
 # CONFIG_PACKAGE_avahi-nodbus-daemon is not set
 # CONFIG_PACKAGE_avahi-utils is not set
-# CONFIG_PACKAGE_bind-check is not set
-# CONFIG_PACKAGE_bind-client is not set
-# CONFIG_PACKAGE_bind-dig is not set
-# CONFIG_PACKAGE_bind-dnssec is not set
-# CONFIG_PACKAGE_bind-host is not set
-# CONFIG_PACKAGE_bind-rndc is not set
+CONFIG_PACKAGE_bind-check=m
+CONFIG_PACKAGE_bind-client=m
+CONFIG_PACKAGE_bind-dig=m
+CONFIG_PACKAGE_bind-dnssec=m
+CONFIG_PACKAGE_bind-host=m
+CONFIG_PACKAGE_bind-rndc=m
 # CONFIG_PACKAGE_bind-server is not set
 # CONFIG_PACKAGE_bind-server-filter-aaaa is not set
-# CONFIG_PACKAGE_bind-tools is not set
+CONFIG_PACKAGE_bind-tools=m
 # CONFIG_PACKAGE_danish is not set
 # CONFIG_PACKAGE_ddns-scripts is not set
 # CONFIG_PACKAGE_dhcp-forwarder is not set
@@ -7045,21 +7076,21 @@ CONFIG_OPENLDAP_DEBUG=y
 # CONFIG_PACKAGE_cjdns-tests is not set
 # CONFIG_PACKAGE_dcstad is not set
 # CONFIG_PACKAGE_dcwapd is not set
-# CONFIG_PACKAGE_devlink is not set
-# CONFIG_PACKAGE_genl is not set
+CONFIG_PACKAGE_devlink=m
+CONFIG_PACKAGE_genl=m
 # CONFIG_PACKAGE_igmpproxy is not set
-# CONFIG_PACKAGE_ip-bridge is not set
+CONFIG_PACKAGE_ip-bridge=m
 CONFIG_PACKAGE_ip-full=y
 # CONFIG_PACKAGE_ip-tiny is not set
 # CONFIG_PACKAGE_lldpd is not set
 # CONFIG_PACKAGE_mcproxy is not set
 # CONFIG_PACKAGE_mrmctl is not set
 # CONFIG_PACKAGE_mwan3 is not set
-# CONFIG_PACKAGE_nstat is not set
+CONFIG_PACKAGE_nstat=m
 # CONFIG_PACKAGE_olsrd is not set
 # CONFIG_PACKAGE_prince is not set
 # CONFIG_PACKAGE_quagga is not set
-# CONFIG_PACKAGE_rdma is not set
+CONFIG_PACKAGE_rdma=m
 # CONFIG_PACKAGE_relayd is not set
 # CONFIG_PACKAGE_smcroute is not set
 # CONFIG_PACKAGE_ss is not set
@@ -7090,11 +7121,11 @@ CONFIG_PACKAGE_openssh-sftp-server=m
 CONFIG_PACKAGE_sentinel-certgen=y
 # CONFIG_PACKAGE_sentinel-certgen-src is not set
 # CONFIG_PACKAGE_sentinel-dynfw-client is not set
-# CONFIG_PACKAGE_sentinel-eula is not set
+CONFIG_PACKAGE_sentinel-eula=m
 # CONFIG_PACKAGE_sentinel-minipot is not set
 # CONFIG_PACKAGE_sentinel-nikola is not set
 # CONFIG_PACKAGE_sentinel-nikola-src is not set
-# CONFIG_PACKAGE_sentinel-proxy is not set
+CONFIG_PACKAGE_sentinel-proxy=m
 # CONFIG_PACKAGE_turris-survey is not set
 # CONFIG_PACKAGE_turris-survey-src is not set
 
@@ -7411,8 +7442,8 @@ CONFIG_PACKAGE_nginx=y
 # CONFIG_PACKAGE_wifischedule is not set
 # CONFIG_PACKAGE_464xlat is not set
 CONFIG_PACKAGE_6in4=y
-# CONFIG_PACKAGE_6rd is not set
-# CONFIG_PACKAGE_6to4 is not set
+CONFIG_PACKAGE_6rd=m
+CONFIG_PACKAGE_6to4=m
 # CONFIG_PACKAGE_acme is not set
 # CONFIG_PACKAGE_acme-dnsapi is not set
 # CONFIG_PACKAGE_adblock is not set
@@ -7442,7 +7473,7 @@ CONFIG_PACKAGE_chat=m
 # CONFIG_PACKAGE_dhcpcd is not set
 # CONFIG_PACKAGE_dmapd is not set
 # CONFIG_PACKAGE_dnscrypt-proxy2 is not set
-# CONFIG_PACKAGE_ds-lite is not set
+CONFIG_PACKAGE_ds-lite=m
 # CONFIG_PACKAGE_eapol-test is not set
 # CONFIG_PACKAGE_eapol-test-openssl is not set
 # CONFIG_PACKAGE_eapol-test-wolfssl is not set
@@ -7503,11 +7534,11 @@ CONFIG_PACKAGE_ipset=y
 # CONFIG_PACKAGE_iputils-arping is not set
 # CONFIG_PACKAGE_iputils-clockdiff is not set
 CONFIG_PACKAGE_iputils-ping=y
-# CONFIG_PACKAGE_iputils-ping6 is not set
+CONFIG_PACKAGE_iputils-ping6=m
 # CONFIG_PACKAGE_iputils-tftpd is not set
-# CONFIG_PACKAGE_iputils-tracepath is not set
-# CONFIG_PACKAGE_iputils-tracepath6 is not set
-# CONFIG_PACKAGE_iputils-traceroute6 is not set
+CONFIG_PACKAGE_iputils-tracepath=m
+CONFIG_PACKAGE_iputils-tracepath6=m
+CONFIG_PACKAGE_iputils-traceroute6=m
 # CONFIG_PACKAGE_ipvsadm is not set
 # CONFIG_PACKAGE_iw is not set
 CONFIG_PACKAGE_iw-full=y
@@ -7523,9 +7554,6 @@ CONFIG_PACKAGE_iw-full=y
 CONFIG_PACKAGE_libipset=y
 # CONFIG_PACKAGE_libndp is not set
 # CONFIG_PACKAGE_linknx is not set
-# CONFIG_PACKAGE_lua-log is not set
-# CONFIG_PACKAGE_lua-resolver is not set
-# CONFIG_PACKAGE_luaevent is not set
 # CONFIG_PACKAGE_lynx is not set
 # CONFIG_PACKAGE_mac-telnet-client is not set
 # CONFIG_PACKAGE_mac-telnet-discover is not set
@@ -7546,8 +7574,6 @@ CONFIG_PACKAGE_mosquitto-ssl=y
 # CONFIG_MOSQUITTO_PASSWD is not set
 # CONFIG_PACKAGE_mrd6 is not set
 # CONFIG_PACKAGE_mtr is not set
-# CONFIG_PACKAGE_mud-controller is not set
-# CONFIG_PACKAGE_mud-supervisor is not set
 # CONFIG_PACKAGE_nbd is not set
 # CONFIG_PACKAGE_nbd-server is not set
 # CONFIG_PACKAGE_ncp is not set
@@ -7569,7 +7595,12 @@ CONFIG_PACKAGE_mosquitto-ssl=y
 # CONFIG_PACKAGE_obfsproxy-src is not set
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcp6c_ext_cer_id=0
-# CONFIG_PACKAGE_odhcpd is not set
+CONFIG_PACKAGE_odhcpd=m
+
+#
+# Configuration
+#
+CONFIG_PACKAGE_odhcpd_full_ext_cer_id=0
 CONFIG_PACKAGE_odhcpd-ipv6only=y
 
 #
@@ -7630,8 +7661,6 @@ CONFIG_PACKAGE_rmbt-client=y
 CONFIG_PACKAGE_shg=m
 CONFIG_PACKAGE_shg-device-manager=m
 CONFIG_PACKAGE_shg-provisioning=m
-# CONFIG_PACKAGE_shg-radius-configuration is not set
-# CONFIG_PACKAGE_shg-wifi-configuration is not set
 # CONFIG_PACKAGE_simple-adblock is not set
 # CONFIG_PACKAGE_smartsnmpd is not set
 # CONFIG_PACKAGE_snmp-mibs is not set
@@ -7653,7 +7682,7 @@ CONFIG_PACKAGE_suricata-pakon=y
 # CONFIG_PACKAGE_tac_plus is not set
 # CONFIG_PACKAGE_tac_plus-pam is not set
 # CONFIG_PACKAGE_tayga is not set
-# CONFIG_PACKAGE_tcpdump is not set
+CONFIG_PACKAGE_tcpdump=m
 # CONFIG_PACKAGE_tcpdump-mini is not set
 # CONFIG_PACKAGE_tgt is not set
 # CONFIG_PACKAGE_tor is not set
@@ -7777,8 +7806,8 @@ CONFIG_PACKAGE_wwan=m
 # Boot Loaders
 #
 # CONFIG_PACKAGE_fconfig is not set
-CONFIG_PACKAGE_uboot-envtools=y
-CONFIG_PACKAGE_uboot-mkimage=y
+CONFIG_PACKAGE_uboot-envtools=m
+CONFIG_PACKAGE_uboot-mkimage=m
 
 #
 # Compression
@@ -7833,7 +7862,7 @@ CONFIG_PACKAGE_partx-utils=y
 # CONFIG_PACKAGE_mg is not set
 # CONFIG_PACKAGE_nano is not set
 # CONFIG_PACKAGE_vim is not set
-# CONFIG_PACKAGE_vim-full is not set
+CONFIG_PACKAGE_vim-full=m
 # CONFIG_PACKAGE_vim-fuller is not set
 # CONFIG_PACKAGE_vim-help is not set
 # CONFIG_PACKAGE_vim-runtime is not set
@@ -7890,7 +7919,7 @@ CONFIG_PACKAGE_schnapps=y
 # CONFIG_PACKAGE_squashfs-tools-mksquashfs is not set
 # CONFIG_PACKAGE_squashfs-tools-unsquashfs is not set
 # CONFIG_PACKAGE_swap-utils is not set
-# CONFIG_PACKAGE_sysfsutils is not set
+CONFIG_PACKAGE_sysfsutils=m
 # CONFIG_PACKAGE_tune2fs is not set
 # CONFIG_PACKAGE_xfs-admin is not set
 # CONFIG_PACKAGE_xfs-fsck is not set
@@ -7930,7 +7959,7 @@ CONFIG_PACKAGE_schnapps=y
 #
 # Shells
 #
-# CONFIG_PACKAGE_bash is not set
+CONFIG_PACKAGE_bash=m
 # CONFIG_PACKAGE_fish is not set
 # CONFIG_PACKAGE_klish is not set
 # CONFIG_PACKAGE_mksh is not set
@@ -8101,8 +8130,8 @@ CONFIG_PACKAGE_collectd-mod-unixsock=y
 # CONFIG_PACKAGE_collectd-mod-write-graphite is not set
 # CONFIG_PACKAGE_collectd-mod-write-http is not set
 # CONFIG_PACKAGE_common_passwords is not set
-CONFIG_PACKAGE_coreutils=y
-CONFIG_PACKAGE_coreutils-base64=y
+CONFIG_PACKAGE_coreutils=m
+CONFIG_PACKAGE_coreutils-base64=m
 # CONFIG_PACKAGE_coreutils-basename is not set
 # CONFIG_PACKAGE_coreutils-cat is not set
 # CONFIG_PACKAGE_coreutils-chcon is not set
@@ -8116,7 +8145,7 @@ CONFIG_PACKAGE_coreutils-base64=y
 # CONFIG_PACKAGE_coreutils-csplit is not set
 # CONFIG_PACKAGE_coreutils-cut is not set
 # CONFIG_PACKAGE_coreutils-date is not set
-CONFIG_PACKAGE_coreutils-dd=y
+CONFIG_PACKAGE_coreutils-dd=m
 # CONFIG_PACKAGE_coreutils-dir is not set
 # CONFIG_PACKAGE_coreutils-dircolors is not set
 # CONFIG_PACKAGE_coreutils-dirname is not set
@@ -8175,7 +8204,7 @@ CONFIG_PACKAGE_coreutils-dd=y
 # CONFIG_PACKAGE_coreutils-sleep is not set
 # CONFIG_PACKAGE_coreutils-sort is not set
 # CONFIG_PACKAGE_coreutils-split is not set
-CONFIG_PACKAGE_coreutils-stat=y
+CONFIG_PACKAGE_coreutils-stat=m
 # CONFIG_PACKAGE_coreutils-stdbuf is not set
 # CONFIG_PACKAGE_coreutils-stty is not set
 # CONFIG_PACKAGE_coreutils-sum is not set
@@ -8285,7 +8314,7 @@ CONFIG_PACKAGE_libjson-script=y
 # CONFIG_PACKAGE_libplist-utils is not set
 # CONFIG_PACKAGE_libsysrepo is not set
 # CONFIG_PACKAGE_libusbmuxd-utils is not set
-# CONFIG_PACKAGE_lm-sensors is not set
+CONFIG_PACKAGE_lm-sensors=m
 # CONFIG_PACKAGE_lm-sensors-detect is not set
 # CONFIG_PACKAGE_logger is not set
 CONFIG_PACKAGE_logrotate=y
@@ -8294,7 +8323,7 @@ CONFIG_LOGROTATE_ACL=y
 # CONFIG_PACKAGE_losetup is not set
 # CONFIG_PACKAGE_lrzsz is not set
 # CONFIG_PACKAGE_lscpu is not set
-# CONFIG_PACKAGE_lsof is not set
+CONFIG_PACKAGE_lsof=m
 # CONFIG_PACKAGE_lxc is not set
 # CONFIG_PACKAGE_lxc-unprivileged is not set
 # CONFIG_PACKAGE_maccalc is not set
@@ -8338,12 +8367,28 @@ CONFIG_PACKAGE_pciutils=y
 # CONFIG_PACKAGE_powertop is not set
 # CONFIG_PACKAGE_pps-tools is not set
 # CONFIG_PACKAGE_prlimit is not set
-# CONFIG_PACKAGE_procps-ng is not set
+CONFIG_PACKAGE_procps-ng=m
+CONFIG_PACKAGE_procps-ng-free=m
+CONFIG_PACKAGE_procps-ng-kill=m
+CONFIG_PACKAGE_procps-ng-pgrep=m
+CONFIG_PACKAGE_procps-ng-pkill=m
+CONFIG_PACKAGE_procps-ng-pmap=m
+CONFIG_PACKAGE_procps-ng-ps=m
+CONFIG_PACKAGE_procps-ng-pwdx=m
+CONFIG_PACKAGE_procps-ng-skill=m
+CONFIG_PACKAGE_procps-ng-slabtop=m
+CONFIG_PACKAGE_procps-ng-snice=m
+CONFIG_PACKAGE_procps-ng-tload=m
+CONFIG_PACKAGE_procps-ng-top=m
+CONFIG_PACKAGE_procps-ng-uptime=m
+CONFIG_PACKAGE_procps-ng-vmstat=m
+CONFIG_PACKAGE_procps-ng-w=m
+CONFIG_PACKAGE_procps-ng-watch=m
 # CONFIG_PACKAGE_progress is not set
 # CONFIG_PACKAGE_prometheus is not set
 # CONFIG_PACKAGE_prometheus-node-exporter-lua is not set
 # CONFIG_PACKAGE_prometheus-statsd-exporter is not set
-# CONFIG_PACKAGE_psmisc is not set
+CONFIG_PACKAGE_psmisc=m
 # CONFIG_PACKAGE_pv is not set
 # CONFIG_PACKAGE_qmi-utils is not set
 # CONFIG_PACKAGE_qrencode is not set
@@ -8359,7 +8404,51 @@ CONFIG_PACKAGE_pciutils=y
 # CONFIG_PACKAGE_sane-daemon is not set
 # CONFIG_PACKAGE_sane-frontends is not set
 # CONFIG_PACKAGE_setserial is not set
-# CONFIG_PACKAGE_shadow-utils is not set
+CONFIG_PACKAGE_shadow=m
+CONFIG_PACKAGE_shadow-chage=m
+CONFIG_PACKAGE_shadow-chfn=m
+CONFIG_PACKAGE_shadow-chgpasswd=m
+CONFIG_PACKAGE_shadow-chpasswd=m
+CONFIG_PACKAGE_shadow-chsh=m
+CONFIG_PACKAGE_shadow-common=m
+CONFIG_PACKAGE_shadow-expiry=m
+CONFIG_PACKAGE_shadow-faillog=m
+CONFIG_PACKAGE_shadow-gpasswd=m
+CONFIG_PACKAGE_shadow-groupadd=m
+CONFIG_PACKAGE_shadow-groupdel=m
+CONFIG_PACKAGE_shadow-groupmems=m
+CONFIG_PACKAGE_shadow-groupmod=m
+CONFIG_PACKAGE_shadow-groups=m
+CONFIG_PACKAGE_shadow-grpck=m
+CONFIG_PACKAGE_shadow-grpconv=m
+CONFIG_PACKAGE_shadow-grpunconv=m
+CONFIG_PACKAGE_shadow-lastlog=m
+CONFIG_PACKAGE_shadow-login=m
+CONFIG_PACKAGE_shadow-logoutd=m
+CONFIG_PACKAGE_shadow-newgidmap=m
+CONFIG_PACKAGE_shadow-newgrp=m
+CONFIG_PACKAGE_shadow-newuidmap=m
+CONFIG_PACKAGE_shadow-newusers=m
+CONFIG_PACKAGE_shadow-nologin=m
+CONFIG_PACKAGE_shadow-passwd=m
+CONFIG_PACKAGE_shadow-pwck=m
+CONFIG_PACKAGE_shadow-pwconv=m
+CONFIG_PACKAGE_shadow-pwunconv=m
+CONFIG_PACKAGE_shadow-su=m
+CONFIG_PACKAGE_shadow-useradd=m
+CONFIG_PACKAGE_shadow-userdel=m
+CONFIG_PACKAGE_shadow-usermod=m
+CONFIG_PACKAGE_shadow-utils=m
+
+#
+# Select shadow utilities
+#
+CONFIG_shadow-all=y
+
+#
+# Utilities
+#
+CONFIG_PACKAGE_shadow-vipw=m
 # CONFIG_PACKAGE_shinit is not set
 # CONFIG_PACKAGE_sispmctl is not set
 # CONFIG_PACKAGE_slide-switch is not set
