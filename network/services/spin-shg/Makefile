@@ -17,7 +17,7 @@ MAKE_PATH:=src
 
 define Package/spin-shg
   SECTION:=base
-  CATEGORY:=SIDN
+  CATEGORY:=CIRA-SHG
   TITLE:=Experimental tools for SPIN
   URL:=https://github.com/SIDN/spin
   DEPENDS:=+ip\
