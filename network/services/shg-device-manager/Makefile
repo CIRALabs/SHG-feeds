@@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-device-manager
   PKGARCH:=all
-  DEPENDS:=+python3-flask
+  DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
