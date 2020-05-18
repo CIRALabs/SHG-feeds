@@ -94,9 +94,14 @@ start_service() {
     # loop as long as server keep saying 202-Retry-After
     HTTP_STATUS=202
 
-    while [ $HTTP_STATUS -eq 202 ]; do
+    #set -x
+    echo CONTACTING ${WELL_KNOWN_ADDRESS} to get HTTPS CERTIFICATE
+    while [ ${HTTP_STATUS} -eq 202 ]; do
         HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} --fail -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
-        sleep 30
+        if [ ${HTTP_STATUS} -eq 202 ]; then
+            echo WAITING TO RETRY SERVER ${WELL_KNOWN_ADDRESS}
+            sleep 30
+        fi
     done
 
     check_error "Failed to download filesystem tgz"
