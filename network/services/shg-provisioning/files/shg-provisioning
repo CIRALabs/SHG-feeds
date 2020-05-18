@@ -91,7 +91,14 @@ start_service() {
     # keep a copy of this for the container
     cp $UPLOADFILE /srv/lxc/mud-supervisor/rootfs/root
 
-    HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
+    # loop as long as server keep saying 202-Retry-After
+    HTTP_STATUS=202
+
+    while [ $HTTP_STATUS -eq 202 ]; do
+        HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} --fail -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
+        sleep 30
+    done
+
     check_error "Failed to download filesystem tgz"
     if [ ${HTTP_STATUS} -ne 200 ]; then
         error "Failed to contact server: HTTP ${HTTP_STATUS}"
