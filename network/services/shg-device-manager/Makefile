@@ -34,8 +34,9 @@ define Package/shg-device-manager/description
 endef
 
 define Package/shg-device-manager/install
-	mkdir -p $(1)/srv/auth_server $(1)/etc/init.d
-	tar -C ${PKG_BUILD_DIR} -c -f - auth_server | tar -C $(1)/srv -x -f -
+	mkdir -p $(1)/srv/shg-device-manager $(1)/etc/init.d
+	${INSTALL_BIN) ./files/lighttpd-shg-device-manager.conf $(1)/etc/lighttpd/conf.d/52-shg-device-manager.conf
+	tar -C ${PKG_BUILD_DIR}/auth_server -c -f - . | tar -C $(1)/srv/shg-device-manager -x -f -
 	$(INSTALL_BIN) ./files/shg-device-manager.init $(1)/etc/init.d/shg-device-manager
 endef
 
