@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=0.2.0
-PKG_RELEASE:=2
+PKG_VERSION:=0.2.3
+PKG_RELEASE:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
 #PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.gz
@@ -34,10 +34,10 @@ define Package/shg-device-manager/description
 endef
 
 define Package/shg-device-manager/install
-	mkdir -p $(1)/srv/shg-device-manager $(1)/etc/init.d
-	${INSTALL_BIN) ./files/lighttpd-shg-device-manager.conf $(1)/etc/lighttpd/conf.d/52-shg-device-manager.conf
+	${INSTALL_DIR} $(1)/srv/shg-device-manager $(1)/etc/init.d $(1)/etc/lighttpd/conf.d
 	tar -C ${PKG_BUILD_DIR}/auth_server -c -f - . | tar -C $(1)/srv/shg-device-manager -x -f -
-	$(INSTALL_BIN) ./files/shg-device-manager.init $(1)/etc/init.d/shg-device-manager
+	${INSTALL_BIN} ./files/lighttpd-shg-device-manager.conf $(1)/etc/lighttpd/conf.d/52-shg-device-manager.conf
+	${INSTALL_BIN} ./files/shg-device-manager.init $(1)/etc/init.d/shg-device-manager
 endef
 
 define Build/Compile
