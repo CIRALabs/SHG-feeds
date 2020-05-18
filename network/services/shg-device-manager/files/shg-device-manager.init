@@ -1,5 +1,7 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2006-2011 OpenWrt.org
+#
+# Copyright (C) 2020 CIRALabs
+# revision 4
 
 START=85 # After mud-supervisor
 USE_PROCD=1
