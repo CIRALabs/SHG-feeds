@@ -20,95 +20,13 @@ check_error() {
 start_service() {
     WELL_KNOWN_FILE="/etc/shg/onboarded"
     WORKING_DIR="/etc/shg"
+    TGZ_NAME="shg-filesystem"
     mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
 
-    if [ -f /etc/shg/provisioningURL ]; then
-        WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
-    else
-        WELL_KNOWN_ADDRESS="https://provision.securehomegateway.ca/shg-provision"
-    fi
-    if [ -f /etc/shg/provisioningDomain ]; then
-        WELL_KNOWN_DOMAIN=$(cat /etc/shg/provisioningDomain)
-    else
-        WELL_KNOWN_DOMAIN="r.securehomegateway.ca"
-    fi
+    export WORKING_DIR TGZ_NAME
 
-    check_error "Failed to retrieve provisionning URL"
-    WAN_DEV_NAME=$(uci get network.wan.ifname)
-    check_error "Failed to retrieve WAN interface name"
-    LAN_DEV_NAME="br-lan"
-    UPLOADFILE="/tmp/provision.json"
-    KEY_NAME="shg"
-    TGZ_NAME="shg-filesystem"
-    POSTINST_SCRIPT="./postinst.sh"
-
-    # Turris is already onboarded
-    if [ -f $WELL_KNOWN_FILE ]; then
-        info "Already onboarded"
-        exit 0;
-    fi
-
-    mkdir -p ${WORKING_DIR}
-    cd ${WORKING_DIR}
-
-    IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'f[cd][a-f0-9]\{2\}:[^/]*')
-    IP6_ULA_PREFIX=$(uci get network.globals.ula_prefix)
-    check_error "Failed to retrieve ULA address"
-
-    # extract bytes 2,3,4 of ULA address.
-    ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 ).${WELL_KNOWN_DOMAIN}
-
-    printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_HOSTNAME},DNS:mud.${ULA_HOSTNAME}\n" >/tmp/shg.ossl.cnf
-
-    # generate cert
-    if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
-        info "Generating certs..."
-        openssl req -new -newkey ec \
-                -pkeyopt ec_paramgen_curve:prime256v1 -pkeyopt ec_param_enc:named_curve \
-                -nodes -subj "/CN=${ULA_HOSTNAME}" \
-                -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr -outform DER \
-                -reqexts SAN \
-                -config /tmp/shg.ossl.cnf \
-#                1>/dev/null 2>&1
-        chmod 600 ${KEY_NAME}.key
-    fi
-
-    # encode CSR, not wrapped, as it goes into JSON
-    ENCODED_CSR=$(gnu-base64 -w 0 ${KEY_NAME}.csr)
-
-    # retrieve adresses
-    info "Retrieve addresses..."
-    WAN_ETH=$(cat /sys/class/net/${WAN_DEV_NAME}/address)
-    check_error "Failed to retrieve ${WAN_DEV_NAME} MAC address"
-    LAN_ETH=$(cat /sys/class/net/${LAN_DEV_NAME}/address)
-    check_error "Failed to retrieve ${LAN_DEV_NAME} MAC address"
-
-    # POST Turris information
-    info "Contact server with information..."
-    JSON="{\"wan-mac\": \"${WAN_ETH}\", \"switch-mac\": \"${LAN_ETH}\", \"ula\": \"${IP6_ULA_PREFIX}\", \"csr\": \"${ENCODED_CSR}\"}"
-    echo $JSON >$UPLOADFILE
-
-    # keep a copy of this for the container
-    cp $UPLOADFILE /srv/lxc/mud-supervisor/rootfs/root
-
-    # loop as long as server keep saying 202-Retry-After
-    HTTP_STATUS=202
-
-    #set -x
-    echo CONTACTING ${WELL_KNOWN_ADDRESS} to get HTTPS CERTIFICATE
-    while [ ${HTTP_STATUS} -eq 202 ]; do
-        HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} --fail -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
-        if [ ${HTTP_STATUS} -eq 202 ]; then
-            echo WAITING TO RETRY SERVER ${WELL_KNOWN_ADDRESS}
-            sleep 30
-        fi
-    done
-
-    check_error "Failed to download filesystem tgz"
-    if [ ${HTTP_STATUS} -ne 200 ]; then
-        error "Failed to contact server: HTTP ${HTTP_STATUS}"
-        exit 1;
-    fi
+    # core of work
+    /etc/shg/enroll-certificate
 
     # Extract tgz file
     info "Filesystem successfully retrieved, install it..."
@@ -153,9 +71,6 @@ start_service() {
 
     # Set the well-known file to avoid subsequent onboarding
     touch ${WELL_KNOWN_FILE}
-
-    # set the hostname appropriately, and then set up /etc/hosts as well
-    uci set system.@system[0].hostname=${ULA_HOSTNAME}
 
     # just make sure stuff not writable.
     chmod g-w / /root
