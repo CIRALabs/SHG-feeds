@@ -11,7 +11,6 @@ check_error() {
     fi
 }
 
-WELL_KNOWN_FILE="/etc/shg/onboarded"
 WORKING_DIR=${WORKING_DIR-"/etc/shg"}
 mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
 
@@ -34,12 +33,6 @@ LAN_DEV_NAME="br-lan"
 UPLOADFILE="/tmp/provision.json"
 KEY_NAME="shg"
 TGZ_NAME=${TGZ_NAME-"shg-filesystem"}
-
-# Turris is already onboarded
-if [ -f $WELL_KNOWN_FILE ]; then
-    info "Already onboarded"
-    exit 0;
-fi
 
 mkdir -p ${WORKING_DIR}
 cd ${WORKING_DIR}
