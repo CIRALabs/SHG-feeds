@@ -21,6 +21,8 @@ start_service() {
     WELL_KNOWN_FILE="/etc/shg/onboarded"
     WORKING_DIR="/etc/shg"
     TGZ_NAME="shg-filesystem"
+    POSTINST_SCRIPT="./postinst.sh"
+
     mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
 
     export WORKING_DIR TGZ_NAME WELL_KNOWN_FILE
