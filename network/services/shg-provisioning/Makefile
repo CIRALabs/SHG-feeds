@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-provisioning
 PKG_VERSION:=1.1.0
-PKG_RELEASE:=4
+PKG_RELEASE:=6
 
 
 include $(INCLUDE_DIR)/package.mk
