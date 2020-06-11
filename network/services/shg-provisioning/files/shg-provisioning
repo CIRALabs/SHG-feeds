@@ -25,6 +25,12 @@ start_service() {
 
     mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
 
+    if [ -f /etc/shg/provisioningDomain ]; then
+        WELL_KNOWN_DOMAIN=$(cat /etc/shg/provisioningDomain)
+    else
+        WELL_KNOWN_DOMAIN="r.securehomegateway.ca"
+    fi
+
     export WORKING_DIR TGZ_NAME WELL_KNOWN_FILE
 
     # Turris is already onboarded
@@ -34,7 +40,12 @@ start_service() {
     fi
 
     # core of work
-    /etc/shg/enroll-certificate
+    if /etc/shg/enroll-certificate && [ -f ${WORKING_DIR}/${TGZ_NAME}.tgz ]; then
+        info "Successful enrollment"
+    else
+        # fail.  Maybe should reboot?
+        exit 5
+    fi
 
     # Extract tgz file
     info "Filesystem successfully retrieved, install it..."
