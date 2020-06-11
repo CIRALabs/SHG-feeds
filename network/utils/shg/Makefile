@@ -2,14 +2,14 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg
 PKG_VERSION:=0.1.0
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/shg
   PKGARCH:=all
   #DEPENDS:=+mud-controller +mud-supervisor +shg-provisioning +shg-wifi-configuration +shg-radius-configuration +spin-shg
-  DEPENDS:=+shg-provisioning +spin +shg-device-manager
+  DEPENDS:=+shg-provisioning +shg-device-manager
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG meta-package
