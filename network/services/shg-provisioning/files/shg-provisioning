@@ -96,6 +96,31 @@ start_service() {
         touch .done20190628
     fi
 
+    if [ ! -f .done20200526 ]; then
+        # now setup the avahi service with the right info.
+        HOSTNAME=$(cat /etc/shg/hostname)
+        FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
+        cat /etc/avahi/services/router.service <<EOF
+<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+  <name>${FQDNNAME}</name>
+  <service>
+    <type>_shg._tcp</type>
+    <port>443</port>
+  </service>
+</service-group>
+EOF
+
+        mkdir -p /etc/avahi /etc/avahi/services
+        echo "[server]" >>/etc/avahi/avahi-daemon.conf
+        echo "host-name=${HOSTNAME}"
+
+        /etc/init.d/avahi-daemon enable
+        /etc/init.d/avahi-daemon start
+        touch .done20200526
+    fi
+
     # Run post-installation script, if it exists.
     cd ${WORKING_DIR}
     if [ -x ${POSTINST_SCRIPT} ]; then
