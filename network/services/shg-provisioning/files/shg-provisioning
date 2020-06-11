@@ -137,6 +137,10 @@ EOF
     [ -d /root/.ssh ] && chmod g-w /root/.ssh
     [ -f /root/.ssh/authorized_keys ] && chmod g-w /root/.ssh/authorized_keys
 
+    # scp fix
+    if [ ! -x /usr/bin/scp ]; then
+        ln -s openssh-scp /usr/bin/scp
+    fi
 
     # Reboot
     info "Filesystem installed, reboot..."
