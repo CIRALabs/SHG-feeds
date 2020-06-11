@@ -42,16 +42,17 @@ IP6_ULA_PREFIX=$(uci get network.globals.ula_prefix)
 check_error "Failed to retrieve ULA address"
 
 # extract bytes 2,3,4 of ULA address.
-ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 ).${WELL_KNOWN_DOMAIN}
+ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 )
+ULA_FQDNNAME=${ULA_HOSTNAME}.${WELL_KNOWN_DOMAIN}
 
-printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_HOSTNAME},DNS:mud.${ULA_HOSTNAME}\n" >/tmp/shg.ossl.cnf
+printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_FQDNNAME},DNS:mud.${ULA_FQDNNAME}\n" >/tmp/shg.ossl.cnf
 
 # generate cert
 if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
     info "Generating certs..."
     openssl req -new -newkey ec \
             -pkeyopt ec_paramgen_curve:prime256v1 -pkeyopt ec_param_enc:named_curve \
-            -nodes -subj "/CN=${ULA_HOSTNAME}" \
+            -nodes -subj "/CN=${ULA_FQDNNAME}" \
             -keyout ${KEY_NAME}.key -out ${KEY_NAME}.csr -outform DER \
             -reqexts SAN \
             -config /tmp/shg.ossl.cnf \
@@ -103,6 +104,7 @@ fi
 
 # set the hostname appropriately, and then set up /etc/hosts as well
 uci set system.@system[0].hostname=${ULA_HOSTNAME}
-echo ${ULA_HOSTNAME} >>/etc/shg/hostname
+uci commit
+echo ${ULA_HOSTNAME} >/etc/shg/hostname
 
 
