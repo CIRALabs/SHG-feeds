@@ -33,6 +33,8 @@ start_service() {
 
     export WORKING_DIR TGZ_NAME WELL_KNOWN_FILE
 
+    procd_add_mdns "router" "tcp" "80"
+
     # Turris is already onboarded
     if [ -f $WELL_KNOWN_FILE ]; then
         info "Already onboarded"
