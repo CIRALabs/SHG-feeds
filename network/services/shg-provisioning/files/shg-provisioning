@@ -40,7 +40,7 @@ start_service() {
     fi
 
     # check if device has a WAN
-    if [ "$(uci get network.wan)" != "interface" ]; then
+    if [ -z "$(uci get network.wan.iface)" ]; then
         if [ ! -f ${WELL_KNOWN_FILE}_WAN ]; then
             uci set network.wan=interface
             uci set network.wan.ifname=eth0
@@ -96,8 +96,8 @@ start_service() {
         touch .done20190628
     fi
 
-    if [ ! -f .done20200526 ]; then
-        # now setup the avahi service with the right info.
+    if [ ! -f .done20200611 ]; then
+        # now setup the umdnsd service with the right info.
         HOSTNAME=$(cat /etc/shg/hostname)
         FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
         cat /etc/avahi/services/router.service <<EOF
@@ -116,9 +116,7 @@ EOF
         echo "[server]" >>/etc/avahi/avahi-daemon.conf
         echo "host-name=${HOSTNAME}"
 
-        /etc/init.d/avahi-daemon enable
-        /etc/init.d/avahi-daemon start
-        touch .done20200526
+        touch .done20200611
     fi
 
     # Run post-installation script, if it exists.
