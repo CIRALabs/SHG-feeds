@@ -104,6 +104,14 @@ fi
 
 # set the hostname appropriately, and then set up /etc/hosts as well
 uci set system.@system[0].hostname=${ULA_HOSTNAME}
+uci set resolver.common.hostname_config='/etc/hosts'
+uci set resolver.kresd.hostname_config='/etc/hosts'
+
+# socat - /tmp/kresd/control/2966
+# > hints.set('nB73304.r.dasblinkenled.org 192.168.1.1')
+# > hints.set('nB73304.r.dasblinkenled.org fdb7:3304:1cac::1')
+
+
 uci commit
 echo ${ULA_HOSTNAME} >/etc/shg/hostname
 
