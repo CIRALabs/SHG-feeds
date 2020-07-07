@@ -105,6 +105,29 @@ fi
 # set the hostname appropriately, and then set up /etc/hosts as well
 uci set system.@system[0].hostname=${ULA_HOSTNAME}
 uci add_list resolver.kresd.hostname_config='/etc/hosts'
+uci set network.lan.ip6assign=64
+uci set network.guest_turris=interface
+uci set network.guest_turris.enabled='1'
+uci set network.guest_turris.type='bridge'
+uci set network.guest_turris.proto='static'
+uci set network.guest_turris.ipaddr='10.111.222.1'
+uci set network.guest_turris.netmask='255.255.255.0'
+uci set network.guest_turris.bridge_empty='1'
+uci set network.guest_turris.ip6assign='64'
+uci set wireless.guest_iface_0=wifi-iface
+uci set wireless.guest_iface_0.device='radio0'
+uci set wireless.guest_iface_0.disabled='0'
+uci set wireless.guest_iface_0.mode='ap'
+uci set wireless.guest_iface_0.ssid='SHG-onboard'
+uci set wireless.guest_iface_0.network='guest_turris'
+uci set wireless.guest_iface_0.encryption='psk2+ccmp'
+uci set wireless.guest_iface_0.wpa_group_rekey='86400'
+uci set wireless.guest_iface_0.key='SHG-onboard'
+uci set wireless.guest_iface_0.ifname='guest_turris_0'
+uci set wireless.guest_iface_0.isolate='1'
+
+# now setup the guest wifi: SHG-onboard with WPA-onboard.
+# make sure it has ULA assigned
 
 # socat - /tmp/kresd/control/2966
 # > hints.set('nB73304.r.dasblinkenled.org 192.168.1.1')
