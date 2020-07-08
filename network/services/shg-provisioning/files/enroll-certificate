@@ -106,6 +106,7 @@ fi
 uci set system.@system[0].hostname=${ULA_HOSTNAME}
 uci add_list resolver.kresd.hostname_config='/etc/hosts'
 uci set network.lan.ip6assign=64
+uci set network.lan.ip6hint=0
 uci set network.guest_turris=interface
 uci set network.guest_turris.enabled='1'
 uci set network.guest_turris.type='bridge'
@@ -114,6 +115,15 @@ uci set network.guest_turris.ipaddr='10.111.222.1'
 uci set network.guest_turris.netmask='255.255.255.0'
 uci set network.guest_turris.bridge_empty='1'
 uci set network.guest_turris.ip6assign='64'
+
+uci set wireless.radio0=wifi-device
+uci set wireless.radio0.type='mac80211'
+uci set wireless.radio0.channel='36'
+uci set wireless.radio0.hwmode='11a'
+uci set wireless.radio0.htmode='VHT80'
+uci set wireless.radio0.disabled='0'
+uci set wireless.radio0.country='CA'
+
 uci set wireless.guest_iface_0=wifi-iface
 uci set wireless.guest_iface_0.device='radio0'
 uci set wireless.guest_iface_0.disabled='0'
@@ -125,6 +135,17 @@ uci set wireless.guest_iface_0.wpa_group_rekey='86400'
 uci set wireless.guest_iface_0.key='SHG-onboard'
 uci set wireless.guest_iface_0.ifname='guest_turris_0'
 uci set wireless.guest_iface_0.isolate='1'
+
+uci set dhcp.guest_turris=dhcp
+uci set dhcp.guest_turris.interface='guest_turris'
+uci set dhcp.guest_turris.ignore='0'
+uci set dhcp.guest_turris.start='100'
+uci set dhcp.guest_turris.limit='150'
+uci set dhcp.guest_turris.leasetime='3600'
+uci set dhcp.guest_turris.dhcp_option='6,10.111.222.1'
+uci set dhcp.guest_turris.dhcpv6='server'
+uci set dhcp.guest_turris.ra='server'
+
 
 # now setup the guest wifi: SHG-onboard with WPA-onboard.
 # make sure it has ULA assigned
