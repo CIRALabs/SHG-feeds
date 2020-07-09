@@ -146,6 +146,20 @@ uci set dhcp.guest_turris.dhcp_option='6,10.111.222.1'
 uci set dhcp.guest_turris.dhcpv6='server'
 uci set dhcp.guest_turris.ra='server'
 
+uci add firewall zone
+uci add_list firewall.@zone[-1].network=guest_turris
+uci set firewall.@zone[-1].input='ACCEPT'
+uci set firewall.@zone[-1].output='ACCEPT'
+uci set firewall.@zone[-1].forward='REJECT'
+
+uci add firewall rule
+uci set firewall.@rule[-1].name=let-mgmt-https
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].dest_port='443'
+uci set firewall.@rule[-1].src='guest_turris'
+uci set firewall.@rule[-1].dest_ip='192.168.1.1'
+
 
 # now setup the guest wifi: SHG-onboard with WPA-onboard.
 # make sure it has ULA assigned
