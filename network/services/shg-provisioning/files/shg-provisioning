@@ -105,9 +105,8 @@ start_service() {
         mkdir -p /etc/umdns
         cat /etc/umdns/windex.json <<EOF
 { "windex" : {
-        "instance" : "router",
         "port" : 443,
-        "service" : "_https_tcp.local",
+        "service" : "_windex._tcp.local",
         "txt" : [ "windex=https://${FQDNNAME}/shg" ]
         }
 }
