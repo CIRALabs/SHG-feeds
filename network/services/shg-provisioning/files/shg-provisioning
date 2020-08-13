@@ -98,27 +98,21 @@ start_service() {
         touch .done20190628
     fi
 
-    if [ ! -f .done20200611 ]; then
+    if [ ! -f .done20200813 ]; then
         # now setup the umdnsd service with the right info.
         HOSTNAME=$(cat /etc/shg/hostname)
         FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
-        cat /etc/avahi/services/router.service <<EOF
-<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
-<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
-<service-group>
-  <name>${FQDNNAME}</name>
-  <service>
-    <type>_shg._tcp</type>
-    <port>443</port>
-  </service>
-</service-group>
+        mkdir -p /etc/umdns
+        cat /etc/umdns/windex.json <<EOF
+{ "windex" : {
+        "instance" : "router",
+        "port" : 443,
+        "service" : "_https_tcp.local",
+        "txt" : [ "windex=https://${FQDNNAME}/shg" ]
+        }
+}
 EOF
-
-        mkdir -p /etc/avahi /etc/avahi/services
-        echo "[server]" >>/etc/avahi/avahi-daemon.conf
-        echo "host-name=${HOSTNAME}"
-
-        touch .done20200611
+        touch .done20200813
     fi
 
     # Run post-installation script, if it exists.
