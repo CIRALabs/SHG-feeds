@@ -103,7 +103,7 @@ start_service() {
         HOSTNAME=$(cat /etc/shg/hostname)
         FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
         mkdir -p /etc/umdns
-        cat /etc/umdns/windex.json <<EOF
+        cat >/etc/umdns/windex.json <<EOF
 { "windex" : {
         "port" : 443,
         "service" : "_windex._tcp.local",
