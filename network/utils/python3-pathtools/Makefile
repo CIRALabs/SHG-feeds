@@ -1,14 +1,14 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=python3-pathtools
-PKG_VERSION:=0.1.2
-PKG_RELEASE:=1
+PKG_NAME:=pathtools
+PKG_VERSION:=0.1.3
+PKG_RELEASE:=2
 
 PYPI_NAME:=pathtools
-PKG_CAT:=xzcat
+PKG_CAT:=zcat
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/gorakhargosh/pathtools.git
-PKG_MIRROR_HASH:=1b9efa8573069595ada7f0c875f09b2078a4949ceddfb975e2ac620ef1782251
+PKG_SOURCE_URL:=https://github.com/CIRALabs/pathtools.git
+PKG_MIRROR_HASH:=795d1928c011a5d766dd66d2fab0dbef4c3e3da11eccfab2bb28397476b758c9
 PKG_SOURCE_VERSION:=master
 
 PKG_MAINTAINER:=Michael Richardson
@@ -27,6 +27,7 @@ define Package/python3-pathtools
   URL:=https://github.com/gorakhargosh/pathtools
   DEPENDS:=+python3
   VARIANT:=python3
+  PYTHON3_PKG_SETUP_ARGS:=
 endef
 
 define Package/python3-pathtools/description
