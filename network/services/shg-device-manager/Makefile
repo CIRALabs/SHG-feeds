@@ -1,24 +1,25 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=0.2.3
-PKG_RELEASE:=1
+PKG_VERSION:=0.3.1
+PKG_RELEASE:=3
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
-#PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.gz
-#PKG_HASH:=316fff3211c5e27467b94bd4c14d1087ed991cefe0ecb3d755c8858bdb734349
+#PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.xz
+#PKG_HASH=3438766c46b348239ff0b90d542b8cb2a0ac0dbb8ccaf99263ac6abe084c3828
 PKG_CAT:=xzcat
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
+#PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
 PKG_SOURCE_URL:=git+ssh://obiwan.sandelman.ca/ssw/projects/shg/sshg-openwrt
-PKG_SOURCE_VERSION:=hera_test1
-PKG_SOURCE_DATE:=2020-04-20
+PKG_SOURCE_VERSION:=2020aug14-0.3.1
+PKG_SOURCE_DATE:=2020-08-14
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-device-manager
   PKGARCH:=all
-  DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors +python3-schema +python3-flup +lighttpd-mod-openssl
+  DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors \
+	+python3-schema +python3-flup +lighttpd-mod-openssl +python3-watchdog
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
@@ -35,7 +36,7 @@ endef
 
 define Package/shg-device-manager/install
 	${INSTALL_DIR} $(1)/srv/shg-device-manager $(1)/etc/init.d $(1)/etc/lighttpd/conf.d
-	tar -C ${PKG_BUILD_DIR}/auth_server -c -f - . | tar -C $(1)/srv/shg-device-manager -x -f -
+	tar -C ${PKG_BUILD_DIR}/device_manager -c -f - . | tar -C $(1)/srv/shg-device-manager -x -f -
 	${INSTALL_BIN} ./files/lighttpd-shg-device-manager.conf $(1)/etc/lighttpd/conf.d/52-shg-device-manager.conf
 	${INSTALL_BIN} ./files/shg-device-manager.init $(1)/etc/init.d/shg-device-manager
 endef
