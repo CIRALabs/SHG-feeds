@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-device-manager
 PKG_VERSION:=0.5.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
 #PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.xz
@@ -20,7 +20,7 @@ define Package/shg-device-manager
   PKGARCH:=all
   DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors \
 	+python3-schema +python3-flup +lighttpd-mod-openssl +python3-watchdog \
-	+python3-pathtools +python3-sqlalchemy
+	+python3-pathtools +python3-sqlalchemy +python3-flask_sqlalchemy
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
