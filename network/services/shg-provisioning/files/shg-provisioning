@@ -120,6 +120,12 @@ EOF
         ${POSTINST_SCRIPT}
     fi
 
+    LAN_DEV_NAME="br-lan"
+    IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'f[cd][a-f0-9]\{2\}:[^/]*')
+    # populate the /etc/hosts file with more names: IPv4 and IPv6
+    echo "192.168.1.1  $FQDNNAME" >>/etc/hosts
+    echo "${IP6_ULA}   $FQDNNAME" >>/etc/hosts
+
     check_error "Failed to run post-installation script"
 
     # Set the well-known file to avoid subsequent onboarding
