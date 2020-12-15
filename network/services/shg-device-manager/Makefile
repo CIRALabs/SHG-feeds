@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=0.5.1
-PKG_RELEASE:=1
+PKG_VERSION:=0.5.2
+PKG_RELEASE:=4
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
 #PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.xz
@@ -12,7 +12,7 @@ PKG_SOURCE_PROTO:=git
 #PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
 PKG_SOURCE_URL:=git+ssh://obiwan.sandelman.ca/ssw/projects/shg/sshg-openwrt
 PKG_SOURCE_VERSION:=2020nov26-0.5.1
-PKG_SOURCE_DATE:=2020-11-26
+PKG_SOURCE_DATE:=2020-11-27
 
 include $(INCLUDE_DIR)/package.mk
 
