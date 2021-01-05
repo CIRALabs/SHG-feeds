@@ -17,7 +17,7 @@ mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
 if [ -f /etc/shg/provisioningURL ]; then
     WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
 else
-    WELL_KNOWN_ADDRESS="https://provision.securehomegateway.ca/shg-provision"
+    WELL_KNOWN_ADDRESS="https://provision.securehomegateway.ca:9443/shg-provision"
 fi
 if [ -f /etc/shg/provisioningDomain ]; then
     WELL_KNOWN_DOMAIN=$(cat /etc/shg/provisioningDomain)
@@ -90,7 +90,7 @@ while [ ${HTTP_STATUS} -eq 202 ]; do
     HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} --fail -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
     curl_stat=$?
     error "CURL status: $curl_stat with ${HTTP_STATUS}"
-    if [ "${curl_stat}" -eq 52 ] || [ "${HTTP_STATUS}" -eq 202 ] || [ "${HTTP_STATUS}" -ge 500 ]; then
+    if [ "${curl_stat}" -eq 52 ] || [ "${HTTP_STATUS}" -eq 000 ] || [ "${HTTP_STATUS}" -eq 202 ] || [ "${HTTP_STATUS}" -ge 500 ]; then
         error "WAITING TO RETRY SERVER ${WELL_KNOWN_ADDRESS}"
         sleep 30
         HTTP_STATUS=202 # make sure that it loops
