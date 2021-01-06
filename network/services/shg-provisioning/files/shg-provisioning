@@ -58,7 +58,7 @@ start_service() {
     fi
 
     # core of work
-    if /etc/shg/enroll-certificate && [ -f ${WORKING_DIR}/${TGZ_NAME}.tgz ]; then
+    if /usr/sbin/enroll-certificate && [ -f ${WORKING_DIR}/${TGZ_NAME}.tgz ]; then
         info "Successful enrollment"
     else
         # fail.  Maybe should reboot?
