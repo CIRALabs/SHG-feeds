@@ -51,8 +51,10 @@ start_service() {
             uci set network.wan6.ifname=eth0
             uci set network.wan6.proto='dhcpv6'
             uci commit
+            ifup wan
             touch ${WELL_KNOWN_FILE}_WAN
             info "Rebooting with new WAN configuration on ETH0"
+            sleep 1
             reboot
         fi
     fi
