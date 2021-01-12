@@ -20,7 +20,8 @@ define Package/shg-device-manager
   PKGARCH:=all
   DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors \
 	+python3-schema +python3-flup +lighttpd-mod-openssl +python3-watchdog \
-	+python3-pathtools +python3-sqlalchemy +python3-flask_sqlalchemy
+	+python3-pathtools +python3-sqlalchemy +python3-flask_sqlalchemy \
+	+python3-flask_migration
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
