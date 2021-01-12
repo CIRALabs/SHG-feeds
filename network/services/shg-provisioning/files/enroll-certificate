@@ -86,9 +86,11 @@ exec 2>/tmp/scan.txt
 
 rm -f ${TGZ_NAME}.tgz
 
+ifup wan
+sleep 2
+
 info "CONTACTING ${WELL_KNOWN_ADDRESS} to get HTTPS CERTIFICATE"
 while [ ${HTTP_STATUS} -eq 202 ]; do
-    ifup wan
     HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} --fail -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
     curl_stat=$?
     error "CURL status: $curl_stat with ${HTTP_STATUS}"
