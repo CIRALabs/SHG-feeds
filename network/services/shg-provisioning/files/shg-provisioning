@@ -74,38 +74,33 @@ start_service() {
     check_error "Failed to extract filesystem tgz"
 
     cd ${WORKING_DIR}
-    if [ ! -f .done20190628 ]; then
+    KEY="/etc/shg/shg.key"
+    CERTIF="/etc/shg/idevid_cert.pem"
+    INTERMEDIATE="/etc/shg/intermediate_certs.pem"
+    OUTPUT="/etc/shg/lighttpd.pem"
 
-        KEY="/etc/shg/shg.key"
-        CERTIF="/etc/shg/idevid_cert.pem"
-        INTERMEDIATE="/etc/shg/intermediate_certs.pem"
-        OUTPUT="/etc/shg/lighttpd.pem"
+    cat ${KEY} ${CERTIF}         > ${OUTPUT}
 
-        cat ${KEY} ${CERTIF}         > ${OUTPUT}
+    mkdir -p /etc/shg/certificates
+    cp ${KEY}                      /etc/shg/certificates/jrc_prime256v1.key
+    cat ${CERTIF} ${INTERMEDIATE} >/etc/shg/certificates/jrc_prime256v1.crt
+    cp masa.crt                    /etc/shg/certificates/masa.crt
 
-        mkdir -p /etc/shg/certificates
-        cp ${KEY}                      /etc/shg/certificates/jrc_prime256v1.key
-        cat ${CERTIF} ${INTERMEDIATE} >/etc/shg/certificates/jrc_prime256v1.crt
-        cp masa.crt                    /etc/shg/certificates/masa.crt
+    check_error "Failed to create certificate for lighttpd"
+    chmod 600 ${OUTPUT}
 
-        check_error "Failed to create certificate for lighttpd"
-        chmod 600 ${OUTPUT}
-
-        if [ -d extra ] ; then
-            (cd extra; find . -type f -print | while read file
-             do
-                 cat $file >>/$file
-             done)
-        fi
-        touch .done20190628
+    if [ -d extra ] ; then
+        (cd extra; find . -type f -print | while read file
+         do
+             cat $file >>/$file
+         done)
     fi
 
-    if [ ! -f .done20200813 ]; then
-        # now setup the umdnsd service with the right info.
-        HOSTNAME=$(cat /etc/shg/hostname)
-        FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
-        mkdir -p /etc/umdns
-        cat >/etc/umdns/windex.json <<EOF
+    # now setup the umdnsd service with the right info.
+    HOSTNAME=$(cat /etc/shg/hostname)
+    FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
+    mkdir -p /etc/umdns
+    cat >/etc/umdns/windex.json <<EOF
 { "windex" : {
         "port" : 443,
         "service" : "_windex._tcp.local",
@@ -113,8 +108,6 @@ start_service() {
         }
 }
 EOF
-        touch .done20200813
-    fi
 
     # Run post-installation script, if it exists.
     cd ${WORKING_DIR}
