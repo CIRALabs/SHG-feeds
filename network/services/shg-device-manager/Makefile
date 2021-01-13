@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=2021.1.04.1
+PKG_VERSION:=2021.1.13-1
 PKG_RELEASE:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
@@ -12,7 +12,7 @@ PKG_SOURCE_PROTO:=git
 #PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
 PKG_SOURCE_URL:=git+ssh://obiwan.sandelman.ca/ssw/projects/shg/sshg-openwrt
 PKG_SOURCE_VERSION:=master
-PKG_SOURCE_DATE:=2021-01-04
+PKG_SOURCE_DATE:=2021-01-13
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -21,7 +21,7 @@ define Package/shg-device-manager
   DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors \
 	+python3-schema +python3-flup +lighttpd-mod-openssl +python3-watchdog \
 	+python3-pathtools +python3-sqlalchemy +python3-flask_sqlalchemy \
-	+python3-flask_migration
+	+python3-flask_migration +python3-flask_script
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
