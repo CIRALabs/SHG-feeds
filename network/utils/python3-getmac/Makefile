@@ -1,11 +1,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=getmac
-PKG_VERSION:=2.0.6
+PKG_VERSION:=0.8.2
 PKG_RELEASE:=1
 
 PYPI_NAME:=getmac
-PKG_SOURCE_URL=https://files.pythonhosted.org/packages/60/a2/d64aed61f8f86827eab2e77e49a6158630690daa8130f7452a4b676acefc/getmac-0.8.2.tar.gz
+PKG_SOURCE_URL=https://files.pythonhosted.org/packages/60/a2/d64aed61f8f86827eab2e77e49a6158630690daa8130f7452a4b676acefc
 PKG_HASH:=d501d20b71856248cfa07a8758192e86a01077910afb8b659a89946c4d52d368
 PKG_SOURCE=getmac-0.8.2.tar.gz
 
