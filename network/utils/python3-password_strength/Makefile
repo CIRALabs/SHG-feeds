@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=password_strength
-PKG_VERSION:=0.0.3
+PKG_VERSION:=0.0.3.post2
 PKG_RELEASE:=1
 
 PYPI_NAME:=password_strength
