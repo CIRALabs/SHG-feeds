@@ -1,8 +1,0 @@
-{
-  "id": "blocked_by_ad",
-  "name": "Blocked by Anomaly Detector",
-  "type": "CREATED_BY_SYSTEM",
-  "description": "Internet access blocked by anomaly detector",
-  "rules_v4": [ "-j REJECT" ],
-  "rules_v6": [ "-j REJECT" ]
-}

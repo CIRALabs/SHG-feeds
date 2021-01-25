@@ -1,8 +1,0 @@
-{
-  "id": "deny_all",
-  "name": "Deny all",
-  "type": "CREATED_BY_USER",
-  "description": "Deny all access to the Internet",
-  "rules_v4": [ "-j REJECT" ],
-  "rules_v6": [ "-j REJECT" ]
-}

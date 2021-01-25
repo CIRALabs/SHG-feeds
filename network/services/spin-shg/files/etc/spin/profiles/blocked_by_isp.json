@@ -1,8 +1,0 @@
-{
-  "id": "blocked_by_isp",
-  "name": "Blocked by ISP",
-  "type": "CREATED_BY_SYSTEM",
-  "description": "Internet access blocked by ISP",
-  "rules_v4": [ "-j REJECT" ],
-  "rules_v6": [ "-j REJECT" ]
-}
