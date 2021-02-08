@@ -1,4 +1,6 @@
 include $(TOPDIR)/rules.mk
+# Load the git token so we don't commit it to the repo...
+include git-token.txt
 
 PKG_NAME:=shg-device-manager
 PKG_VERSION:=2021.02.01
@@ -12,7 +14,7 @@ PKG_SOURCE_PROTO:=git
 #PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
 #PKG_SOURCE_URL:=git+ssh://obiwan.sandelman.ca/ssw/projects/shg/sshg-openwrt
 #PKG_SOURCE_URL:=git+ssh://git@github.com/CIRALabs/sshg-openwrt
-PKG_SOURCE_URL:=https://071d884bccce914fbb6007b244776692be71d96e:x-oauth-basic@github.com/CIRALabs/sshg-openwrt
+PKG_SOURCE_URL:=https://${GIT-TOKEN}:x-oauth-basic@github.com/CIRALabs/sshg-openwrt
 PKG_SOURCE_VERSION:=master
 PKG_SOURCE_DATE:=2021-02-05
 
