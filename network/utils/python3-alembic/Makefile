@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=alembic
 PKG_VERSION:=1.4.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PYPI_NAME:=alembic
 PKG_SOURCE_URL=https://files.pythonhosted.org/packages/cd/f5/705578ee067b92bcfbda4ca1122bdf8c7387dc2c691f1a9d39f18d78f84c
@@ -17,7 +17,10 @@ include $(INCLUDE_DIR)/../feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/../feeds/packages/lang/python/python3-package.mk
 
+
+
 define Package/python3-alembic
+  DEPENDS:=+python3-mako +python3-dateutil
   SUBMENU:=Python
   SECTION:=lang
   CATEGORY:=Languages

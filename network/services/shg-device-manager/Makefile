@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=2021.1.21-1
-PKG_RELEASE:=3
+PKG_VERSION:=2021.02.01
+PKG_RELEASE:=4
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
 #PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.xz
@@ -11,9 +11,10 @@ PKG_CAT:=xzcat
 PKG_SOURCE_PROTO:=git
 #PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
 #PKG_SOURCE_URL:=git+ssh://obiwan.sandelman.ca/ssw/projects/shg/sshg-openwrt
-PKG_SOURCE_URL:=git+ssh://git@github.com/CIRALabs/sshg-openwrt
+#PKG_SOURCE_URL:=git+ssh://git@github.com/CIRALabs/sshg-openwrt
+PKG_SOURCE_URL:=https://071d884bccce914fbb6007b244776692be71d96e:x-oauth-basic@github.com/CIRALabs/sshg-openwrt
 PKG_SOURCE_VERSION:=master
-PKG_SOURCE_DATE:=2021-01-21
+PKG_SOURCE_DATE:=2021-02-05
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -23,8 +24,7 @@ define Package/shg-device-manager
 	+python3-schema +python3-flup +lighttpd-mod-openssl +python3-watchdog \
 	+python3-pathtools +python3-sqlalchemy +python3-flask_sqlalchemy \
 	+python3-flask_migrate +python3-flask_script +python3-getmac +python3-alembic \
-	+python3-password_strength +python3-mako \
-	+python3-dateutil
+	+python3-password_strength +python3-mako +python3-dateutil
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager

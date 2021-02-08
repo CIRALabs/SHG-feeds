@@ -122,18 +122,23 @@ uci set network.guest_turris.ip6assign='64'
 
 uci set wireless.radio0=wifi-device
 uci set wireless.radio0.type='mac80211'
-uci set wireless.radio0.channel='36'
-uci set wireless.radio0.hwmode='11a'
-uci set wireless.radio0.htmode='VHT80'
+uci set wireless.radio0.channel='auto'
+#uci set wireless.radio0.hwmode='11a'
+uci set wireless.radio0.hwmode='11g'
+#uci set wireless.radio0.htmode='VHT80'
+# Bring up the radio in 2.4ghz mode (HT20)
+uci set wireless.radio0.htmode='HT20'
 uci set wireless.radio0.disabled='0'
 uci set wireless.radio0.country='CA'
 
 # remove default Turris SSID
-uci del wireless.default_radio0=wifi-device
+uci set wireless.default_radio0.disabled="1"
 
 uci set wireless.guest_iface_0=wifi-iface
 uci set wireless.guest_iface_0.device='radio0'
-uci set wireless.guest_iface_0.disabled='0'
+# Let the device-manager enable this wifi access point...
+#uci set wireless.guest_iface_0.disabled='0'
+uci set wireless.guest_iface_0.disabled='1'
 uci set wireless.guest_iface_0.mode='ap'
 uci set wireless.guest_iface_0.ssid='SHG-onboard'
 uci set wireless.guest_iface_0.network='guest_turris'
@@ -142,6 +147,7 @@ uci set wireless.guest_iface_0.wpa_group_rekey='86400'
 uci set wireless.guest_iface_0.key='SHG-onboard'
 uci set wireless.guest_iface_0.ifname='guest_turris_0'
 uci set wireless.guest_iface_0.isolate='1'
+
 
 uci set dhcp.guest_turris=dhcp
 uci set dhcp.guest_turris.interface='guest_turris'
@@ -179,6 +185,8 @@ uci set firewall.@rule[-1].src='guest_turris'
 # now setup the umdns to answer as we need.
 uci add_list umdns.@umdns[0].network=guest_turris
 
+# maybe this can be done by tweaking input to
+#   /usr/share/mox/mox_autosetup
 
 # now setup the guest wifi: SHG-onboard with WPA-onboard.
 # make sure it has ULA assigned

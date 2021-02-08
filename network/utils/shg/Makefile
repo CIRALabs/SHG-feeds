@@ -34,16 +34,13 @@ define Package/shg/preinst
 grep shg $${IPKG_INSTROOT}/etc/services_wanted || \
     echo "
 shg-provisioning
-mud-controller
-mud-supervisor
-radiusd
 mosquitto
 spin
 " >> $${IPKG_INSTROOT}/etc/services_wanted
 
 grep cira $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf || \
 echo "
-src/gz ciralabs https://ghost.sandelman.ca/hbs/omnia/packages/ciralabs" >> $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf
+src/gz ciralabs https://build.securehomegateway.ca/hbl/omnia/packages/ciralabs" >> $${IPKG_INSTROOT}/etc/opkg/distfeeds.conf
 endef
 
 $(eval $(call BuildPackage,shg))
