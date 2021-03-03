@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=python-flask-jwt-extended
-PKG_VERSION:=3.20.0
+PKG_VERSION:=3.25.0
 PKG_RELEASE:=1
 
 #PKG_MAINTAINER:=Eneas U de Queiroz <cote2004-github@yahoo.com>
@@ -9,7 +9,7 @@ PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 
 PYPI_NAME:=Flask-JWT-Extended
-PKG_HASH:=0aa8ee6fa7eb3be9314e39dd199ac8e19389a95371f9d54e155c7aa635e319dd
+PKG_HASH:=bbf4467f41c56cf1fd8a5870d2556f419c572aad2b4085757581c3f9b4d7767a
 
 include $(INCLUDE_DIR)/../feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
@@ -28,7 +28,7 @@ endef
 
 define Package/python3-flask-jwt-extended/description
   This package not only adds support for using JSON Web Tokens (JWT)
-  to Flask for protecting views, but also many helpful (and optional) 
+  to Flask for protecting views, but also many helpful (and optional)
   features built in to make working with JSON Web Tokens easier.
 endef
 
