@@ -47,6 +47,12 @@ start_service() {
         exit 0;
     fi
 
+
+    # Add the ciralabs package repo to customfeeds...if it's not there already...
+    if ! grep -q ciralabs /etc/opkg/customfeeds.conf; then
+    	echo 'src/gz ciralabs http://build.securehomegateway.ca/hbl/mox/packages/ciralabs' >> /etc/opkg/customfeeds.conf
+    fi
+
     # check if device has a WAN
     if [ -z "$(uci get network.wan.iface)" ]; then
         if [ ! -f ${WELL_KNOWN_FILE}_WAN ]; then

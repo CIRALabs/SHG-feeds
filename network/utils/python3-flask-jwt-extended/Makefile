@@ -9,7 +9,9 @@ PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 
 PYPI_NAME:=Flask-JWT-Extended
-PKG_HASH:=bbf4467f41c56cf1fd8a5870d2556f419c572aad2b4085757581c3f9b4d7767a
+PKG_SOURCE_URL=https://files.pythonhosted.org/packages/1e/2d/95770fa9a11ec3842d29599113657d58649c8cc7f7ff66bb997739fa9e6f
+PKG_SOURCE=Flask-JWT-Extended-3.25.0.tar.gz
+PKG_HASH:=b2e4dba91661e4697b30269106386c2b29e416a00d9ff66b26c462edddc10078
 
 include $(INCLUDE_DIR)/../feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
