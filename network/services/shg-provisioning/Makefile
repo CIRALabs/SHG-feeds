@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-provisioning
-PKG_VERSION:=1.3.12
+PKG_VERSION:=1.3.14
 PKG_RELEASE:=1
 
 
@@ -33,12 +33,6 @@ define Package/shg-provisioning/install
 
 	$(INSTALL_BIN) ./files/shg-provisioning $(1)/etc/init.d/shg-provisioning
 	$(INSTALL_BIN) ./files/enroll-certificate $(1)/usr/sbin
-
-	$(INSTALL_BIN) ./files/authorized_keys $(1)/root/.ssh
-	$(INSTALL_BIN) ./files/tunnel.py $(1)/etc/shg
-	$(INSTALL_BIN) ./files/tunnelkey.pem $(1)/etc/shg
-
-
 endef
 
 $(eval $(call BuildPackage,shg-provisioning))
