@@ -1,0 +1,13 @@
+#!/bin/sh /etc/rc.common
+
+# Make sure we start after SPIN / MQTT
+start=85 
+
+# Don't know if this is necessary - spinLogger.py does NOT need to be root.
+#USE_PROCID=1
+
+start_service() {
+    procd_open_instance
+    procd_set_param command python3 /etc/shg/spinLogger.py
+    procd_close_instance
+}
