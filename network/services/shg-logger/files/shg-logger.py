@@ -17,7 +17,7 @@ data collection server.
 """
 
 # Required constants
-MQTT_TOPICS = ['SPIN/traffic', 'SSHG/REJECT']
+MQTT_TOPICS = ['SPIN/traffic']
 MQTT_PORT = 1883
 MQTT_HOST = '127.0.0.1'
 CERT = '/etc/shg/certificates/jrc_prime256v1.crt'
@@ -238,7 +238,7 @@ def run_main():
 
     args = parser.parse_args()
     if args.debug:
-        print("Starting spinForwarder...")
+        print("Starting shg-logger...")
 
     # Make sure the cert and key exist...
     if not os.path.exists(CERT):
