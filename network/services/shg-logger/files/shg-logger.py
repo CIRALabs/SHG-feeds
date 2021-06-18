@@ -1,20 +1,21 @@
 #!/usr/bin/python3
-import argparse
-import sys
-import time
-import json
-import paho.mqtt.client as mqtt
-import requests
-from threading import Lock, Timer
-import socket
-import os
 
 """
-This application will connect to the MQTT server on 
+This application will connect to the MQTT server on
 a local box, subscribe to interesting topics,
 and then bundle / send that data to the SSHG backend
 data collection server.
 """
+
+import argparse
+import sys
+import time
+import json
+import socket
+import os
+from threading import Lock, Timer
+import paho.mqtt.client as mqtt
+import requests
 
 # Required constants
 MQTT_TOPICS = ['SPIN/traffic']
@@ -28,7 +29,7 @@ URL = 'https://api.securehomegateway.ca/data'
 class MessageQueue:
     """
     This class handles everything having to do with the message queue, including
-    checking to see if it's time to sent the data, as well as uploading the data.
+    checking to see if it's time to sent the data, as well the upload.
     """
 
     def __init__(self, debug):
@@ -40,33 +41,67 @@ class MessageQueue:
         self.debug = debug
 
     def add(self, message):
+        """
+        This method will add a message to the message queue
+        """
         self.queue_lock.acquire(blocking=True)
         self.queue.append(message)
         self.queue_lock.release()
 
     def clear(self):
+        """
+        This method will clear the contents of the message queue
+        """
+        self.queue_lock.acquire(blocking=True)
         self.queue = []
+        self.queue_lock.release()
 
     def messages(self):
-        return self.queue.copy()
+        """
+        This method will return a copy of the list of messages in the queue
+        """
+        self.queue_lock.acquire(blocking=True)
+        queue_copy = self.queue.copy()
+        self.queue_lock.release()
+        return queue_copy
 
     def set_last_collection_time(self, timestamp):
+        """
+        This method will set the last collection time, which is
+        the time that we last checked to see if we needed to upload
+        data
+        """
         self.last_collection_time = timestamp
 
     def get_last_collection_time(self):
+        """
+        This method will return the last collection time for this queue.
+        """
         return self.last_collection_time
 
     def queue_length(self):
+        """
+        This method will return the number of items in the current queue.
+        """
         return len(self.queue)
 
     def queue_size(self):
+        """
+        This method returns the current queue size (in bytes)
+
+        """
         return sys.getsizeof(self.queue)
 
     def set_timer(self):
+        """
+        Set a timer to re-run the process method in the future
+        """
         Timer(self.check_interval, self.process).start()
 
-    # Check the queue to see if we should sent the messages we have...
     def process(self):
+        """
+        # Check the queue to see if we should sent the messages we have...
+        """
 
         # Reset the timer, so we try to send messages again later...
         self.set_timer()
@@ -117,10 +152,11 @@ class MessageQueue:
         except Exception as err:
             print(f'Upload Error: {err} ')
 
-    # Do the log upload to the backend log collection server, and
-    # verify the result
     def do_upload(self, json_data):
-        global URL, CERT, KEY
+        """
+        # Do the log upload to the backend log collection server, and
+        # verify the result
+        """
 
         # Figure the size of the upload so that we can make sure that the
         # server got all the bytes we tried to send.
@@ -134,10 +170,11 @@ class MessageQueue:
             response = requests.post(URL, cert=(CERT, KEY), json=json_data)
 
         except socket.gaierror as err:
-            raise Exception(f'Could not open connection to {MQTT_HOST}: {err}')
+            raise Exception(f'Could not open connection to {MQTT_HOST}')\
+                from err
 
         except requests.exceptions.ConnectionError as err:
-            raise Exception(f"Could not create TLS connection: {err}")
+            raise Exception('Could not create TLS connection') from err
 
         except Exception as err:
             raise Exception(err)
@@ -151,8 +188,9 @@ class MessageQueue:
         # received by the server matched what we wanted to send...
         try:
             json_response = response.json()
-        except ValueError:
-            raise Exception(f'Got invalid json in response: {response.content}')
+        except ValueError as err:
+            raise Exception(f'Got invalid json response: {response.content}')\
+                from err
 
         if self.debug:
             the_response = response.content.decode('utf-8').rstrip()
@@ -172,9 +210,10 @@ class MessageQueue:
                             f'Got {file_length}, expected {num_bytes}')
 
 
-# Callback handler for MQTT connect to server
 def on_connect(client, userdata, _flags, rc):
-    global MQTT_HOST, MQTT_TOPICS
+    """
+    # Callback handler for MQTT connect to server
+    """
 
     the_queue = userdata['queue']
     debug = userdata['debug']
@@ -194,11 +233,14 @@ def on_connect(client, userdata, _flags, rc):
 
     else:
         print(f'Error: Could not connect to {MQTT_HOST}: RC is {rc}')
-        exit(0)
+        sys.exit(0)
 
 
-# Callback handler for MQTT message received
 def on_message(_client, userdata, message):
+    """
+    Callback handler for MQTT message received
+    """
+
     the_queue = userdata['queue']
     debug = userdata['debug']
 
@@ -228,8 +270,9 @@ def on_message(_client, userdata, message):
 
 
 def run_main():
-    # Make sure that we reference our global constants
-    global MQTT_HOST, MQTT_PORT, CERT, KEY
+    """
+    Make sure that we reference our global constants
+    """
 
     # Check for the -d debug mode flag...
     parser = argparse.ArgumentParser()
@@ -243,11 +286,11 @@ def run_main():
     # Make sure the cert and key exist...
     if not os.path.exists(CERT):
         print(f'Error: Certificate file {CERT} does not exist.')
-        exit(1)
+        sys.exit(1)
 
     if not os.path.exists(KEY):
         print(f'Error: Key file {KEY} does not exist.')
-        exit(1)
+        sys.exit(1)
 
     # Creat the message queue, and pass that queue into MQTT callbacks...
     the_queue = MessageQueue(args.debug)
@@ -264,7 +307,7 @@ def run_main():
 
         except KeyboardInterrupt:
             client.disconnect()
-            exit(0)
+            sys.exit(0)
 
         except:
             raise
