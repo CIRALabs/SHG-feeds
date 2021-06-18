@@ -221,8 +221,8 @@ class MessageQueue:
         # If the size of the queue is less than the max
         # AND it hasn't been too long since the last collection time,
         # we don't need to send anything...
-        if self.queue_size() < self.max_bytes\
-                and self.last_collection_time + self.check_interval >\
+        if self.queue_size() < self.max_bytes \
+                and self.last_collection_time + self.check_interval > \
                 time.time():
 
             return
@@ -272,7 +272,7 @@ class MessageQueue:
             response = requests.post(URL, cert=(CERT, KEY), json=json_data)
 
         except socket.gaierror as err:
-            raise Exception(f'Could not open connection to {MQTT_HOST}')\
+            raise Exception(f'Could not open connection to {MQTT_HOST}') \
                 from err
 
         except requests.exceptions.ConnectionError as err:
@@ -291,7 +291,7 @@ class MessageQueue:
         try:
             json_response = response.json()
         except ValueError as err:
-            raise Exception(f'Got invalid json response: {response.content}')\
+            raise Exception(f'Got invalid json response: {response.content}') \
                 from err
 
         if self.debug:
@@ -322,7 +322,7 @@ def on_connect(client, userdata, _flags, rc):
 
     if rc == 0:
         if debug:
-            print(f'Connected to {MQTT_HOST}...')
+            print(f'Connected to MQTT server on {MQTT_HOST}...')
 
         for this_topic in MQTT_TOPICS:
             client.subscribe(this_topic)
