@@ -10,13 +10,14 @@ import socket
 import os
 
 """
-This application will connect to the SPIN MQTT traffic topic on 
-a local box, and then bundle / send that data to the SSHG backend
+This application will connect to the MQTT server on 
+a local box, subscribe to interesting topics,
+and then bundle / send that data to the SSHG backend
 data collection server.
 """
 
 # Required constants
-MQTT_TOPICS = ['SPIN/traffic']
+MQTT_TOPICS = ['SPIN/traffic', 'SHG/REJECT']
 MQTT_PORT = 1883
 MQTT_HOST = '127.0.0.1'
 CERT = '/etc/shg/certificates/jrc_prime256v1.crt'
