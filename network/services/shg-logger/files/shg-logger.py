@@ -211,7 +211,7 @@ def on_message(_client, userdata, message):
     # Clean up the json, SPIN inserts some garbage values...
     if 'result' in json_payload.keys():
         # Add a note so that we can locate SPIN traffic later...
-        json_payload['result']['mqtt_topic'] = message.topic
+        json_payload['result']['log_type'] = message.topic
 
         json_payload['result'].pop('total_size', None)
         json_payload['result'].pop('total_count', None)
