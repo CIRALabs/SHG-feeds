@@ -17,7 +17,7 @@ define Package/shg-logger
 endef
 
 define Package/shg-logger/description
-  This package will install a utilit collect and send interesting MQTT logs to
+  This package will install a utility to collect and send interesting MQTT logs to
   securehomegateway.ca using the SSHG router's certificate for authentication/authorization.
 endef
 
