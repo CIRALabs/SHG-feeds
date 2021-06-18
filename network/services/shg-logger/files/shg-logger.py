@@ -13,7 +13,9 @@ import time
 import json
 import socket
 import os
-from threading import Lock, Timer
+import re
+from threading import Lock, Timer, Thread
+import subprocess
 import paho.mqtt.client as mqtt
 import requests
 
@@ -24,6 +26,105 @@ MQTT_HOST = '127.0.0.1'
 CERT = '/etc/shg/certificates/jrc_prime256v1.crt'
 KEY = '/etc/shg/certificates/jrc_prime256v1.key'
 URL = 'https://api.securehomegateway.ca/data'
+LOGREAD = '/sbin/logread'
+
+
+class LogreadScraperThread(Thread):
+    """
+    This class will handle reading lines of logs from "logread -f"
+    then adding those new lines to the message queue...
+    """
+
+    def __init__(self, queue, debug):
+
+        Thread.__init__(self)
+
+        self.queue = queue
+        self.debug = debug
+        self.log_type = 'SSHG-REJECT'
+
+        # This is the regex that is used to decode the line logged in syslog
+        # by fw3 for rejected connections
+        # NOTE: if this doesn't match what we see being logged, we won't
+        # get anything...
+        self.the_regex = re.compile(r"""
+        
+        ^
+        (\w+\s+\d+)        # The date
+        \s+
+        (\d+:\d+:\d+)      # The time
+        \s+
+        ([na-f0-9]{7})     # The machine hostname
+        \s+
+        kernel:
+        \s+
+        \[\d+\.\d+\]       # some number
+        \s+
+        SSHG-REJECT:
+        \s+
+        IN=([^\s]+)        # Input interface
+        \s+
+        OUT=([^\s]+)       # Output interface    
+        \s+
+        MAC=([^\s]+)       # MAC address
+        \s+
+        SRC=([^\s]+)       # Source IP
+        \s+
+        DST=([^\s]+)       # Destination IP
+        .+?
+        \s+
+        PROTO=([^\s]+)     # Protocol
+
+        """, re.VERBOSE)
+
+    def run(self):
+
+        if self.debug:
+            print("Starting the logread scraper thread...")
+
+        proc = subprocess.Popen([LOGREAD, '-f'], stdout=subprocess.PIPE)
+
+        while True:
+            line = proc.stdout.readline()
+
+            if not line:
+                continue
+
+            # If the process ended...
+            if proc.poll() is not None:
+                print("Error: logread process exited...")
+                break
+
+            # Clean up the line and make sure it's something that
+            # we're interested in...
+            line = line.decode('utf-8')
+            line = line.rstrip()
+
+            # Next, pull all the interesting bits out of the log line...
+            match = self.the_regex.search(line)
+
+            if not match:
+                continue
+
+            if self.debug:
+                print(f'Got a {self.log_type} logread line...')
+
+            date = match.group(1)
+            the_time = match.group(2)
+            hostname = match.group(3)
+            in_int = match.group(4)
+            out_int = match.group(5)
+            mac = match.group(6)
+            src_ip = match.group(7)
+            dst_ip = match.group(8)
+
+            # Make that into json...
+            json_log = {'log_type': self.log_type, 'date': date,
+                        'time': the_time, 'hostname': hostname,
+                        'in_int': in_int, 'out_int': out_int, 'mac': mac,
+                        'src_ip': src_ip, 'dst_ip': dst_ip}
+
+            self.queue.add(json_log)
 
 
 class MessageQueue:
@@ -44,6 +145,10 @@ class MessageQueue:
         """
         This method will add a message to the message queue
         """
+        if self.debug:
+            print("Adding a message to the queue")
+            print(message)
+
         self.queue_lock.acquire(blocking=True)
         self.queue.append(message)
         self.queue_lock.release()
@@ -63,6 +168,7 @@ class MessageQueue:
         self.queue_lock.acquire(blocking=True)
         queue_copy = self.queue.copy()
         self.queue_lock.release()
+
         return queue_copy
 
     def set_last_collection_time(self, timestamp):
@@ -91,7 +197,7 @@ class MessageQueue:
         """
         return sys.getsizeof(self.queue)
 
-    def set_timer(self):
+    def start_timer(self):
         """
         Set a timer to re-run the process method in the future
         """
@@ -102,15 +208,14 @@ class MessageQueue:
         Check the queue to see if we should sent the messages we have...
         """
 
-        # Reset the timer, so we try to send messages again later...
-        self.set_timer()
+        if self.debug:
+            print("Processing the queue...")
 
-        # Only one thread at a time should be able to process the queue...
-        self.queue_lock.acquire(blocking=True)
+        # Reset the timer, so we try to send messages again later...
+        self.start_timer()
 
         # Make sure we have items in the queue to send...
         if self.queue_length() == 0:
-            self.queue_lock.release()
             return
 
         # If the size of the queue is less than the max
@@ -120,7 +225,6 @@ class MessageQueue:
                 and self.last_collection_time + self.check_interval >\
                 time.time():
 
-            self.queue_lock.release()
             return
 
         # Update the last_collection timestamp so that we know when we
@@ -128,7 +232,7 @@ class MessageQueue:
         self.last_collection_time = time.time()
 
         if self.debug:
-            print(f"Sending {len(self.queue)} items")
+            print(f"Sending {self.queue_length()} items")
 
         # Add the 'Data' wrapper to the list of queue items to
         # make the API happy...
@@ -137,11 +241,10 @@ class MessageQueue:
         # Empty the queue so it's ready for the next batch of items...
         self.queue.clear()
 
-        # And release the queue lock so that new messages aren't waiting
-        # to be put inserted into the queue...
-        self.queue_lock.release()
-
         # Do the upload of data to the back end server...
+        if self.debug:
+            print('Doing upload...')
+
         try:
             self.do_upload(json_data)
 
@@ -228,7 +331,7 @@ def on_connect(client, userdata, _flags, rc):
                 print(f'Subscribed to {this_topic}')
 
         # Start the timer so we will check the message queue over and over...
-        the_queue.set_timer()
+        the_queue.start_timer()
 
     else:
         print(f'Error: Could not connect to {MQTT_HOST}: RC is {rc}')
@@ -249,11 +352,10 @@ def on_message(_client, userdata, message):
     payload = message.payload.decode('utf-8')
     json_payload = json.loads(payload)
 
+    json_payload['log_type'] = f'{message.topic}'
+
     # Clean up the json, SPIN inserts some garbage values...
     if 'result' in json_payload.keys():
-        # Add a note so that we can locate SPIN traffic later...
-        json_payload['result']['log_type'] = message.topic
-
         json_payload['result'].pop('total_size', None)
         json_payload['result'].pop('total_count', None)
 
@@ -261,9 +363,6 @@ def on_message(_client, userdata, message):
             for this_flow in json_payload['result']['flows']:
                 this_flow.pop('size', None)
                 this_flow.pop('count', None)
-
-    if debug:
-        print(json_payload)
 
     the_queue.add(json_payload)
 
@@ -299,6 +398,10 @@ def run_main():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(MQTT_HOST, MQTT_PORT)
+
+    # Start the "logread -f" scraper thread for the firewall rejects...
+    scraper_thread = LogreadScraperThread(the_queue, args.debug)
+    scraper_thread.start()
 
     while True:
         try:
