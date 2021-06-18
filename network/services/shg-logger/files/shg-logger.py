@@ -88,7 +88,6 @@ class MessageQueue:
     def queue_size(self):
         """
         This method returns the current queue size (in bytes)
-
         """
         return sys.getsizeof(self.queue)
 
@@ -100,7 +99,7 @@ class MessageQueue:
 
     def process(self):
         """
-        # Check the queue to see if we should sent the messages we have...
+        Check the queue to see if we should sent the messages we have...
         """
 
         # Reset the timer, so we try to send messages again later...
@@ -154,8 +153,8 @@ class MessageQueue:
 
     def do_upload(self, json_data):
         """
-        # Do the log upload to the backend log collection server, and
-        # verify the result
+         Do the log upload to the backend log collection server, and
+         verify the result
         """
 
         # Figure the size of the upload so that we can make sure that the
@@ -212,7 +211,7 @@ class MessageQueue:
 
 def on_connect(client, userdata, _flags, rc):
     """
-    # Callback handler for MQTT connect to server
+     Callback handler for MQTT connect to server
     """
 
     the_queue = userdata['queue']
@@ -271,7 +270,7 @@ def on_message(_client, userdata, message):
 
 def run_main():
     """
-    Make sure that we reference our global constants
+    The main method, launches everything.
     """
 
     # Check for the -d debug mode flag...
