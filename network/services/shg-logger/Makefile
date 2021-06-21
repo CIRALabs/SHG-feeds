@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-logger
-PKG_VERSION:=1.0.0
+PKG_VERSION:=1.0.1
 PKG_RELEASE:=1
 PKG_SOURCE_DATE:=2021-06-17
 
@@ -10,10 +10,12 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-logger
   PKGARCH:=all
-  DEPENDS:=+shg-provisioning +spin-shg +shg-device-manager
+  DEPENDS:=
   SECTION:=ciralabs
   TITLE:=shg-logger
+  CATEGORY:=Network
   URL:=http://www.securehomegateway.ca
+  MENU:=1
 endef
 
 define Package/shg-logger/description
@@ -25,9 +27,15 @@ define Build/Compile
   true
 endef
 
+# NOTE _ it is important that the lines inside this section are indented with TABs!
+# SPACEs will not work for the compile!
+# jb - 2021/06/21
 define Package/shg-logger/install
-  $(INSTALL_BIN) ./files/shg-logger.init $(1)/etc/init.d/shg-logger
-  $(INSTALL_BIN) ./files/shg-logger.py $(1)/etc/shg
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_DIR) $(1)/etc/shg
+
+	$(INSTALL_BIN) ./files/shg-logger.init $(1)/etc/init.d/shg-logger
+	$(INSTALL_BIN) ./files/shg-logger.py $(1)/etc/shg
 endef
 
 $(eval $(call BuildPackage,shg-logger))
