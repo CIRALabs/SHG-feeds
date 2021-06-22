@@ -3,20 +3,16 @@ include $(TOPDIR)/rules.mk
 include git-token.txt
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=2021.03.24.02
+PKG_VERSION:=2021.06.21.01
 PKG_RELEASE:=1
-
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
-#PKG_SOURCE:=shg-device-manager-$(PKG_VERSION).tar.xz
-#PKG_HASH=3438766c46b348239ff0b90d542b8cb2a0ac0dbb8ccaf99263ac6abe084c3828
 PKG_CAT:=xzcat
 PKG_SOURCE_PROTO:=git
-#PKG_SOURCE_URL:=https://github.com/CIRALabs/sshg-openwrt.git
-#PKG_SOURCE_URL:=git+ssh://obiwan.sandelman.ca/ssw/projects/shg/sshg-openwrt
-#PKG_SOURCE_URL:=git+ssh://git@github.com/CIRALabs/sshg-openwrt
 PKG_SOURCE_URL:=https://${GIT-TOKEN}:x-oauth-basic@github.com/CIRALabs/sshg-openwrt
-PKG_SOURCE_VERSION:=master
-PKG_SOURCE_DATE:=2021-03-24
+#PKG_SOURCE_VERSION:=master
+PKG_SOURCE_VERSION:=feature/sshg-80_analyzingThread
+
+PKG_SOURCE_DATE:=2021-06-21
 
 include $(INCLUDE_DIR)/package.mk
 
