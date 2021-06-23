@@ -4,7 +4,7 @@
 # NOTE - start MUST be uppercase, and the 
 # value MUST be lower than 100
 # jb - 2021/06/22
-START=99
+START=94
 USE_PROCD=1
 
 start_service() {
