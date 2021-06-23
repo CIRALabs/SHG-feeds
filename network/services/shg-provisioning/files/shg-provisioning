@@ -38,12 +38,6 @@ start_service() {
     # Turris is already onboarded
     if [ -f $WELL_KNOWN_FILE ]; then
         info "Already onboarded"
-
-	# Start the remote administration tunnel...
-	# Make sure the perms are right!
-	chmod 400 /etc/shg/tunnelkey.pem
-	python /etc/shg/tunnel.py &
-
         exit 0;
     fi
 
