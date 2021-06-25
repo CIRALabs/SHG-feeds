@@ -115,7 +115,6 @@ class LogreadScraperThread(Thread):
         if self.debug:
             print("Starting the logread scraper thread...")
 
-
         # This code is going to monitoring the output from the
         # logread -f command, scan it for firewall rejects, and then
         # add those to the message queue.
