@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 include git-token.txt
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=2021.03.31.02
+PKG_VERSION:=2021.06.25.01
 PKG_RELEASE:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
@@ -16,7 +16,7 @@ PKG_SOURCE_PROTO:=git
 #PKG_SOURCE_URL:=git+ssh://git@github.com/CIRALabs/sshg-openwrt
 PKG_SOURCE_URL:=https://${GIT-TOKEN}:x-oauth-basic@github.com/CIRALabs/sshg-openwrt
 PKG_SOURCE_VERSION:=master
-PKG_SOURCE_DATE:=2021-03-31
+PKG_SOURCE_DATE:=2021-06-25
 
 include $(INCLUDE_DIR)/package.mk
 
