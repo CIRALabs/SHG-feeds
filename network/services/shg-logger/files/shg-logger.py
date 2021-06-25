@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 
 """
@@ -28,6 +29,39 @@ KEY = '/etc/shg/certificates/jrc_prime256v1.key'
 URL = 'https://api.securehomegateway.ca/data'
 LOGREAD = '/sbin/logread'
 
+IPTABLES_DEL_CMD = '/usr/sbin/iptables -D zone_wan_dest_REJECT -m limit --limit 1/sec -j LOG --log-prefix "SSHG-REJECT: " --log-level 6'
+IPTABLES_ADD_CMD = '/usr/sbin/iptables -I zone_wan_dest_REJECT 1 -m limit --limit 1/sec -j LOG --log-prefix "SSHG-REJECT: " --log-level 6'
+IPTABLES_SAVE_CMD = '/usr/sbin/iptables-save > /dev/null 2>&1'
+
+
+class FirewallConfigThread(Thread):
+    """
+    This class will handle making sure that the firewall rule that we rely on
+    being in place stays in placed (some UCI commands seem to blow it away).
+    """
+
+    def __init__(self, debug):
+
+        Thread.__init__(self)
+
+        self.debug = debug
+        self.check_interval = 300
+
+    def run(self):
+
+        if self.debug:
+            print("Starting the FW config thread...")
+
+        while True:
+            if self.debug:
+                print("Doing FW config...")
+
+            os.system(IPTABLES_DEL_CMD)
+            os.system(IPTABLES_ADD_CMD)
+            os.system(IPTABLES_SAVE_CMD)
+
+            time.sleep(self.check_interval)
+
 
 class LogreadScraperThread(Thread):
     """
@@ -48,7 +82,7 @@ class LogreadScraperThread(Thread):
         # NOTE: if this doesn't match what we see being logged, we won't
         # get anything...
         self.the_regex = re.compile(r"""
-        
+
         ^
         (\w+\s+\d+)        # The date
         \s+
@@ -58,13 +92,13 @@ class LogreadScraperThread(Thread):
         \s+
         kernel:
         \s+
-        \[\d+\.\d+\]       # some number
+        .+?                # some number
         \s+
         SSHG-REJECT:
         \s+
         IN=([^\s]+)        # Input interface
         \s+
-        OUT=([^\s]+)       # Output interface    
+        OUT=([^\s]+)       # Output interface
         \s+
         MAC=([^\s]+)       # MAC address
         \s+
@@ -82,6 +116,10 @@ class LogreadScraperThread(Thread):
         if self.debug:
             print("Starting the logread scraper thread...")
 
+
+        # This code is going to monitoring the output from the
+        # logread -f command, scan it for firewall rejects, and then
+        # add those to the message queue.
         proc = subprocess.Popen([LOGREAD, '-f'], stdout=subprocess.PIPE)
 
         while True:
@@ -105,9 +143,6 @@ class LogreadScraperThread(Thread):
 
             if not match:
                 continue
-
-            if self.debug:
-                print(f'Got a {self.log_type} logread line...')
 
             date = match.group(1)
             the_time = match.group(2)
@@ -146,8 +181,8 @@ class MessageQueue:
         This method will add a message to the message queue
         """
         if self.debug:
-            print("Adding a message to the queue")
-            print(message)
+            log_type = message['log_type']
+            print(f'Adding to queue: {log_type}')
 
         self.queue_lock.acquire(blocking=True)
         self.queue.append(message)
@@ -224,7 +259,6 @@ class MessageQueue:
         if self.queue_size() < self.max_bytes \
                 and self.last_collection_time + self.check_interval > \
                 time.time():
-
             return
 
         # Update the last_collection timestamp so that we know when we
@@ -279,7 +313,9 @@ class MessageQueue:
             raise Exception('Could not create TLS connection') from err
 
         except Exception as err:
-            raise Exception(err)
+            # If we get an unexpected exception, log it and bail...
+            print(f'Unknown exception: {err}')
+            return
 
         if not response.ok:
             raise Exception(
@@ -298,11 +334,11 @@ class MessageQueue:
             the_response = response.content.decode('utf-8').rstrip()
             print(f'Response: {the_response}')
 
-        if 'accepted' not in json_response.keys() \
+        if 'accepted' not in json_response \
                 or json_response['accepted'] != 'yes':
             raise Exception(f'Data not accepted by server: {response.content}')
 
-        if 'fileLength' not in json_response.keys():
+        if 'fileLength' not in json_response:
             raise Exception("fileLength not in json response")
 
         if json_response['fileLength'] != num_bytes:
@@ -346,20 +382,17 @@ def on_message(_client, userdata, message):
     the_queue = userdata['queue']
     debug = userdata['debug']
 
-    if debug:
-        print(f'MQTT Message received on {message.topic}...')
-
     payload = message.payload.decode('utf-8')
     json_payload = json.loads(payload)
 
     json_payload['log_type'] = f'{message.topic}'
 
     # Clean up the json, SPIN inserts some garbage values...
-    if 'result' in json_payload.keys():
+    if 'result' in json_payload:
         json_payload['result'].pop('total_size', None)
         json_payload['result'].pop('total_count', None)
 
-        if 'flows' in json_payload['result'].keys():
+        if 'flows' in json_payload['result']:
             for this_flow in json_payload['result']['flows']:
                 this_flow.pop('size', None)
                 this_flow.pop('count', None)
@@ -390,6 +423,10 @@ def run_main():
         print(f'Error: Key file {KEY} does not exist.')
         sys.exit(1)
 
+    if not os.path.exists(LOGREAD):
+        print(f'Error: Key file {KEY} does not exist.')
+        sys.exit(1)
+
     # Creat the message queue, and pass that queue into MQTT callbacks...
     the_queue = MessageQueue(args.debug)
 
@@ -403,10 +440,14 @@ def run_main():
     scraper_thread = LogreadScraperThread(the_queue, args.debug)
     scraper_thread.start()
 
+    # Start the fw configuration thread - gotta keep our
+    # reject logging configuration active...
+    fw_config_thread = FirewallConfigThread(args.debug)
+    fw_config_thread.start()
+
     while True:
         try:
             client.loop_forever()
-
         except KeyboardInterrupt:
             client.disconnect()
             sys.exit(0)
