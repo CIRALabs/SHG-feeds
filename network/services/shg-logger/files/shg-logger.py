@@ -18,6 +18,7 @@ from threading import Lock, Timer, Thread
 import subprocess
 import paho.mqtt.client as mqtt
 import requests
+from socket import gethostname
 
 # Required constants
 MQTT_TOPICS = ['SPIN/traffic']
@@ -27,10 +28,174 @@ CERT = '/etc/shg/certificates/jrc_prime256v1.crt'
 KEY = '/etc/shg/certificates/jrc_prime256v1.key'
 URL = 'https://api.securehomegateway.ca/data'
 LOGREAD = '/sbin/logread'
+TOP = '/usr/bin/top'
+FREE = '/bin/free'
+DF = '/bin/df'
+PGREP = '/bin/pgrep'
+PS = '/bin/ps'
 
 IPTABLES_DEL_CMD = '/usr/sbin/iptables -D zone_wan_dest_REJECT -m limit --limit 1/sec -j LOG --log-prefix "SSHG-REJECT: " --log-level 6'
 IPTABLES_ADD_CMD = '/usr/sbin/iptables -I zone_wan_dest_REJECT 1 -m limit --limit 1/sec -j LOG --log-prefix "SSHG-REJECT: " --log-level 6'
 IPTABLES_SAVE_CMD = '/usr/sbin/iptables-save > /dev/null 2>&1'
+
+
+class StatsCollectorThread(Thread):
+    """
+    Run system stats collection  evey so often and add those
+    stats to the message queue...
+    """
+
+    def __init__(self, queue, debug):
+        Thread.__init__(self)
+
+        self.queue = queue
+        self.debug = debug
+        self.log_type = 'SYSTEM-STATS'
+        self.check_interval = 300
+
+    def get_load_average(self):
+        """
+        Run a single iteration of the 'top' command and scrape
+        the 1 minute load average from the output.
+        """
+        process = subprocess.run([TOP, '-bn1'], stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        first_index = output.index('load average:')
+        second_index = output.index(',', first_index)
+
+        # Pull just the load from the data in output...
+        load_average = output[first_index + 14: second_index]
+        return load_average
+
+    def get_free_memory(self):
+        """
+        Run the 'free' command and scrape the amount of free
+        bytes.  Then convert that to megabytes and return that.
+
+        """
+        process = subprocess.run([FREE, '-h'], stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        line2 = output.splitlines()[1]
+        free = line2.split()[6]
+        free = int(free) / 1000
+        return f'{free}MB'
+
+    def get_free_disk_space(self):
+        """
+        Run the 'df' command, scrape the amount of free space.
+        """
+        process = subprocess.run([DF, '-h'], stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        line2 = output.splitlines()[1]
+        available = line2.split()[3]
+        return available
+
+    def get_top_cpu_process(self):
+        """
+        Run a single iteration of the top command sorted by CPU usage,
+        scrape it for the command / percentage used.
+        We need to supply the -w 500 so that the command will not be
+        truncated.
+        """
+        process = subprocess.run([TOP, '-bn1', '-o', '%CPU', '-w', str(500)],
+                                 stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        line = output.splitlines()[8]
+        parts = line.split(None, 10)
+        percent_cpu = parts[6] + '%'
+        command = parts[10]
+
+        return {'percentage': percent_cpu, 'command': command}
+
+    def get_top_mem_process(self):
+        """
+        Run a single iteration of the top command, sorted by memory usage.
+        Scrape the process with the highest memory usage.
+        """
+        process = subprocess.run([TOP, '-bn1', '-o', '%MEM', '-w', str(500)],
+                                 stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        line = output.splitlines()[8]
+        parts = line.split(None, 10)
+        percent_mem = parts[7] + '%'
+        command = parts[10]
+
+        return {'percentage:': percent_mem, 'command': command}
+
+    def get_proc_stats(self, process_name):
+        """
+        This method will get the %cpu and %memory usage for a given process,
+        given by process_name (or substring of process_name)
+        """
+        process = subprocess.run([PGREP, '-f', process_name],
+                                 stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        process_id = output.strip()
+
+        if self.debug:
+            print(f'Process ID for {process_name} is {process_id}')
+
+        # Now, use PS to get the stats for just that processId...
+        process = subprocess.run(
+            [PS, '-p', process_id, '-o', '%cpu,%mem'],
+            stdout=subprocess.PIPE)
+        output = process.stdout.decode('utf-8')
+
+        line2 = output.splitlines()[1]
+        percent_cpu, percent_mem = line2.split(None, 1)
+
+        return {
+            'percent_cpu': percent_cpu + '%',
+            'percent_memory': percent_mem + '%',
+        }
+
+    def collect_system_stats(self):
+        """
+        Run a bunch of commands to collect system stats and throw them
+        in a hash (for later jsonification).
+        """
+
+        stats = {
+            'log_type': 'SYSTEM_STATS',
+            'time': time.time(),
+            'hostname': gethostname(),
+            'load': self.get_load_average(),
+            'free_mem': self.get_free_memory(),
+            'free_disk': self.get_free_disk_space(),
+            'top_cpu_process': self.get_top_cpu_process(),
+            'top_mem_process': self.get_top_mem_process(),
+            'device_manager_stats': self.get_proc_stats('shg-device-manager')
+        }
+
+        if self.debug:
+            print(f'Collected Stats:\n{stats}')
+
+        return stats
+
+    def run(self):
+        """
+        This thread should run every 5 minutes or so, collect a number
+        of different system stats, and then insert those into the message
+        queue so that they are logged.
+        """
+
+        if self.debug:
+            print("Starting the stats collection thread...")
+
+        while True:
+            if self.debug:
+                print("Collecting system stats...")
+
+            stats = self.collect_system_stats()
+            self.queue.add(stats)
+
+            time.sleep(self.check_interval)
 
 
 class FirewallConfigThread(Thread):
@@ -178,6 +343,10 @@ class MessageQueue:
         """
         This method will add a message to the message queue
         """
+        if 'log_type' not in message:
+            print("Error - log_type not defined for message - skipping")
+            return
+
         if self.debug:
             log_type = message['log_type']
             print(f'Adding to queue: {log_type}')
@@ -442,6 +611,10 @@ def run_main():
     # reject logging configuration active...
     fw_config_thread = FirewallConfigThread(args.debug)
     fw_config_thread.start()
+
+    # Start the system stats collection thread...
+    stats_collector_thread = StatsCollectorThread(the_queue, args.debug)
+    stats_collector_thread.start()
 
     while True:
         try:
