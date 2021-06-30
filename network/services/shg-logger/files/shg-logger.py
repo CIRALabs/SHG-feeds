@@ -19,6 +19,7 @@ import subprocess
 import paho.mqtt.client as mqtt
 import requests
 from socket import gethostname
+from typing import List
 
 # Required constants
 MQTT_TOPICS = ['SPIN/traffic']
@@ -53,7 +54,7 @@ class StatsCollectorThread(Thread):
         self.log_type = 'SYSTEM-STATS'
         self.check_interval = 300
 
-    def get_load_average(self):
+    def get_load_average(self) -> str:
         """
         Run a single iteration of the 'top' command and scrape
         the 1 minute load average from the output.
@@ -68,7 +69,7 @@ class StatsCollectorThread(Thread):
         load_average = output[first_index + 14: second_index]
         return load_average
 
-    def get_free_memory(self):
+    def get_free_memory(self) -> str:
         """
         Run the 'free' command and scrape the amount of free
         bytes.  Then convert that to megabytes and return that.
@@ -82,7 +83,7 @@ class StatsCollectorThread(Thread):
         free = int(free) / 1000
         return f'{free}MB'
 
-    def get_free_disk_space(self):
+    def get_free_disk_space(self) -> str:
         """
         Run the 'df' command, scrape the amount of free space.
         """
@@ -93,7 +94,7 @@ class StatsCollectorThread(Thread):
         available = line2.split()[3]
         return available
 
-    def get_top_cpu_process(self):
+    def get_top_cpu_process(self) -> dict:
         """
         Run a single iteration of the top command sorted by CPU usage,
         scrape it for the command / percentage used.
@@ -106,12 +107,12 @@ class StatsCollectorThread(Thread):
 
         line = output.splitlines()[8]
         parts = line.split(None, 10)
-        percent_cpu = parts[6] + '%'
+        percent_cpu = parts[6]
         command = parts[10]
 
-        return {'percentage': percent_cpu, 'command': command}
+        return {'percentage': f'{percent_cpu}%', 'command': command}
 
-    def get_top_mem_process(self):
+    def get_top_mem_process(self) -> dict:
         """
         Run a single iteration of the top command, sorted by memory usage.
         Scrape the process with the highest memory usage.
@@ -122,12 +123,12 @@ class StatsCollectorThread(Thread):
 
         line = output.splitlines()[8]
         parts = line.split(None, 10)
-        percent_mem = parts[7] + '%'
+        percent_mem = parts[7]
         command = parts[10]
 
-        return {'percentage:': percent_mem, 'command': command}
+        return {'percentage:': f'{percent_mem}%', 'command': command}
 
-    def get_proc_stats(self, process_name):
+    def get_proc_stats(self, process_name: str) -> dict:
         """
         This method will get the %cpu and %memory usage for a given process,
         given by process_name (or substring of process_name)
@@ -151,11 +152,11 @@ class StatsCollectorThread(Thread):
         percent_cpu, percent_mem = line2.split(None, 1)
 
         return {
-            'percent_cpu': percent_cpu + '%',
-            'percent_memory': percent_mem + '%',
+            'percent_cpu': f'{percent_cpu}%',
+            'percent_memory': f'{percent_mem}%'
         }
 
-    def collect_system_stats(self):
+    def collect_system_stats(self) -> dict:
         """
         Run a bunch of commands to collect system stats and throw them
         in a hash (for later jsonification).
@@ -339,7 +340,7 @@ class MessageQueue:
         self.queue_lock = Lock()
         self.debug = debug
 
-    def add(self, message):
+    def add(self, message: dict):
         """
         This method will add a message to the message queue
         """
@@ -363,7 +364,7 @@ class MessageQueue:
         self.queue = []
         self.queue_lock.release()
 
-    def messages(self):
+    def messages(self) -> List[dict]:
         """
         This method will return a copy of the list of messages in the queue
         """
@@ -373,7 +374,7 @@ class MessageQueue:
 
         return queue_copy
 
-    def set_last_collection_time(self, timestamp):
+    def set_last_collection_time(self, timestamp: float):
         """
         This method will set the last collection time, which is
         the time that we last checked to see if we needed to upload
@@ -381,19 +382,19 @@ class MessageQueue:
         """
         self.last_collection_time = timestamp
 
-    def get_last_collection_time(self):
+    def get_last_collection_time(self) -> float:
         """
         This method will return the last collection time for this queue.
         """
         return self.last_collection_time
 
-    def queue_length(self):
+    def queue_length(self) -> int:
         """
         This method will return the number of items in the current queue.
         """
         return len(self.queue)
 
-    def queue_size(self):
+    def queue_size(self) -> int:
         """
         This method returns the current queue size (in bytes)
         """
@@ -455,7 +456,7 @@ class MessageQueue:
         except Exception as err:
             print(f'Upload Error: {err} ')
 
-    def do_upload(self, json_data):
+    def do_upload(self, json_data: dict):
         """
          Do the log upload to the backend log collection server, and
          verify the result
@@ -515,7 +516,7 @@ class MessageQueue:
                             f'Got {file_length}, expected {num_bytes}')
 
 
-def on_connect(client, userdata, _flags, rc):
+def on_connect(client: mqtt.Client, userdata: dict, _flags: dict, rc: int):
     """
      Callback handler for MQTT connect to server
     """
@@ -541,7 +542,7 @@ def on_connect(client, userdata, _flags, rc):
         sys.exit(0)
 
 
-def on_message(_client, userdata, message):
+def on_message(_client: mqtt.Client, userdata: dict, message: mqtt.MQTTMessage):
     """
     Callback handler for MQTT message received
     """
