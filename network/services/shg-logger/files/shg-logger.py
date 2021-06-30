@@ -19,7 +19,7 @@ import subprocess
 import paho.mqtt.client as mqtt
 import requests
 from socket import gethostname
-from typing import List
+from typing import Dict, List, Any
 
 # Required constants
 MQTT_TOPICS = ['SPIN/traffic']
@@ -46,7 +46,7 @@ class StatsCollectorThread(Thread):
     stats to the message queue...
     """
 
-    def __init__(self, queue, debug):
+    def __init__(self, queue: List[Dict[str, Any]], debug: bool):
         Thread.__init__(self)
 
         self.queue = queue
@@ -94,7 +94,7 @@ class StatsCollectorThread(Thread):
         available = line2.split()[3]
         return available
 
-    def get_top_cpu_process(self) -> dict:
+    def get_top_cpu_process(self) -> Dict[str, str]:
         """
         Run a single iteration of the top command sorted by CPU usage,
         scrape it for the command / percentage used.
@@ -112,7 +112,7 @@ class StatsCollectorThread(Thread):
 
         return {'percentage': f'{percent_cpu}%', 'command': command}
 
-    def get_top_mem_process(self) -> dict:
+    def get_top_mem_process(self) -> Dict[str, str]:
         """
         Run a single iteration of the top command, sorted by memory usage.
         Scrape the process with the highest memory usage.
@@ -128,7 +128,7 @@ class StatsCollectorThread(Thread):
 
         return {'percentage:': f'{percent_mem}%', 'command': command}
 
-    def get_proc_stats(self, process_name: str) -> dict:
+    def get_proc_stats(self, process_name: str) -> Dict[str, str]:
         """
         This method will get the %cpu and %memory usage for a given process,
         given by process_name (or substring of process_name)
@@ -156,7 +156,7 @@ class StatsCollectorThread(Thread):
             'percent_memory': f'{percent_mem}%'
         }
 
-    def collect_system_stats(self) -> dict:
+    def collect_system_stats(self) -> Dict[str, Any]:
         """
         Run a bunch of commands to collect system stats and throw them
         in a hash (for later jsonification).
@@ -179,7 +179,7 @@ class StatsCollectorThread(Thread):
 
         return stats
 
-    def run(self):
+    def run(self) -> None:
         """
         This thread should run every 5 minutes or so, collect a number
         of different system stats, and then insert those into the message
@@ -205,14 +205,14 @@ class FirewallConfigThread(Thread):
     being in place stays in placed (some UCI commands seem to blow it away).
     """
 
-    def __init__(self, debug):
+    def __init__(self, debug: bool):
 
         Thread.__init__(self)
 
         self.debug = debug
         self.check_interval = 300
 
-    def run(self):
+    def run(self) -> None:
 
         if self.debug:
             print("Starting the FW config thread...")
@@ -234,7 +234,7 @@ class LogreadScraperThread(Thread):
     then adding those new lines to the message queue...
     """
 
-    def __init__(self, queue, debug):
+    def __init__(self, queue: List[Dict[str, Any]], debug: bool):
 
         Thread.__init__(self)
 
@@ -276,7 +276,7 @@ class LogreadScraperThread(Thread):
 
         """, re.VERBOSE)
 
-    def run(self):
+    def run(self) -> None:
 
         if self.debug:
             print("Starting the logread scraper thread...")
@@ -340,7 +340,7 @@ class MessageQueue:
         self.queue_lock = Lock()
         self.debug = debug
 
-    def add(self, message: dict):
+    def add(self, message: Dict[str, Any]) -> None:
         """
         This method will add a message to the message queue
         """
@@ -356,7 +356,7 @@ class MessageQueue:
         self.queue.append(message)
         self.queue_lock.release()
 
-    def clear(self):
+    def clear(self) -> None:
         """
         This method will clear the contents of the message queue
         """
@@ -364,7 +364,7 @@ class MessageQueue:
         self.queue = []
         self.queue_lock.release()
 
-    def messages(self) -> List[dict]:
+    def get_messages(self) -> List[Dict[str, Any]]:
         """
         This method will return a copy of the list of messages in the queue
         """
@@ -374,7 +374,7 @@ class MessageQueue:
 
         return queue_copy
 
-    def set_last_collection_time(self, timestamp: float):
+    def set_last_collection_time(self, timestamp: float) -> None:
         """
         This method will set the last collection time, which is
         the time that we last checked to see if we needed to upload
@@ -400,13 +400,13 @@ class MessageQueue:
         """
         return sys.getsizeof(self.queue)
 
-    def start_timer(self):
+    def start_timer(self) -> None:
         """
         Set a timer to re-run the process method in the future
         """
         Timer(self.check_interval, self.process).start()
 
-    def process(self):
+    def process(self) -> None:
         """
         Check the queue to see if we should sent the messages we have...
         """
@@ -438,7 +438,7 @@ class MessageQueue:
 
         # Add the 'Data' wrapper to the list of queue items to
         # make the API happy...
-        json_data = {'Data': self.messages()}
+        json_data = {'Data': self.get_messages()}
 
         # Empty the queue so it's ready for the next batch of items...
         self.queue.clear()
@@ -456,7 +456,7 @@ class MessageQueue:
         except Exception as err:
             print(f'Upload Error: {err} ')
 
-    def do_upload(self, json_data: dict):
+    def do_upload(self, json_data: Dict[str, Any]):
         """
          Do the log upload to the backend log collection server, and
          verify the result
@@ -516,7 +516,8 @@ class MessageQueue:
                             f'Got {file_length}, expected {num_bytes}')
 
 
-def on_connect(client: mqtt.Client, userdata: dict, _flags: dict, rc: int):
+def on_connect(client: mqtt.Client, userdata: dict, _flags: dict,
+               rc: int) -> None:
     """
      Callback handler for MQTT connect to server
     """
@@ -542,7 +543,8 @@ def on_connect(client: mqtt.Client, userdata: dict, _flags: dict, rc: int):
         sys.exit(0)
 
 
-def on_message(_client: mqtt.Client, userdata: dict, message: mqtt.MQTTMessage):
+def on_message(_client: mqtt.Client, userdata: dict,
+               message: mqtt.MQTTMessage) -> None:
     """
     Callback handler for MQTT message received
     """
@@ -568,7 +570,7 @@ def on_message(_client: mqtt.Client, userdata: dict, message: mqtt.MQTTMessage):
     the_queue.add(json_payload)
 
 
-def run_main():
+def run_main() -> None:
     """
     The main method, launches everything.
     """
