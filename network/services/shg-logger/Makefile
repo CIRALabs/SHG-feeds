@@ -1,9 +1,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shg-logger
-PKG_VERSION:=1.0.5
+PKG_VERSION:=1.0.6
 PKG_RELEASE:=1
-PKG_SOURCE_DATE:=2021-06-24
+PKG_SOURCE_DATE:=2021-06-30
 
 
 include $(INCLUDE_DIR)/package.mk
