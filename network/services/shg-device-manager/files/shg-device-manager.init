@@ -3,11 +3,10 @@
 # Copyright (C) 2020 CIRALabs
 # revision 4
 
-START=85 # After mud-supervisor
+START=85
 USE_PROCD=1
 
 start_service() {
     procd_open_instance
-    procd_set_param command lua /usr/lib/lua/mud-controller/init.lua
     procd_close_instance
 }

@@ -6,7 +6,7 @@ PKG_RELEASE:=1
 
 PYPI_NAME:=watchdog
 PKG_HASH:=4214e1379d128b0588021880ccaf40317ee156d4603ac388b9adcf29165e0c04
-PKG_SOURCE_URL:=https://pypi.python.org/packages/source/w/watchdog/watchdog-0.10.3.tar.gz
+PKG_SOURCE_URL:=https://pypi.python.org/packages/source/w/watchdog
 
 PKG_MAINTAINER:=Michael Richardson
 #PKG_LICENSE:="Apache License 2.0"

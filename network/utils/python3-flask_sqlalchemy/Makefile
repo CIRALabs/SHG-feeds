@@ -5,7 +5,7 @@ PKG_VERSION:=2.4.4
 PKG_RELEASE:=2
 
 PYPI_NAME:=Flask-SQLAlchemy
-PKG_SOURCE_URL=https://files.pythonhosted.org/packages/cc/d3/58d45c266b1c6e9f54a12af54f444547b142f6312e4520c771de0171d031/Flask-SQLAlchemy-2.4.4.tar.gz
+PKG_SOURCE_URL=https://files.pythonhosted.org/packages/cc/d3/58d45c266b1c6e9f54a12af54f444547b142f6312e4520c771de0171d031
 PKG_HASH:=bfc7150eaf809b1c283879302f04c42791136060c6eeb12c0c6674fb1291fae5
 PKG_SOURCE=Flask-SQLAlchemy-2.4.4.tar.gz
 
