@@ -1,4 +1,0 @@
-/etc/shg/certificates   app/certificates       none bind,create=dir,nodev,noexec,nosuid 0 0
-/etc/shg/database       app/database           none bind,create=dir,nodev,noexec,nosuid 0 0
-/etc/shg/sockets        app/sockets            none bind,create=dir,noexec,nosuid 0 0
-/tmp/mudlogs            app/logs               none bind,create=dir,nodev,noexec,nosuid 0 0

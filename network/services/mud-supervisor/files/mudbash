@@ -1,3 +1,0 @@
-#!/bin/sh
-
-lxc-attach --name=mud-supervisor -- /bin/bash
