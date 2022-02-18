@@ -5,9 +5,7 @@ PKG_VERSION:=0.0.3.post2
 PKG_RELEASE:=1
 
 PYPI_NAME:=password_strength
-PKG_SOURCE_URL=https://files.pythonhosted.org/packages/db/f1/6165ebcca27fca3f1d63f8c3a45805c2ed8568be4d09219a2aa45e792c14
 PKG_HASH:=bf4df10a58fcd3abfa182367307b4fd7b1cec518121dd83bf80c1c42ba796762
-PKG_SOURCE=password_strength-0.0.3.post2.tar.gz
 
 PKG_MAINTAINER:=Michael Richardson
 PKG_LICENSE:=MIT

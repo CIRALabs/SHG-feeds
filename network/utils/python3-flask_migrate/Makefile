@@ -1,13 +1,11 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=flask_migrate
-PKG_VERSION:=2.5.3
+PKG_NAME:=Flask-Migrate
+PKG_VERSION:=3.1.0
 PKG_RELEASE:=1
 
-PYPI_NAME:=Flask-Migrate
-PKG_SOURCE_URL=https://files.pythonhosted.org/packages/75/3e/5675d46efdb62eb369bc951c7107657bea9ddf20cea65dab9816dc27e6ee
-PKG_HASH:=a69d508c2e09d289f6e55a417b3b8c7bfe70e640f53d2d9deb0d056a384f37ee
-PKG_SOURCE=Flask-Migrate-2.5.3.tar.gz
+PYPI_NAME:=$(PKG_NAME)
+PKG_HASH:=57d6060839e3a7f150eaab6fe4e726d9e3e7cffe2150fb223d73f92421c6d1d9
 
 PKG_MAINTAINER:=Michael Richardson
 PKG_LICENSE:=MIT

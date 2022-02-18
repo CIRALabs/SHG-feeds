@@ -1,12 +1,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=python3-watchdog
-PKG_VERSION:=0.10.3
+PKG_VERSION:=2.1.6
 PKG_RELEASE:=1
 
 PYPI_NAME:=watchdog
-PKG_HASH:=4214e1379d128b0588021880ccaf40317ee156d4603ac388b9adcf29165e0c04
-PKG_SOURCE_URL:=https://pypi.python.org/packages/source/w/watchdog
+PKG_HASH:=a36e75df6c767cbf46f61a91c70b3ba71811dfa0aca4a324d9407a06a8b7a2e7
 
 PKG_MAINTAINER:=Michael Richardson
 #PKG_LICENSE:="Apache License 2.0"
