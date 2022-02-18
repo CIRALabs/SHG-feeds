@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=password_strength
+PKG_NAME:=password-strength
 PKG_VERSION:=0.0.3.post2
 PKG_RELEASE:=1
 
@@ -15,12 +15,12 @@ include $(INCLUDE_DIR)/../feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/../feeds/packages/lang/python/python3-package.mk
 
-define Package/python3-password_strength
+define Package/python3-password-strength
   SUBMENU:=Python
   SECTION:=lang
   CATEGORY:=Languages
   TITLE:=Password-Strength
-  URL:=https://pypi.org/project/password_strength/
+  URL:=https://pypi.org/project/password-strength/
   DEPENDS:=+python3
   VARIANT:=python3
   #PYTHON3_PKG_SETUP_ARGS:=

@@ -15,7 +15,7 @@ include $(INCLUDE_DIR)/../feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/../feeds/packages/lang/python/python3-package.mk
 
-define Package/python3-flask_migrate
+define Package/python3-flask-migrate
   SUBMENU:=Python
   SECTION:=lang
   CATEGORY:=Languages
@@ -26,10 +26,10 @@ define Package/python3-flask_migrate
   #PYTHON3_PKG_SETUP_ARGS:=
 endef
 
-define Package/python3-flask_migrate/description
+define Package/python3-flask-migrate/description
   SQLAlchemy database migrations for Flask applications using Alembic.
 endef
 
-$(eval $(call Py3Package,python3-${PKG_NAME}))
-$(eval $(call BuildPackage,python3-${PKG_NAME}))
-$(eval $(call BuildPackage,python3-${PKG_NAME}-src))
+$(eval $(call Py3Package,python3-flask-migrate))
+$(eval $(call BuildPackage,python3-flask-migrate))
+$(eval $(call BuildPackage,python3-flask-migrate-src))
