@@ -18,10 +18,11 @@ include $(INCLUDE_DIR)/package.mk
 define Package/shg-device-manager
   PKGARCH:=all
   DEPENDS:=+python3-flask +python3-flask-jwt-extended +python3-flask-cors \
-	+python3-schema +python3-flup +lighttpd-mod-openssl +python3-watchdog \
-	+python3-sqlalchemy +python3-flask-sqlalchemy +python3-flask-migrate \
-	+python3-getmac +python3-alembic +python3-password-strength +python3-mako \
-	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci
+	+python3-schema +python3-flup +python3-watchdog +python3-sqlalchemy \
+	+python3-flask-sqlalchemy +python3-flask-migrate +python3-getmac \
+	+python3-alembic +python3-password-strength +python3-mako \
+	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci \
+	+lighttpd-mod-openssl +lighttpd-mod-fastcgi +lighttpd-mod-setenv
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
