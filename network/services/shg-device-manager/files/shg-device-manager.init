@@ -1,12 +1,15 @@
 #!/bin/sh /etc/rc.common
 #
 # Copyright (C) 2020 CIRALabs
-# revision 4
+# revision 5
 
 START=85
 USE_PROCD=1
+PYTHON=/usr/bin/python
+SCRIPT=/srv/shg-device-manager/db_upgrade.py
 
 start_service() {
     procd_open_instance
+    procd_set_param command $PYTHON $SCRIPT
     procd_close_instance
 }
