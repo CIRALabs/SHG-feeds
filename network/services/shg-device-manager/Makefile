@@ -3,15 +3,15 @@ include $(TOPDIR)/rules.mk
 include git-token.txt
 
 PKG_NAME:=shg-device-manager
-PKG_VERSION:=2021.06.25.01
+PKG_VERSION:=2022.03.09.01
 PKG_RELEASE:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/shg-device-manager-$(PKG_VERSION)
 PKG_CAT:=xzcat
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://${GIT-TOKEN}:x-oauth-basic@github.com/CIRALabs/sshg-openwrt
-PKG_SOURCE_VERSION:=master
-PKG_SOURCE_DATE:=2021-06-25
+PKG_SOURCE_VERSION:=openwrt-target
+PKG_SOURCE_DATE:=2022-03-09
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -22,7 +22,8 @@ define Package/shg-device-manager
 	+python3-flask-sqlalchemy +python3-flask-migrate +python3-getmac \
 	+python3-alembic +python3-password-strength +python3-mako \
 	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci \
-	+lighttpd-mod-openssl +lighttpd-mod-fastcgi +lighttpd-mod-setenv
+	+lighttpd-mod-openssl +lighttpd-mod-fastcgi +lighttpd-mod-setenv \
+	+lighttpd-mod-redirect
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
