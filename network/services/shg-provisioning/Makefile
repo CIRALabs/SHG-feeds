@@ -9,7 +9,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/shg-provisioning
   PKGARCH:=all
-  DEPENDS:=+coreutils +coreutils-base64 +curl
+  DEPENDS:=+coreutils +coreutils-base64 +curl +openssl-util +umdns
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=SHG provisioning init script
