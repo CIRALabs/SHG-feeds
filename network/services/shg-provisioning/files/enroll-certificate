@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Onboarding script for SHG on Turris Omnia
+# Onboarding script for SHG
 
 info() { logger -t shg-provisioning -p info $@; }
 error() { logger -t shg-provisioning -p err $@; }
@@ -12,7 +12,7 @@ check_error() {
 }
 
 WORKING_DIR=${WORKING_DIR-"/etc/shg"}
-mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
+mkdir -p /etc/shg
 
 if [ -f /etc/shg/provisioningURL ]; then
     WELL_KNOWN_ADDRESS=$(cat /etc/shg/provisioningURL)
@@ -45,7 +45,7 @@ check_error "Failed to retrieve ULA address"
 ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 )
 ULA_FQDNNAME=${ULA_HOSTNAME}.${WELL_KNOWN_DOMAIN}
 
-printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_FQDNNAME},DNS:mud.${ULA_FQDNNAME}\n" >/tmp/shg.ossl.cnf
+printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_FQDNNAME}\n" >/tmp/shg.ossl.cnf
 
 # generate cert
 if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
@@ -74,9 +74,6 @@ check_error "Failed to retrieve ${LAN_DEV_NAME} MAC address"
 info "Contact server with information ${WAN_ETH}..."
 JSON="{\"wan-mac\": \"${WAN_ETH}\", \"switch-mac\": \"${LAN_ETH}\", \"ula\": \"${IP6_ULA_PREFIX}\", \"csr\": \"${ENCODED_CSR}\"}"
 echo $JSON >$UPLOADFILE
-
-# keep a copy of this for the container
-#cp $UPLOADFILE /srv/lxc/mud-supervisor/rootfs/root
 
 # loop as long as server keep saying 202-Retry-After
 HTTP_STATUS=202

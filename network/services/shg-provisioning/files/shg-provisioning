@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
 #
-# Onboarding script for SHG on Turris Omnia
+# Onboarding script for SHG
 
 START=80
 STOP=00
@@ -23,8 +23,6 @@ start_service() {
     TGZ_NAME="shg-filesystem"
     POSTINST_SCRIPT="./postinst.sh"
 
-    mkdir -p /etc/shg /srv/lxc/mud-supervisor/rootfs/root
-
     if [ -f /etc/shg/provisioningDomain ]; then
         WELL_KNOWN_DOMAIN=$(cat /etc/shg/provisioningDomain)
     else
@@ -35,7 +33,7 @@ start_service() {
 
     procd_add_mdns "router" "tcp" "80"
 
-    # Turris is already onboarded
+    # Router is already onboarded
     if [ -f $WELL_KNOWN_FILE ]; then
         info "Already onboarded"
         exit 0;
