@@ -61,7 +61,7 @@ if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
 fi
 
 # encode CSR, not wrapped, as it goes into JSON
-ENCODED_CSR=$(gnu-base64 -w 0 ${KEY_NAME}.csr)
+ENCODED_CSR=$(base64 -w 0 ${KEY_NAME}.csr)
 
 # retrieve adresses
 info "Retrieve addresses..."
@@ -108,6 +108,7 @@ uci set system.@system[0].hostname=${ULA_HOSTNAME}
 uci add_list resolver.kresd.hostname_config='/etc/hosts'
 uci set network.lan.ip6assign=64
 uci set network.lan.ip6hint=0
+# TODO rename guest_turris, see also https://openwrt.org/docs/guide-user/network/wifi/guestwifi/guest-wlan if needed
 uci set network.guest_turris=interface
 uci set network.guest_turris.enabled='1'
 uci set network.guest_turris.type='bridge'
@@ -131,6 +132,8 @@ uci set wireless.radio0.country='CA'
 # remove default Turris SSID
 uci set wireless.default_radio0.disabled="1"
 
+# now setup the guest wifi: SHG-onboard with WPA-onboard.
+# make sure it has ULA assigned
 uci set wireless.guest_iface_0=wifi-iface
 uci set wireless.guest_iface_0.device='radio0'
 # Let the device-manager enable this wifi access point...
@@ -169,7 +172,7 @@ uci set firewall.@rule[-1].target='ACCEPT'
 uci set firewall.@rule[-1].proto='tcp'
 uci set firewall.@rule[-1].dest_port='443'
 uci set firewall.@rule[-1].src='guest_turris'
-uci set firewall.@rule[-1].dest_ip='192.168.1.1'
+uci set firewall.@rule[-1].dest_ip="$(uci get network.lan.ipaddr)"
 
 uci add firewall rule
 uci set firewall.@rule[-1].name=let-mgmt-https6
@@ -197,15 +200,18 @@ uci add_list umdns.@umdns[0].network=guest_turris
 # maybe this can be done by tweaking input to
 #   /usr/share/mox/mox_autosetup
 
-# now setup the guest wifi: SHG-onboard with WPA-onboard.
-# make sure it has ULA assigned
-
 # socat - /tmp/kresd/control/2966
 # > hints.set('nB73304.r.dasblinkenled.org 192.168.1.1')
 # > hints.set('nB73304.r.dasblinkenled.org fdb7:3304:1cac::1')
 
 
+# make uhttpd (LUCI) listen on another port as lighttpd will listen on 80 and 443
+# TODO we should rather change lighttpd configuration
+uci set uhttpd.main.listen_http='0.0.0.0:8080 [::]:8080'
+uci set uhttpd.main.listen_https '0.0.0.0:4443 [::]:4443'
+
 uci commit
 echo ${ULA_HOSTNAME} >/etc/shg/hostname
 
-
+# restart uhttpd (as we changed listening port)
+/etc/init.d/uhttpd restart

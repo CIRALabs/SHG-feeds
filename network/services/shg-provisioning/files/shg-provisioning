@@ -40,12 +40,14 @@ start_service() {
     fi
 
 
+# TODO should add repo depending en architecture
     # Add the ciralabs package repo to customfeeds...if it's not there already...
-    if ! grep -q ciralabs /etc/opkg/customfeeds.conf; then
-    	echo 'src/gz ciralabs http://build.securehomegateway.ca/hbl/mox/packages/ciralabs' >> /etc/opkg/customfeeds.conf
-    fi
+#    if ! grep -q ciralabs /etc/opkg/customfeeds.conf; then
+#    	echo 'src/gz ciralabs http://build.securehomegateway.ca/hbl/mox/packages/ciralabs' >> /etc/opkg/customfeeds.conf
+#    fi
 
     # check if device has a WAN
+    info "Check if device has WAN"
     if [ -z "$(uci get network.wan.iface)" ]; then
         if [ ! -f ${WELL_KNOWN_FILE}_WAN ]; then
             uci set network.wan=interface
@@ -64,6 +66,7 @@ start_service() {
     fi
 
     # core of work
+    info "Enroll"
     if /usr/sbin/enroll-certificate && [ -f ${WORKING_DIR}/${TGZ_NAME}.tgz ]; then
         info "Successful enrollment"
     else
@@ -74,7 +77,8 @@ start_service() {
     # Extract tgz file
     info "Filesystem successfully retrieved, install it..."
     cd /
-    tar --no-same-owner -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
+    #tar --no-same-owner -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
+    tar -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
     check_error "Failed to extract filesystem tgz"
 
     cd ${WORKING_DIR}
@@ -122,7 +126,7 @@ EOF
     LAN_DEV_NAME="br-lan"
     IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'f[cd][a-f0-9]\{2\}:[^/]*')
     # populate the /etc/hosts file with more names: IPv4 and IPv6
-    echo "192.168.1.1  $FQDNNAME" >>/etc/hosts
+    echo "$(uci get network.lan.ipaddr)  $FQDNNAME" >>/etc/hosts
     echo "${IP6_ULA}   $FQDNNAME" >>/etc/hosts
 
     check_error "Failed to run post-installation script"
@@ -139,6 +143,12 @@ EOF
     if [ ! -x /usr/bin/scp ]; then
         ln -s openssh-scp /usr/bin/scp
     fi
+
+    # FIXME workaround to allow device-manager process launched by lighttpd with http user to launch uci commands
+    # TODO see https://redmine.lighttpd.net/projects/1/wiki/docs_modfastcgi (#External Spawning) as a better solution
+    group_add_user "http" "www-data"
+    chown :www-data /etc/config -R
+    chmod g+rw /etc/config -R
 
     # Reboot
     info "Filesystem installed, reboot..."
