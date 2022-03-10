@@ -207,11 +207,14 @@ uci add_list umdns.@umdns[0].network=guest_turris
 
 # make uhttpd (LUCI) listen on another port as lighttpd will listen on 80 and 443
 # TODO we should rather change lighttpd configuration
-uci set uhttpd.main.listen_http='0.0.0.0:8080 [::]:8080'
-uci set uhttpd.main.listen_https '0.0.0.0:4443 [::]:4443'
+uci add_list uhttpd.main.listen_http='0.0.0.0:8080'
+uci add_list uhttpd.main.listen_http='[::]:8080'
+uci add_list uhttpd.main.listen_https='0.0.0.0:4443'
+uci add_list uhttpd.main.listen_https='[::]:4443'
 
 uci commit
-echo ${ULA_HOSTNAME} >/etc/shg/hostname
 
 # restart uhttpd (as we changed listening port)
 /etc/init.d/uhttpd restart
+
+echo ${ULA_HOSTNAME} >/etc/shg/hostname

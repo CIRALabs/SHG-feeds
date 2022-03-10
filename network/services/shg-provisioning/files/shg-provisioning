@@ -149,6 +149,8 @@ EOF
     group_add_user "http" "www-data"
     chown :www-data /etc/config -R
     chmod g+rw /etc/config -R
+    chown :www-data /etc/shg -R
+    chmod g+rw /etc/shg -R
 
     # Reboot
     info "Filesystem installed, reboot..."
