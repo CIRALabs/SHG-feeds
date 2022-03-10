@@ -45,7 +45,7 @@ check_error "Failed to retrieve ULA address"
 ULA_HOSTNAME=n$(echo $IP6_ULA_PREFIX | cut -c3-4,6-9 )
 ULA_FQDNNAME=${ULA_HOSTNAME}.${WELL_KNOWN_DOMAIN}
 
-printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_FQDNNAME}\n" >/tmp/shg.ossl.cnf
+printf "[ req ]\ndistinguished_name=shg\n[shg]\n[distinguished_name]\n[SAN]\nsubjectAltName=DNS:${ULA_FQDNNAME},DNS:mud.${ULA_FQDNNAME}\n" >/tmp/shg.ossl.cnf
 
 # generate cert
 if [ ! -f ${KEY_NAME}.key ] || [ ! -f ${KEY_NAME}.csr ]; then
@@ -91,7 +91,7 @@ while [ ${HTTP_STATUS} -eq 202 ]; do
     HTTP_STATUS=$(curl ${WELL_KNOWN_ADDRESS} --fail -H 'Content-Type: application/json' --data-raw "${JSON}"  -Ss -w "%{http_code}" -o ${TGZ_NAME}.tgz)
     curl_stat=$?
     error "CURL status: $curl_stat with ${HTTP_STATUS}"
-    if [ "${curl_stat}" -eq 52 ] || [ "${HTTP_STATUS}" -eq 000 ] || [ "${HTTP_STATUS}" -eq 202 ] || [ "${HTTP_STATUS}" -ge 500 ]; then
+    if [ "${curl_stat}" -eq 52 ] || [ "${curl_stat}" -eq 22 ] || [ "${HTTP_STATUS}" -eq 000 ] || [ "${HTTP_STATUS}" -eq 202 ] || [ "${HTTP_STATUS}" -ge 500 ]; then
         error "WAITING TO RETRY SERVER ${WELL_KNOWN_ADDRESS}"
         sleep 30
         HTTP_STATUS=202 # make sure that it loops
