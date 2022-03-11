@@ -144,13 +144,10 @@ EOF
         ln -s openssh-scp /usr/bin/scp
     fi
 
-    # FIXME workaround to allow device-manager process launched by lighttpd with http user to launch uci commands
-    # TODO see https://redmine.lighttpd.net/projects/1/wiki/docs_modfastcgi (#External Spawning) as a better solution
-    group_add_user "http" "www-data"
-    chown :www-data /etc/config -R
-    chmod g+rw /etc/config -R
-    chown :www-data /etc/shg -R
-    chmod g+rw /etc/shg -R
+    # FIXME workaround to make device-manager process launched as root by lighttpd
+    # TODO see https://redmine.lighttpd.net/projects/1/wiki/docs_modfastcgi (#External Spawning) as a better solution?
+    sed -i 's/server.username/#server.username/' /etc/lighttpd/lighttpd.conf
+    sed -i 's/server.groupname/#server.groupname/' /etc/lighttpd/lighttpd.conf
 
     # Reboot
     info "Filesystem installed, reboot..."
