@@ -6,63 +6,7 @@ START=80
 STOP=00
 USE_PROCD=1
 
-#info() { echo $@; }
-#error(){ >&2 echo $@; }
-info() { logger -t shg-provisioning -p info $@; }
-error() { logger -t shg-provisioning -p err $@; }
-check_error() {
-    if [ $? -ne 0 ]; then
-        error $@
-        exit 1
-    fi
-}
-
 start_service() {
-    WELL_KNOWN_FILE="/etc/shg/onboarded"
-
-    export WELL_KNOWN_FILE
-
-    procd_add_mdns "router" "tcp" "80"
-
-    # Router is already onboarded
-    if [ -f $WELL_KNOWN_FILE ]; then
-        info "Already onboarded"
-        exit 0;
-    fi
-
-
-    # check if device has a WAN
-    info "Check if device has WAN"
-    if [ -z "$(uci get network.wan.iface)" ]; then
-        if [ ! -f ${WELL_KNOWN_FILE}_WAN ]; then
-            uci set network.wan=interface
-            uci set network.wan.ifname=eth0
-            uci set network.wan.proto='dhcp'
-            uci set network.wan6=interface
-            uci set network.wan6.ifname=eth0
-            uci set network.wan6.proto='dhcpv6'
-            uci commit
-            ifup wan
-            touch ${WELL_KNOWN_FILE}_WAN
-            info "Rebooting with new WAN configuration on ETH0"
-            sleep 1
-            reboot
-        fi
-    fi
-
-    # Set the well-known file to avoid subsequent onboarding
-    touch ${WELL_KNOWN_FILE}
-
-    # just make sure stuff not writable.
-    chmod g-w / /root
-    [ -d /root/.ssh ] && chmod g-w /root/.ssh
-    [ -f /root/.ssh/authorized_keys ] && chmod g-w /root/.ssh/authorized_keys
-
-    # scp fix
-    if [ ! -x /usr/bin/scp ]; then
-        ln -s openssh-scp /usr/bin/scp
-    fi
-
     # FIXME workaround to make device-manager process launched as root by lighttpd
     # TODO see https://redmine.lighttpd.net/projects/1/wiki/docs_modfastcgi (#External Spawning) as a better solution?
     sed -i 's/server.username/#server.username/' /etc/lighttpd/lighttpd.conf
