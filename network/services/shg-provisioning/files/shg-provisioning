@@ -19,17 +19,8 @@ check_error() {
 
 start_service() {
     WELL_KNOWN_FILE="/etc/shg/onboarded"
-    WORKING_DIR="/etc/shg"
-    TGZ_NAME="shg-filesystem"
-    POSTINST_SCRIPT="./postinst.sh"
 
-    if [ -f /etc/shg/provisioningDomain ]; then
-        WELL_KNOWN_DOMAIN=$(cat /etc/shg/provisioningDomain)
-    else
-        WELL_KNOWN_DOMAIN="r.securehomegateway.ca"
-    fi
-
-    export WORKING_DIR TGZ_NAME WELL_KNOWN_FILE
+    export WELL_KNOWN_FILE
 
     procd_add_mdns "router" "tcp" "80"
 
@@ -39,12 +30,6 @@ start_service() {
         exit 0;
     fi
 
-
-# TODO should add repo depending en architecture
-    # Add the ciralabs package repo to customfeeds...if it's not there already...
-#    if ! grep -q ciralabs /etc/opkg/customfeeds.conf; then
-#    	echo 'src/gz ciralabs http://build.securehomegateway.ca/hbl/mox/packages/ciralabs' >> /etc/opkg/customfeeds.conf
-#    fi
 
     # check if device has a WAN
     info "Check if device has WAN"
@@ -67,69 +52,7 @@ start_service() {
 
     # core of work
     info "Enroll"
-    if /usr/sbin/enroll-certificate && [ -f ${WORKING_DIR}/${TGZ_NAME}.tgz ]; then
-        info "Successful enrollment"
-    else
-        # fail.  Maybe should reboot?
-        exit 5
-    fi
-
-    # Extract tgz file
-    info "Filesystem successfully retrieved, install it..."
-    cd /
-    #tar --no-same-owner -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
-    tar -x -z -f ${WORKING_DIR}/${TGZ_NAME}.tgz 1>/dev/null
-    check_error "Failed to extract filesystem tgz"
-
-    cd ${WORKING_DIR}
-    KEY="/etc/shg/shg.key"
-    CERTIF="/etc/shg/idevid_cert.pem"
-    INTERMEDIATE="/etc/shg/intermediate_certs.pem"
-    OUTPUT="/etc/shg/lighttpd.pem"
-
-    cat ${KEY} ${CERTIF}         > ${OUTPUT}
-
-    mkdir -p /etc/shg/certificates
-    cp ${KEY}                      /etc/shg/certificates/jrc_prime256v1.key
-    cat ${CERTIF} ${INTERMEDIATE} >/etc/shg/certificates/jrc_prime256v1.crt
-    cp masa.crt                    /etc/shg/certificates/masa.crt
-
-    check_error "Failed to create certificate for lighttpd"
-    chmod 600 ${OUTPUT}
-
-    if [ -d extra ] ; then
-        (cd extra; find . -type f -print | while read file
-         do
-             cat $file >>/$file
-         done)
-    fi
-
-    # now setup the umdnsd service with the right info.
-    HOSTNAME=$(cat /etc/shg/hostname)
-    FQDNNAME=${HOSTNAME}.${WELL_KNOWN_DOMAIN}
-    mkdir -p /etc/umdns
-    cat >/etc/umdns/windex.json <<EOF
-{ "windex" : {
-        "port" : 443,
-        "service" : "_windex._tcp.local",
-        "txt" : [ "windex=https://${FQDNNAME}/shg" ]
-        }
-}
-EOF
-
-    # Run post-installation script, if it exists.
-    cd ${WORKING_DIR}
-    if [ -x ${POSTINST_SCRIPT} ]; then
-        ${POSTINST_SCRIPT}
-    fi
-
-    LAN_DEV_NAME="br-lan"
-    IP6_ULA=$(ip addr show dev ${LAN_DEV_NAME} | grep -m1 -w -o -e 'f[cd][a-f0-9]\{2\}:[^/]*')
-    # populate the /etc/hosts file with more names: IPv4 and IPv6
-    echo "$(uci get network.lan.ipaddr)  $FQDNNAME" >>/etc/hosts
-    echo "${IP6_ULA}   $FQDNNAME" >>/etc/hosts
-
-    check_error "Failed to run post-installation script"
+    /usr/sbin/enroll-certificate
 
     # Set the well-known file to avoid subsequent onboarding
     touch ${WELL_KNOWN_FILE}
@@ -150,7 +73,6 @@ EOF
     sed -i 's/server.groupname/#server.groupname/' /etc/lighttpd/lighttpd.conf
 
     # Reboot
-    info "Filesystem installed, reboot..."
     reboot
 }
 
