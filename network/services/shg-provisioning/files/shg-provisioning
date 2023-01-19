@@ -50,10 +50,6 @@ start_service() {
         fi
     fi
 
-    # core of work
-    info "Enroll"
-    /usr/sbin/enroll-certificate
-
     # Set the well-known file to avoid subsequent onboarding
     touch ${WELL_KNOWN_FILE}
 
@@ -71,6 +67,18 @@ start_service() {
     # TODO see https://redmine.lighttpd.net/projects/1/wiki/docs_modfastcgi (#External Spawning) as a better solution?
     sed -i 's/server.username/#server.username/' /etc/lighttpd/lighttpd.conf
     sed -i 's/server.groupname/#server.groupname/' /etc/lighttpd/lighttpd.conf
+
+    # make uhttpd (LUCI) listen on another port as lighttpd will listen on 80 and 443
+    # TODO we should rather change lighttpd configuration
+    uci add_list uhttpd.main.listen_http='0.0.0.0:8080'
+    uci add_list uhttpd.main.listen_http='[::]:8080'
+    uci add_list uhttpd.main.listen_https='0.0.0.0:4443'
+    uci add_list uhttpd.main.listen_https='[::]:4443'
+
+    uci commit
+
+    # restart uhttpd (as we changed listening port)
+    /etc/init.d/uhttpd restart
 
     # Reboot
     reboot

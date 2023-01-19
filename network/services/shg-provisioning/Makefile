@@ -29,7 +29,6 @@ define Package/shg-provisioning/install
 	$(INSTALL_DIR) $(1)/etc/init.d $(1)/usr/sbin
 
 	$(INSTALL_BIN) ./files/shg-provisioning $(1)/etc/init.d/shg-provisioning
-	$(INSTALL_BIN) ./files/enroll-certificate $(1)/usr/sbin
 endef
 
 $(eval $(call BuildPackage,shg-provisioning))
