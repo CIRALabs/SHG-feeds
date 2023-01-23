@@ -21,9 +21,7 @@ define Package/shg-device-manager
 	+python3-schema +python3-flup +python3-watchdog +python3-sqlalchemy \
 	+python3-flask-sqlalchemy +python3-flask-migrate +python3-getmac \
 	+python3-alembic +python3-password-strength +python3-mako \
-	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci \
-	+lighttpd-mod-openssl +lighttpd-mod-fastcgi +lighttpd-mod-setenv \
-	+lighttpd-mod-redirect
+	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
@@ -38,9 +36,10 @@ define Package/shg-device-manager/description
 endef
 
 define Package/shg-device-manager/install
-	${INSTALL_DIR} $(1)/srv/shg-device-manager $(1)/etc/init.d $(1)/etc/lighttpd/conf.d
+	${INSTALL_DIR} $(1)/srv/shg-device-manager $(1)/etc/init.d $(1)/etc/lighttpd/conf.d $(1)/etc/uci-defaults
 	tar -C ${PKG_BUILD_DIR}/device_manager -c -f - . | tar -C $(1)/srv/shg-device-manager -x -f -
 	${INSTALL_BIN} ./files/lighttpd-shg-device-manager.conf $(1)/etc/lighttpd/conf.d/52-shg-device-manager.conf
+	${INSTALL_BIN} ./files/uhttpd-shg $(1)/etc/uci-defaults/60-uhttpd-shg
 	${INSTALL_BIN} ./files/shg-device-manager.init $(1)/etc/init.d/shg-device-manager
 endef
 
