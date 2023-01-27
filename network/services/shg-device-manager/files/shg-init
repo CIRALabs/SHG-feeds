@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mkdir -p /etc/shg
+/usr/bin/python /srv/shg-device-manager/db_upgrade.py
+chown -R http:www-data /etc/shg
+chown -R http:www-data /etc/config/shg
+/etc/init.d/lighttpd enable
+/etc/init.d/lighttpd start
+# enable shg user/group to read some configuration with uci
+chmod a+r /etc/config/firewall
+chmod a+r /etc/config/network
+chmod a+r /tmp/dhcp.leases
+
+exit 0
