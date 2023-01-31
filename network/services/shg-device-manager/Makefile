@@ -22,8 +22,8 @@ define Package/shg-device-manager
 	+python3-flask-sqlalchemy +python3-flask-migrate +python3-getmac \
 	+python3-alembic +python3-password-strength +python3-mako \
 	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci \
-	+lighttpd-mod-openssl +lighttpd-mod-fastcgi +lighttpd-mod-setenv \
-	+lighttpd-mod-redirect
+	+lighttpd-mod-fastcgi +lighttpd-mod-redirect \
+	+spawn-fcgi
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager

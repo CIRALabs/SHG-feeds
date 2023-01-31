@@ -1,14 +1,16 @@
 #!/bin/sh
 
 mkdir -p /etc/shg
-/usr/bin/python /srv/shg-device-manager/db_upgrade.py
-chown -R http:www-data /etc/shg
-chown -R http:www-data /etc/config/shg
+
+# if lighttpd is not enabled nor started set default port for SHG else it would try to listen on port 80
+/etc/init.d/lighttpd enabled
+ENABLED=$?
+/etc/init.d/lighttpd running
+STARTED=$?
+if [ "$ENABLED" = 1 ] && [ "$STARTED" = 1 ]; then
+  echo "server.port = 81" >> /etc/lighttpd/conf.d/52-shg-device-manager.conf
+fi
 /etc/init.d/lighttpd enable
 /etc/init.d/lighttpd start
-# enable shg user/group to read some configuration with uci
-chmod a+r /etc/config/firewall
-chmod a+r /etc/config/network
-chmod a+r /tmp/dhcp.leases
 
 exit 0
