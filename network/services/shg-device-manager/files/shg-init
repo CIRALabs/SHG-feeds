@@ -13,4 +13,8 @@ fi
 /etc/init.d/lighttpd enable
 /etc/init.d/lighttpd start
 
+uci set spin.spind.pubsub_run_mosquitto 1
+/etc/init.d/spin enable
+/etc/init.d/spin start
+
 exit 0

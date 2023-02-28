@@ -22,8 +22,8 @@ define Package/shg-device-manager
 	+python3-flask-sqlalchemy +python3-flask-migrate +python3-getmac \
 	+python3-alembic +python3-password-strength +python3-mako \
 	+python3-dateutil +python3-requests +python3-paho-mqtt +python3-uci \
-	+lighttpd-mod-openssl +lighttpd-mod-fastcgi +lighttpd-mod-setenv \
-	+lighttpd-mod-redirect
+	+lighttpd-mod-fastcgi +lighttpd-mod-redirect \
+	+spawn-fcgi +spin
   SECTION:=ciralabs
   CATEGORY:=Network
   TITLE:=IoT Device Manager
@@ -31,10 +31,9 @@ define Package/shg-device-manager
 endef
 
 define Package/shg-device-manager/description
- This package provides an interface to the SHG Smartphone application.
- It discovers IoT devices in the home, characterizes their network traffic, and
- allows the home owner to control what network access the devices get.
- It can import or export RFC8520 MUD files via URL or QR code.
+ This package provides a REST API to manage a tool that discovers IoT devices
+ in the home, characterizes their network traffic, and allows the home owner
+ to control what network access the devices get.
 endef
 
 define Package/shg-device-manager/install
